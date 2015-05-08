@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>ionic-Tabs | Nemo&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="ion-tabsDelegate：$ionicTabsDelegate
+提供多tab切换的接口。
+可以任意设置tabs class和animation class来定义效果。
+单个的tab细节详见ionTab指示器
+注意: 不要再ion-content添加ion-tabs，这样会造成css错误
+用法123456789101112131415&amp;lt;ion-tabs class=&quot;tabs-posi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ionic-Tabs">
+<meta property="og:url" content="http://violet-day.github.io/2014/08/10/Ionic/Tabs/index.html">
+<meta property="og:site_name" content="Nemo's Blog">
+<meta property="og:description" content="ion-tabsDelegate：$ionicTabsDelegate
+提供多tab切换的接口。
+可以任意设置tabs class和animation class来定义效果。
+单个的tab细节详见ionTab指示器
+注意: 不要再ion-content添加ion-tabs，这样会造成css错误
+用法123456789101112131415&amp;lt;ion-tabs class=&quot;tabs-posi">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ionic-Tabs">
+<meta name="twitter:description" content="ion-tabsDelegate：$ionicTabsDelegate
+提供多tab切换的接口。
+可以任意设置tabs class和animation class来定义效果。
+单个的tab细节详见ionTab指示器
+注意: 不要再ion-content添加ion-tabs，这样会造成css错误
+用法123456789101112131415&amp;lt;ion-tabs class=&quot;tabs-posi">
+  
+    <link rel="alternative" href="/atom.xml" title="Nemo&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img src="https://avatars2.githubusercontent.com/u/5970246?v=3&amp;s=460">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">violet_day</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">Ride The Lightning</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/violet-day" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+					        
+								<a class="mail" target="_blank" href="/violet_day@live.com" title="mail">mail</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Hibernate/" style="font-size: 10px;">Hibernate</a><a href="/tags/Navigation/" style="font-size: 10px;">Navigation</a><a href="/tags/SecureCRT/" style="font-size: 10px;">SecureCRT</a><a href="/tags/Tabs/" style="font-size: 10px;">Tabs</a><a href="/tags/aws/" style="font-size: 10px;">aws</a><a href="/tags/cordova/" style="font-size: 10px;">cordova</a><a href="/tags/eclipse/" style="font-size: 10px;">eclipse</a><a href="/tags/git/" style="font-size: 13.33px;">git</a><a href="/tags/gitflow/" style="font-size: 10px;">gitflow</a><a href="/tags/gitosis/" style="font-size: 10px;">gitosis</a><a href="/tags/ionic/" style="font-size: 16.67px;">ionic</a><a href="/tags/java/" style="font-size: 13.33px;">java</a><a href="/tags/linux/" style="font-size: 20px;">linux</a><a href="/tags/nginx/" style="font-size: 20px;">nginx</a><a href="/tags/node/" style="font-size: 20px;">node</a><a href="/tags/redis/" style="font-size: 10px;">redis</a><a href="/tags/side-menus/" style="font-size: 10px;">side menus</a><a href="/tags/strongloop/" style="font-size: 10px;">strongloop</a><a href="/tags/主键/" style="font-size: 10px;">主键</a><a href="/tags/全部变量/" style="font-size: 10px;">全部变量</a><a href="/tags/守护进程/" style="font-size: 10px;">守护进程</a><a href="/tags/负载均衡/" style="font-size: 10px;">负载均衡</a><a href="/tags/集合/" style="font-size: 10px;">集合</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">奥巴马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">卡卡的美丽传说</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">本泽马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">吉格斯的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">习大大大不同</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">托蒂的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">violet_day</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="https://avatars2.githubusercontent.com/u/5970246?v=3&amp;s=460">
+				<hgroup>
+				  <h1 class="header-author">violet_day</h1>
+				</hgroup>
+			</div>
+			
+			<p class="header-subtitle">Ride The Lightning</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/violet-day" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+			        
+						<a class="mail" target="_blank" href="/violet_day@live.com" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Ionic/Tabs" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2014/08/10/Ionic/Tabs/" class="article-date">
+  	<time datetime="2014-08-09T20:59:23.000Z" itemprop="datePublished">8月 10 2014</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ionic-Tabs
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Tabs/">Tabs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ionic/">ionic</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/ionic/">ionic</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="ion-tabs">ion-tabs</h2><p>Delegate：<code>$ionicTabsDelegate</code></p>
+<p>提供多tab切换的接口。</p>
+<p>可以任意设置<code>tabs class</code>和<code>animation class</code>来定义效果。</p>
+<p>单个的tab细节详见<code>ionTab</code>指示器</p>
+<p>注意: 不要再ion-content添加ion-tabs，这样会造成css错误</p>
+<h3 id="用法">用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ion-tabs</span> <span class="attribute">class</span>=<span class="value">"tabs-positive tabs-icon-only"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="title">ion-tab</span> <span class="attribute">title</span>=<span class="value">"Home"</span> <span class="attribute">icon-on</span>=<span class="value">"ion-ios7-filing"</span> <span class="attribute">icon-off</span>=<span class="value">"ion-ios7-filing-outline"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- Tab 1 content --&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">ion-tab</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="title">ion-tab</span> <span class="attribute">title</span>=<span class="value">"About"</span> <span class="attribute">icon-on</span>=<span class="value">"ion-ios7-clock"</span> <span class="attribute">icon-off</span>=<span class="value">"ion-ios7-clock-outline"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- Tab 2 content --&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">ion-tab</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="title">ion-tab</span> <span class="attribute">title</span>=<span class="value">"Settings"</span> <span class="attribute">icon-on</span>=<span class="value">"ion-ios7-gear"</span> <span class="attribute">icon-off</span>=<span class="value">"ion-ios7-gear-outline"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- Tab 3 content --&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">ion-tab</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="title">ion-tabs</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="ion-tab">ion-tab</h2><p>Child of ionTabs</p>
+<p>包含了tab的content。content只有当指定的tab被选中时才出现。</p>
+<p>每个ionTab都有自己的view history</p>
+<h3 id="用法-1">用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ion-tab</span></span><br><span class="line">  <span class="attribute">title</span>=<span class="value">"Tab!"</span></span><br><span class="line">  <span class="attribute">icon</span>=<span class="value">"my-icon"</span></span><br><span class="line">  <span class="attribute">href</span>=<span class="value">"#/tab/tab-link"</span></span><br><span class="line">  <span class="attribute">on-select</span>=<span class="value">"onTabSelected()"</span></span><br><span class="line">  <span class="attribute">on-deselect</span>=<span class="value">"onTabDeselected()"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ion-tab</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>更加完整的例子请看<code>inoTabs</code></p>
+<h3 id="API">API</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">属性</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">详细说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">title</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">tab的标题    </td>
+</tr>
+<tr>
+<td style="text-align:center">href(可选)</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">The link that this tab will navigate to when tapped</td>
+</tr>
+<tr>
+<td style="text-align:center">icon(可选)</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">tab的图标，如果设置，则会变为icon-on和icon-off的默认图标</td>
+</tr>
+<tr>
+<td style="text-align:center">icon-on(可选)</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">选中时tab的图标</td>
+</tr>
+<tr>
+<td style="text-align:center">icon-off(可选)</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">未选中时tab的图标</td>
+</tr>
+<tr>
+<td style="text-align:center">badge(可选)</td>
+<td style="text-align:center">expression</td>
+<td style="text-align:center">tab上的徽章，通常为数字</td>
+</tr>
+<tr>
+<td style="text-align:center">badge-style(可选)</td>
+<td style="text-align:center">expression</td>
+<td style="text-align:center">tab上徽章的样式，tabs-positive等</td>
+</tr>
+<tr>
+<td style="text-align:center">on-select(可选)</td>
+<td style="text-align:center">expression</td>
+<td style="text-align:center">tab选中的回调函数</td>
+</tr>
+<tr>
+<td style="text-align:center">on-deselect(可选)</td>
+<td style="text-align:center">expression</td>
+<td style="text-align:center">tab取消选中时的回调</td>
+</tr>
+<tr>
+<td style="text-align:center">ng-click(可选)</td>
+<td style="text-align:center">expression</td>
+<td style="text-align:center">默认的，tab将会在click之后被选中。如果设置了ngClick，将不会被选中。你可以显示的通过<code>$ionicTabsDelegate.select()</code>切换</td>
+</tr>
+</tbody>
+</table>
+<h2 id="$ionicTabsDelegate">$ionicTabsDelegate</h2><p>Delegate for controlling the <code>ionTabs</code> directive.</p>
+<p><code>$ionicTabsDelegate</code>服务中的函数控制所有的<code>ionTabs</code>指示器，通过<code>$getByHandle</code>获取具体的<code>ionTabs</code>实例。</p>
+<h3 id="用法-2">用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">body</span> <span class="attribute">ng-controller</span>=<span class="value">"MyCtrl"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ion-tabs</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="title">ion-tab</span> <span class="attribute">title</span>=<span class="value">"Tab 1"</span>&gt;</span></span><br><span class="line">      Hello tab 1!</span><br><span class="line">      <span class="tag">&lt;<span class="title">button</span> <span class="attribute">ng-click</span>=<span class="value">"selectTabWithIndex(1)"</span>&gt;</span>Select tab 2!<span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">ion-tab</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">ion-tab</span> <span class="attribute">title</span>=<span class="value">"Tab 2"</span>&gt;</span>Hello tab 2!<span class="tag">&lt;/<span class="title">ion-tab</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="title">ion-tabs</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyCtrl</span><span class="params">($scope, $ionicTabsDelegate)</span> </span>&#123;</span><br><span class="line">  $scope.selectTabWithIndex = <span class="function"><span class="keyword">function</span><span class="params">(index)</span> </span>&#123;</span><br><span class="line">    $ionicTabsDelegate.select(index);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="方法">方法</h3><h4 id="select(index,_[shouldChangeHistory])"><code>select(index, [shouldChangeHistory])</code></h4><p>通过给定的index选中tab</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">详细信息</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">index</td>
+<td style="text-align:center">number</td>
+<td style="text-align:center">选中tab的缩影</td>
+</tr>
+<tr>
+<td style="text-align:center">shouldChangeHistory(可选)</td>
+<td style="text-align:center">boolean</td>
+<td style="text-align:center">是否此次选中载入指定tab的历史，或者仅仅载入默认的页面。默认为false。提示：如果tab中有ionNavView，这个很可能为true</td>
+</tr>
+</tbody>
+</table>
+<h4 id="selectedIndex"><code>selectedIndex</code></h4><ul>
+<li>返回：<code>number</code>,选中tab的索引，没有则为-1</li>
+</ul>
+<h4 id="$getByHandle(handle)"><code>$getByHandle(handle)</code></h4><table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">详细信息</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">handle</td>
+<td style="text-align:center">string</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>返回:<code>delegateInstance</code>Returns:  A delegate instance that controls only the ionTabs directives with delegate-handle matching the given handle.</li>
+</ul>
+<p>示例: $ionicTabsDelegate.$getByHandle(‘my-handle’).select(0);</p>
+<a id="more"></a>
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/08/10/Ionic/Side Menus/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Side Menus
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/08/09/Ionic/Cordova/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Can&#39;t install Cordova plugins from Git on CLI</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="Ionic/Tabs" data-title="ionic-Tabs" data-url="http://violet-day.github.io/2014/08/10/Ionic/Tabs/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2015 violet_day
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/mobile.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  </div>
+</body>
+</html>

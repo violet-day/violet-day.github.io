@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Hibernate各种主键生成策略与配置详解 | Nemo&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="assigned主键由外部程序负责生成，在 save() 之前必须指定一个。Hibernate不负责维护主键生成。与Hibernate和底层数据库都无关，可以跨数据库。在存储对象前，必须要使用主键的setter方法给主键赋值，至于这个值怎么生成，完全由自己决定，这种方法应该尽量避免。
+123&amp;lt;id name=&quot;id&quot; column=&quot;id&quot;&amp;gt;&amp;lt;generator class=&quot;a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hibernate各种主键生成策略与配置详解">
+<meta property="og:url" content="http://violet-day.github.io/2014/08/17/Java/Hibernate各种主键生成策略与配置详解/index.html">
+<meta property="og:site_name" content="Nemo's Blog">
+<meta property="og:description" content="assigned主键由外部程序负责生成，在 save() 之前必须指定一个。Hibernate不负责维护主键生成。与Hibernate和底层数据库都无关，可以跨数据库。在存储对象前，必须要使用主键的setter方法给主键赋值，至于这个值怎么生成，完全由自己决定，这种方法应该尽量避免。
+123&amp;lt;id name=&quot;id&quot; column=&quot;id&quot;&amp;gt;&amp;lt;generator class=&quot;a">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hibernate各种主键生成策略与配置详解">
+<meta name="twitter:description" content="assigned主键由外部程序负责生成，在 save() 之前必须指定一个。Hibernate不负责维护主键生成。与Hibernate和底层数据库都无关，可以跨数据库。在存储对象前，必须要使用主键的setter方法给主键赋值，至于这个值怎么生成，完全由自己决定，这种方法应该尽量避免。
+123&amp;lt;id name=&quot;id&quot; column=&quot;id&quot;&amp;gt;&amp;lt;generator class=&quot;a">
+  
+    <link rel="alternative" href="/atom.xml" title="Nemo&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img src="https://avatars2.githubusercontent.com/u/5970246?v=3&amp;s=460">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">violet_day</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">Ride The Lightning</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/violet-day" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+					        
+								<a class="mail" target="_blank" href="/violet_day@live.com" title="mail">mail</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Hibernate/" style="font-size: 10px;">Hibernate</a><a href="/tags/Navigation/" style="font-size: 10px;">Navigation</a><a href="/tags/SecureCRT/" style="font-size: 10px;">SecureCRT</a><a href="/tags/Tabs/" style="font-size: 10px;">Tabs</a><a href="/tags/aws/" style="font-size: 10px;">aws</a><a href="/tags/cordova/" style="font-size: 10px;">cordova</a><a href="/tags/eclipse/" style="font-size: 10px;">eclipse</a><a href="/tags/git/" style="font-size: 13.33px;">git</a><a href="/tags/gitflow/" style="font-size: 10px;">gitflow</a><a href="/tags/gitosis/" style="font-size: 10px;">gitosis</a><a href="/tags/ionic/" style="font-size: 16.67px;">ionic</a><a href="/tags/java/" style="font-size: 13.33px;">java</a><a href="/tags/linux/" style="font-size: 20px;">linux</a><a href="/tags/nginx/" style="font-size: 20px;">nginx</a><a href="/tags/node/" style="font-size: 20px;">node</a><a href="/tags/redis/" style="font-size: 10px;">redis</a><a href="/tags/side-menus/" style="font-size: 10px;">side menus</a><a href="/tags/strongloop/" style="font-size: 10px;">strongloop</a><a href="/tags/主键/" style="font-size: 10px;">主键</a><a href="/tags/全部变量/" style="font-size: 10px;">全部变量</a><a href="/tags/守护进程/" style="font-size: 10px;">守护进程</a><a href="/tags/负载均衡/" style="font-size: 10px;">负载均衡</a><a href="/tags/集合/" style="font-size: 10px;">集合</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">奥巴马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">卡卡的美丽传说</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">本泽马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">吉格斯的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">习大大大不同</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">托蒂的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">violet_day</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="https://avatars2.githubusercontent.com/u/5970246?v=3&amp;s=460">
+				<hgroup>
+				  <h1 class="header-author">violet_day</h1>
+				</hgroup>
+			</div>
+			
+			<p class="header-subtitle">Ride The Lightning</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/violet-day" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+			        
+						<a class="mail" target="_blank" href="/violet_day@live.com" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Java/Hibernate各种主键生成策略与配置详解" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2014/08/17/Java/Hibernate各种主键生成策略与配置详解/" class="article-date">
+  	<time datetime="2014-08-16T17:32:28.000Z" itemprop="datePublished">8月 17 2014</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Hibernate各种主键生成策略与配置详解
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hibernate/">Hibernate</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/主键/">主键</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/java/">java</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="assigned">assigned</h2><p>主键由外部程序负责生成，在 save() 之前必须指定一个。Hibernate不负责维护主键生成。与Hibernate和底层数据库都无关，可以跨数据库。在存储对象前，必须要使用主键的setter方法给主键赋值，至于这个值怎么生成，完全由自己决定，这种方法应该尽量避免。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"assigned"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>“ud”是自定义的策略名，人为起的名字，后面均用“ud”表示。</p>
+<p><em>特点：可以跨数据库，人为控制主键生成，应尽量避免。</em></p>
+<h2 id="increment">increment</h2><p>由Hibernate从数据库中取出主键的最大值（每个session只取1次），以该值为基础，每次增量为1，在内存中生成主键，不依赖于底层的数据库，因此可以跨数据库。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"increment"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Hibernate调用org.hibernate.id.IncrementGenerator类里面的generate()方法，使用select max(idColumnName) from tableName语句获取主键最大值。该方法被声明成了synchronized，所以在一个独立的Java虚拟机内部是没有问题的，然而，在多个JVM同时并发访问数据库select max时就可能取出相同的值，再insert就会发生Dumplicate entry的错误。所以只能有一个Hibernate应用进程访问数据库，否则就可能产生主键冲突，所以不适合多进程并发更新数据库，适合单一进程访问数据库，不能用于群集环境。</p>
+<p>官方文档：只有在没有其他进程往同一张表中插入数据时才能使用，在集群下不要使用。</p>
+<p><em>特点：跨数据库，不适合多进程并发更新数据库，适合单一进程访问数据库，不能用于群集环境。</em></p>
+<h2 id="hilo">hilo</h2><p>hilo（高低位方式high low）是hibernate中最常用的一种生成方式，需要一张额外的表保存hi的值。保存hi值的表至少有一条记录（只与第一条记录有关），否则会出现错误。可以跨数据库。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"hilo"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"table"</span>&gt;</span>hibernate_hilo<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"column"</span>&gt;</span>next_hi<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"max_lo"</span>&gt;</span>100<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">generator</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"table"</span>&gt;</span>hibernate_hilo<span class="tag">&lt;/<span class="title">param</span>&gt;</span> 指定保存hi值的表名</span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"column"</span>&gt;</span>next_hi<span class="tag">&lt;/<span class="title">param</span>&gt;</span> 指定保存hi值的列名</span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"max_lo"</span>&gt;</span>100<span class="tag">&lt;/<span class="title">param</span>&gt;</span> 指定低位的最大值</span><br></pre></td></tr></table></figure>
+<p>也可以省略table和column配置，其默认的表为hibernate_unique_key，列为next_hi</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"hilo"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"max_lo"</span>&gt;</span>100<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">generator</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>hilo生成器生成主键的过程（以hibernate_unique_key表，next_hi列为例）：</p>
+<ol>
+<li>获得hi值：读取并记录数据库的hibernate_unique_key表中next_hi字段的值，数据库中此字段值加1保存。</li>
+<li>获得lo值：从0到max_lo循环取值，差值为1，当值为max_lo值时，重新获取hi值，然后lo值继续从0到max_lo循环。</li>
+<li>根据公式 hi * (max_lo + 1) + lo计算生成主键值。</li>
+</ol>
+<p>注意：当hi值是0的时候，那么第一个值不是0*(max_lo+1)+0=0，而是lo跳过0从1开始，直接是1、2、3……</p>
+<p>那max_lo配置多大合适呢？</p>
+<p>这要根据具体情况而定，如果系统一般不重启，而且需要用此表建立大量的主键，可以吧max_lo配置大一点，这样可以减少读取数据表的次数，提高效率；反之，如果服务器经常重启，可以吧max_lo配置小一点，可以避免每次重启主键之间的间隔太大，造成主键值主键不连贯。</p>
+<p><em>特点：跨数据库，hilo算法生成的标志只能在一个数据库中保证唯一。</em></p>
+<h2 id="seqhilo">seqhilo</h2><p>与hilo类似，通过hi/lo算法实现的主键生成机制，只是将hilo中的数据表换成了序列sequence，需要数据库中先创建sequence，适用于支持sequence的数据库，如Oracle。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"seqhilo"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"sequence"</span>&gt;</span>hibernate_seq<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"max_lo"</span>&gt;</span>100<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">generator</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><em>特点：与hilo类似，只能在支持序列的数据库中使用。</em></p>
+<h2 id="sequence">sequence</h2><p>采用数据库提供的sequence机制生成主键，需要数据库支持sequence。如oralce、DB、SAP DB、PostgerSQL、McKoi中的sequence。MySQL这种不支持sequence的数据库则不行（可以使用identity）。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"sequence"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"sequence"</span>&gt;</span>hibernate_id<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">generator</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"sequence"</span>&gt;</span>hibernate_id<span class="tag">&lt;/<span class="title">param</span>&gt;</span> 指定sequence的名称</span><br></pre></td></tr></table></figure>
+<p>Hibernate生成主键时，查找sequence并赋给主键值，主键值由数据库生成，Hibernate不负责维护，使用时必须先创建一个sequence，如果不指定sequence名称，则使用Hibernate默认的sequence，名称为hibernate_sequence，前提要在数据库中创建该sequence。</p>
+<p><em>特点：只能在支持序列的数据库中使用，如Oracle。</em></p>
+<h2 id="identity">identity</h2><p>identity由底层数据库生成标识符。identity是由数据库自己生成的，但这个主键必须设置为自增长，使用identity的前提条件是底层数据库支持自动增长字段类型，如DB2、SQL Server、MySQL、Sybase和HypersonicSQL等，Oracle这类没有自增字段的则不支持。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"identity"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>例：如果使用MySQL数据库，则主键字段必须设置成auto_increment。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id int(11) primary key auto_increment</span><br></pre></td></tr></table></figure>
+<p><em>特点：只能用在支持自动增长的字段数据库中使用，如MySQL。</em></p>
+<h2 id="native">native</h2><p>native由hibernate根据使用的数据库自行判断采用identity、hilo、sequence其中一种作为主键生成方式，灵活性很强。如果能支持identity则使用identity，如果支持sequence则使用sequence。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"native"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>例如MySQL使用identity，Oracle使用sequence</p>
+<p>注意：如果Hibernate自动选择sequence或者hilo，则所有的表的主键都会从Hibernate默认的sequence或hilo表中取。并且，有的数据库对于默认情况主键生成测试的支持，效率并不是很高。</p>
+<p>使用sequence或hilo时，可以加入参数，指定sequence名称或hi值表名称等，如</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"sequence"</span>&gt;</span>hibernate_id<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><em>特点：根据数据库自动选择，项目中如果用到多个数据库时，可以使用这种方式，使用时需要设置表的自增字段或建立序列，建立表等。</em></p>
+<h2 id="uuid">uuid</h2><p>UUID：Universally Unique Identifier，是指在一台机器上生成的数字，它保证对在同一时空中的所有机器都是唯一的。按照开放软件基金会(OSF)制定的标准计算，用到了以太网卡地址、纳秒级时间、芯片ID码和许多可能的数字，标准的UUID格式为：</p>
+<p>xxxxxxxx-xxxx-xxxx-xxxxxx-xxxxxxxxxx (8-4-4-4-12)</p>
+<p>其中每个 x 是 0-9 或 a-f 范围内的一个十六进制的数字。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"uuid"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Hibernate在保存对象时，生成一个UUID字符串作为主键，保证了唯一性，但其并无任何业务逻辑意义，只能作为主键，唯一缺点长度较大，32位（Hibernate将UUID中间的“-”删除了）的字符串，占用存储空间大，但是有两个很重要的优点，Hibernate在维护主键时，不用去数据库查询，从而提高效率，而且它是跨数据库的，以后切换数据库极其方便。</p>
+<p><em>特点：uuid长度大，占用空间大，跨数据库，不用访问数据库就生成主键值，所以效率高且能保证唯一性，移植非常方便，推荐使用。</em></p>
+<h2 id="guid">guid</h2><p>GUID：Globally Unique Identifier全球唯一标识符，也称作 UUID，是一个128位长的数字，用16进制表示。算法的核心思想是结合机器的网卡、当地时间、一个随即数来生成GUID。从理论上讲，如果一台机器每秒产生10000000个GUID，则可以保证（概率意义上）3240年不重复。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"guid"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Hibernate在维护主键时，先查询数据库，获得一个uuid字符串，该字符串就是主键值，该值唯一，缺点长度较大，支持数据库有限，优点同uuid，跨数据库，但是仍然需要访问数据库。</p>
+<p><em>注意：长度因数据库不同而不同</em></p>
+<p>MySQL中使用select uuid()语句获得的为36位（包含标准格式的“-”）</p>
+<p>Oracle中，使用select rawtohex(sys_guid()) from dual语句获得的为32位（不包含“-”） 特点：需要数据库支持查询uuid，生成时需要查询数据库，效率没有uuid高，推荐使用uuid。</p>
+<h2 id="foreign">foreign</h2><p>使用另外一个相关联的对象的主键作为该对象主键。主要用于一对一关系中。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"foreign"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"property"</span>&gt;</span>user<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">generator</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">one-to-one</span> <span class="attribute">name</span>=<span class="value">"user"</span> <span class="attribute">class</span>=<span class="value">"domain.User"</span> <span class="attribute">constrained</span>=<span class="value">"true"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<p>该例使用domain.User的主键作为本类映射的主键。</p>
+<p><em>特点：很少使用，大多用在一对一关系中。</em></p>
+<h2 id="select">select</h2><p>使用触发器生成主键，主要用于早期的数据库主键生成机制，能用到的地方非常少。</p>
+<h2 id="其他注释方式配置">其他注释方式配置</h2><p>注释方式与配置文件底层实现方式相同，只是配置的方式换成了注释方式</p>
+<ol>
+<li><p>自动增长，适用于支持自增字段的数据库</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Id</span></span><br><span class="line"><span class="annotation">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>根据底层数据库自动选择方式，需要底层数据库的设置<br>如MySQL，会使用自增字段，需要将主键设置成auto_increment。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Id</span></span><br><span class="line"><span class="annotation">@GeneratedValue</span>(strategy = GenerationType.AUTO)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用表存储生成的主键，可以跨数据库。<br>每次需要主键值时，查询名为”hibernate_table”的表，查找主键列”gen_pk”值为”2”记录，得到这条记录的”gen_val”值，根据这个值，和allocationSize的值生成主键值。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Id</span></span><br><span class="line"><span class="annotation">@GeneratedValue</span>(strategy = GenerationType.TABLE, generator = <span class="string">"ud"</span>)</span><br><span class="line"><span class="annotation">@TableGenerator</span>(name = <span class="string">"ud"</span>,</span><br><span class="line">table = <span class="string">"hibernate_table"</span>,</span><br><span class="line">pkColumnName= <span class="string">"gen_pk"</span>,</span><br><span class="line">pkColumnValue = <span class="string">"2"</span>,</span><br><span class="line">valueColumnName = <span class="string">"gen_val"</span>,</span><br><span class="line">initialValue = <span class="number">2</span>,</span><br><span class="line">allocationSize = <span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用序列存储主键值</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Id</span></span><br><span class="line"><span class="annotation">@GeneratedValue</span>(strategy = GenerationType.SEQUENCE, generator = <span class="string">"ud"</span>)</span><br><span class="line"><span class="annotation">@SequenceGenerator</span>(name = <span class="string">"ud"</span>,</span><br><span class="line">sequenceName = <span class="string">"hibernate_seq"</span>,</span><br><span class="line">allocationSize = <span class="number">1</span>,</span><br><span class="line">initialValue = <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>uuid生成主键</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Id</span></span><br><span class="line"><span class="annotation">@GenericGenerator</span>(name = <span class="string">"systemUUID"</span>, strategy = <span class="string">"uuid"</span>)</span><br><span class="line"><span class="annotation">@GeneratedValue</span>(generator = <span class="string">"systemUUID"</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="小结">小结</h2><ol>
+<li><p>为了保证对象标识符的唯一性与不可变性，应该让Hibernate来为主键赋值，而不是程序。</p>
+</li>
+<li><p>正常使用Hibernate维护主键，最好将主键的setter方法设置成private，从而避免人为或程序修改主键，而使用assigned方式，就不能用private，否则无法给主键赋值。</p>
+</li>
+<li><p>Hibernate中唯一一种最简单通用的主键生成器就是uuid。虽然是个32位难读的长字符串，但是它没有跨数据库的问题，将来切换数据库极其简单方便，推荐使用！</p>
+</li>
+<li><p>关于hilo机制注意：<br>hilo算法生成的标志只能在一个数据库中保证唯一。<br>当用户为Hibernate自行提供连接，或者Hibernate通过JTA，从应用服务器的数据源获取数据库连接时，无法使用hilo，因为这不能保证hilo单独在新的数据库连接的事务中访问hi值表，这种情况，如果数据库支持序列，可以使用seqhilo。</p>
+</li>
+<li><p>使用identity、native、GenerationType.AUTO等方式生成主键时，只要用到自增字段，数据库表的字段必须设置成自动增加的，否则出错。</p>
+</li>
+<li><p>还有一些方法未列出来，例如uuid.hex，sequence-identity等，这些方法不是很常用，且已被其他方法代替，如uuid.hex，官方文档里建议不使用，而直接使用uuid方法。</p>
+</li>
+<li><p>Hibernate的各版本主键生成策略配置有略微差别，但实现基本相同。如，有的版本默认sequence不指定序列名，则使用名为hibernate_sequence的序列，有的版本则必须指定序列名。</p>
+</li>
+<li><p>还可以自定义主键生成策略，这里暂时不讨论，只讨论官方自带生成策略。</p>
+</li>
+</ol>
+<a id="more"></a>
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/08/17/Java/Java集合框架List，Map，Set等全面介绍/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Java集合框架List，Map，Set等全面介绍
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/08/12/Java/开发环境配置/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">开发环境配置</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="Java/Hibernate各种主键生成策略与配置详解" data-title="Hibernate各种主键生成策略与配置详解" data-url="http://violet-day.github.io/2014/08/17/Java/Hibernate各种主键生成策略与配置详解/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2015 violet_day
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/mobile.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  </div>
+</body>
+</html>

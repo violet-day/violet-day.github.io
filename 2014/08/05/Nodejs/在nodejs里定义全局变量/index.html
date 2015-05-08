@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>在nodejs里定义全局变量 | Nemo&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="如果你正在使用一系列node模块，或许是一个像Express.js一样的框架，突然需要使用几个全局变量。怎样在nodejs里创建全局变量呢？对此最常见的建议是“不使用‘var’关键字声明一个变量”或“给object对象添加一个变量”或“给OBJECT对象添加一个变量”。你会使用哪种方式呢？首先，让我们分析下global对象。打开一个终端，启动一个node命令提示界面：1$ node&amp;#10;&amp;#6">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在nodejs里定义全局变量">
+<meta property="og:url" content="http://violet-day.github.io/2014/08/05/Nodejs/在nodejs里定义全局变量/index.html">
+<meta property="og:site_name" content="Nemo's Blog">
+<meta property="og:description" content="如果你正在使用一系列node模块，或许是一个像Express.js一样的框架，突然需要使用几个全局变量。怎样在nodejs里创建全局变量呢？对此最常见的建议是“不使用‘var’关键字声明一个变量”或“给object对象添加一个变量”或“给OBJECT对象添加一个变量”。你会使用哪种方式呢？首先，让我们分析下global对象。打开一个终端，启动一个node命令提示界面：1$ node&amp;#10;&amp;#6">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在nodejs里定义全局变量">
+<meta name="twitter:description" content="如果你正在使用一系列node模块，或许是一个像Express.js一样的框架，突然需要使用几个全局变量。怎样在nodejs里创建全局变量呢？对此最常见的建议是“不使用‘var’关键字声明一个变量”或“给object对象添加一个变量”或“给OBJECT对象添加一个变量”。你会使用哪种方式呢？首先，让我们分析下global对象。打开一个终端，启动一个node命令提示界面：1$ node&amp;#10;&amp;#6">
+  
+    <link rel="alternative" href="/atom.xml" title="Nemo&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img src="https://avatars2.githubusercontent.com/u/5970246?v=3&amp;s=460">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">violet_day</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">Ride The Lightning</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/violet-day" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+					        
+								<a class="mail" target="_blank" href="/violet_day@live.com" title="mail">mail</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Hibernate/" style="font-size: 10px;">Hibernate</a><a href="/tags/Navigation/" style="font-size: 10px;">Navigation</a><a href="/tags/SecureCRT/" style="font-size: 10px;">SecureCRT</a><a href="/tags/Tabs/" style="font-size: 10px;">Tabs</a><a href="/tags/aws/" style="font-size: 10px;">aws</a><a href="/tags/cordova/" style="font-size: 10px;">cordova</a><a href="/tags/eclipse/" style="font-size: 10px;">eclipse</a><a href="/tags/git/" style="font-size: 13.33px;">git</a><a href="/tags/gitflow/" style="font-size: 10px;">gitflow</a><a href="/tags/gitosis/" style="font-size: 10px;">gitosis</a><a href="/tags/ionic/" style="font-size: 16.67px;">ionic</a><a href="/tags/java/" style="font-size: 13.33px;">java</a><a href="/tags/linux/" style="font-size: 20px;">linux</a><a href="/tags/nginx/" style="font-size: 20px;">nginx</a><a href="/tags/node/" style="font-size: 20px;">node</a><a href="/tags/redis/" style="font-size: 10px;">redis</a><a href="/tags/side-menus/" style="font-size: 10px;">side menus</a><a href="/tags/strongloop/" style="font-size: 10px;">strongloop</a><a href="/tags/主键/" style="font-size: 10px;">主键</a><a href="/tags/全部变量/" style="font-size: 10px;">全部变量</a><a href="/tags/守护进程/" style="font-size: 10px;">守护进程</a><a href="/tags/负载均衡/" style="font-size: 10px;">负载均衡</a><a href="/tags/集合/" style="font-size: 10px;">集合</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">奥巴马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">卡卡的美丽传说</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">本泽马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">吉格斯的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">习大大大不同</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">托蒂的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">violet_day</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="https://avatars2.githubusercontent.com/u/5970246?v=3&amp;s=460">
+				<hgroup>
+				  <h1 class="header-author">violet_day</h1>
+				</hgroup>
+			</div>
+			
+			<p class="header-subtitle">Ride The Lightning</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/violet-day" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+			        
+						<a class="mail" target="_blank" href="/violet_day@live.com" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Nodejs/在nodejs里定义全局变量" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2014/08/05/Nodejs/在nodejs里定义全局变量/" class="article-date">
+  	<time datetime="2014-08-04T21:44:12.000Z" itemprop="datePublished">8月 5 2014</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      在nodejs里定义全局变量
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/全部变量/">全部变量</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/node/">node</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>如果你正在使用一系列node模块，或许是一个像Express.js一样的框架，突然需要使用几个全局变量。怎样在nodejs里创建全局变量呢？<br>对此最常见的建议是“不使用‘var’关键字声明一个变量”或“给object对象添加一个变量”或“给OBJECT对象添加一个变量”。你会使用哪种方式呢？<br>首先，让我们分析下global对象。打开一个终端，启动一个node命令提示界面：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ node&#10;&#62;</span><br></pre></td></tr></table></figure></p>
+<p>在命令提示界面下看看关于global的所有信息：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#62; global</span><br></pre></td></tr></table></figure></p>
+<p>飞天怪物的神圣母亲!!!那是一个超级大的对象！事实上，你看到了node的核心。所有在node进程里的对象都挂在这个对象上。如果你非常熟悉javascript所在的浏览器环境，global对象是等同于window对象。<br>现在我们已经指导global对象是声明，让我们把玩下它：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#62; global.name&#10;undefined&#10;&#62; global.name = &#39;El Capitan&#39;&#10;&#62; global.name&#10;&#39;El Capitan&#39;&#10;&#62; GLOBAL.name&#10;&#39;El Capitan&#39;&#10;&#62; delete global.name&#10;true&#10;&#62; GLOBAL.name&#10;undefined&#10;&#62; name = &#39;El Capitan&#39;&#10;&#39;El Capitan&#39;&#10;&#62; global.name&#10;&#39;El Capitan&#39;&#10;&#62; GLOBAL.name&#10;&#39;El Capitan&#39;&#10;&#62; var name = &#39;Sparrow&#39;&#10;undefined&#10;&#62; global.name&#10;&#39;Sparrow&#39;</span><br></pre></td></tr></table></figure></p>
+<p>令人兴奋的观察！</p>
+<p>global和BLOBAL看起来是一个同一个东西且是一回事。确实，Global是global一个别名。</p>
+<p>令我们超感兴趣的是一个使用还是不使用var关键字声明的变量附加到global对象上。在node里创建一个全局变量的最基本的方式就是通过不使用var关键字声明一个变量。这种做法与使用一个模块(module)略有不同，接下来我讲解释它。</p>
+<p>当你启动一个node进程，将会启动一个模块，那么所有的模块将会被包含在它里面，所有模块都共享同一个global对象。应用上面的测试观察结合实际，你就会明白全局变量怎样在node里工作。然而有些轻微的变化，如果使用var关键字声明的变量将会保留在本地模块里；这些声明的变量没有附加到global对象里。</p>
+<p>那么现在你已经知道”没有使用var关键字声明的变量“，”向global里添加一个变量“，”给GLOBAL对象添加一个变量“，所有这些都是一回事。</p>
+<p>在一个module里全局声明的变量能够被其他任何模块使用它们的名字来引用，没必要从global对象引用它们。但是这不意味这你就可以这样做。为什么呢？请看这样:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> company = <span class="string">'Yahoo'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(global.company); <span class="comment">// 'Google'</span></span><br><span class="line"><span class="built_in">console</span>.log(company); <span class="comment">// 'Yahoo'</span></span><br></pre></td></tr></table></figure></p>
+<p>当你使用global.company时,你知道你使用的是全局变量，但是它的备用名字company在module是当作局部变量来使用的。</p>
+<p>如果你打算在你的node应用里使用全局变量，那么我们讨论的创建变量方法会工作的很好。然而，请不要过度使用它。话虽如此，还有可以不使用全局对象的替代解决方案吗？</p>
+<p>是的，有这么一个，它涉及到module.exports的使用。让我使用例子来演示：</p>
+<p>File: main.js<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">exports.company = <span class="string">'Google'</span>;</span><br><span class="line"><span class="keyword">var</span> m = <span class="built_in">require</span>(<span class="string">'./mod'</span>);</span><br></pre></td></tr></table></figure></p>
+<p>File: mod.js<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> company = <span class="built_in">require</span>(<span class="string">'./main'</span>).company;</span><br><span class="line"><span class="built_in">console</span>.log(company);</span><br></pre></td></tr></table></figure></p>
+<p>现在看看执行结果：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ node main.js&#10;Google</span><br></pre></td></tr></table></figure></p>
+<p>这样你就实现了，一个其他模块的的变量你可以在另外的模块中使用他而没有使用global对象。你可以include main.js在其他的module来访问company名字。</p>
+<p>注意：引用（include）一个已经被其他模块引用过的模块时，仅仅创建一个指向之前包体的引用，因此这意味着不会极度消耗内存。也因为没有重新创建一个真正的包体，在module里的所有初始化方法没有再执行。</p>
+<p>因此，一个包体中，有2钟创建node全局变量的方法，一个是使用global对象，另一个是使用modules.exports。哪个是我推荐的呢?global方法适用小的应用，modules.exprots适用于大的应用。</p>
+<p>原文：<a href="http://www.hacksparrow.com/global-variables-in-node-js.html" target="_blank" rel="external">http://www.hacksparrow.com/global-variables-in-node-js.html</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/08/05/Nginx/nginx-conf/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          nginx的配置文件
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/07/24/Nginx/Upstream负载均衡模块/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Upstream负载均衡模块</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="Nodejs/在nodejs里定义全局变量" data-title="在nodejs里定义全局变量" data-url="http://violet-day.github.io/2014/08/05/Nodejs/在nodejs里定义全局变量/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2015 violet_day
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/mobile.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  </div>
+</body>
+</html>

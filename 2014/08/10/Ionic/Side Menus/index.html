@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Side Menus | Nemo&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="ion-side-menusDelegate: $ionicSideMenuDelegate
+包含侧滑菜单和主内容的容器。菜单可位于左边或右边，并且允许通过拖拽主内容来切换。
+为了自动关闭菜单，您可以通过添加menuClose属性。menu-close通常被添加在ion-side-menu内容中links或button上，这样就可以通过点击对应的元素自动关闭侧滑菜单。
+更多信息请查看
+
+ionSi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Side Menus">
+<meta property="og:url" content="http://violet-day.github.io/2014/08/10/Ionic/Side Menus/index.html">
+<meta property="og:site_name" content="Nemo's Blog">
+<meta property="og:description" content="ion-side-menusDelegate: $ionicSideMenuDelegate
+包含侧滑菜单和主内容的容器。菜单可位于左边或右边，并且允许通过拖拽主内容来切换。
+为了自动关闭菜单，您可以通过添加menuClose属性。menu-close通常被添加在ion-side-menu内容中links或button上，这样就可以通过点击对应的元素自动关闭侧滑菜单。
+更多信息请查看
+
+ionSi">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Side Menus">
+<meta name="twitter:description" content="ion-side-menusDelegate: $ionicSideMenuDelegate
+包含侧滑菜单和主内容的容器。菜单可位于左边或右边，并且允许通过拖拽主内容来切换。
+为了自动关闭菜单，您可以通过添加menuClose属性。menu-close通常被添加在ion-side-menu内容中links或button上，这样就可以通过点击对应的元素自动关闭侧滑菜单。
+更多信息请查看
+
+ionSi">
+  
+    <link rel="alternative" href="/atom.xml" title="Nemo&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img src="https://avatars2.githubusercontent.com/u/5970246?v=3&amp;s=460">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">violet_day</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">Ride The Lightning</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/violet-day" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+					        
+								<a class="mail" target="_blank" href="/violet_day@live.com" title="mail">mail</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Hibernate/" style="font-size: 10px;">Hibernate</a><a href="/tags/Navigation/" style="font-size: 10px;">Navigation</a><a href="/tags/SecureCRT/" style="font-size: 10px;">SecureCRT</a><a href="/tags/Tabs/" style="font-size: 10px;">Tabs</a><a href="/tags/aws/" style="font-size: 10px;">aws</a><a href="/tags/cordova/" style="font-size: 10px;">cordova</a><a href="/tags/eclipse/" style="font-size: 10px;">eclipse</a><a href="/tags/git/" style="font-size: 13.33px;">git</a><a href="/tags/gitflow/" style="font-size: 10px;">gitflow</a><a href="/tags/gitosis/" style="font-size: 10px;">gitosis</a><a href="/tags/ionic/" style="font-size: 16.67px;">ionic</a><a href="/tags/java/" style="font-size: 13.33px;">java</a><a href="/tags/linux/" style="font-size: 20px;">linux</a><a href="/tags/nginx/" style="font-size: 20px;">nginx</a><a href="/tags/node/" style="font-size: 20px;">node</a><a href="/tags/redis/" style="font-size: 10px;">redis</a><a href="/tags/side-menus/" style="font-size: 10px;">side menus</a><a href="/tags/strongloop/" style="font-size: 10px;">strongloop</a><a href="/tags/主键/" style="font-size: 10px;">主键</a><a href="/tags/全部变量/" style="font-size: 10px;">全部变量</a><a href="/tags/守护进程/" style="font-size: 10px;">守护进程</a><a href="/tags/负载均衡/" style="font-size: 10px;">负载均衡</a><a href="/tags/集合/" style="font-size: 10px;">集合</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">奥巴马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">卡卡的美丽传说</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">本泽马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">吉格斯的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">习大大大不同</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">托蒂的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">violet_day</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="https://avatars2.githubusercontent.com/u/5970246?v=3&amp;s=460">
+				<hgroup>
+				  <h1 class="header-author">violet_day</h1>
+				</hgroup>
+			</div>
+			
+			<p class="header-subtitle">Ride The Lightning</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/violet-day" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+			        
+						<a class="mail" target="_blank" href="/violet_day@live.com" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Ionic/Side Menus" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2014/08/10/Ionic/Side Menus/" class="article-date">
+  	<time datetime="2014-08-10T10:24:51.000Z" itemprop="datePublished">8月 10 2014</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Side Menus
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ionic/">ionic</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/side-menus/">side menus</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/ionic/">ionic</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="ion-side-menus">ion-side-menus</h2><p>Delegate: <code>$ionicSideMenuDelegate</code></p>
+<p>包含侧滑菜单和主内容的容器。菜单可位于左边或右边，并且允许通过拖拽主内容来切换。</p>
+<p>为了自动关闭菜单，您可以通过添加<code>menuClose</code>属性。<code>menu-close</code>通常被添加在<code>ion-side-menu</code>内容中links或button上，这样就可以通过点击对应的元素自动关闭侧滑菜单。</p>
+<p>更多信息请查看</p>
+<ul>
+<li><code>ionSideMenuContent</code></li>
+<li><code>ionSideMenu</code></li>
+<li><code>menuClose</code></li>
+</ul>
+<h3 id="用法">用法</h3><p>使用侧滑菜单，需要添加父元素<code>&lt;ion-side-menus&gt;</code>，<code>&lt;ion-side-menu-content&gt;</code>作为中心内容区域，还有一个或多个<code>&lt;ion-side-menu&gt;</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ion-side-menus</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- Center content --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ion-side-menu-content</span> <span class="attribute">ng-controller</span>=<span class="value">"ContentController"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">ion-side-menu-content</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">&lt;!-- Left menu --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ion-side-menu</span> <span class="attribute">side</span>=<span class="value">"left"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">ion-side-menu</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">&lt;!-- Right menu --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ion-side-menu</span> <span class="attribute">side</span>=<span class="value">"right"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">ion-side-menu</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ion-side-menus</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ContentController</span><span class="params">($scope, $ionicSideMenuDelegate)</span> </span>&#123;</span><br><span class="line">  $scope.toggleLeft = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    $ionicSideMenuDelegate.toggleLeft();</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="API">API</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">属性</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">详细说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">delegate-handle(可选)</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">The handle used to identify this side menu with <code>$ionicSideMenuDelegate</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="ion-side-menu-content">ion-side-menu-content</h2><p>Child of <code>ionSideMenus</code></p>
+<p>主要可见内容区域的容器，与<code>ionSideMenu</code>平级</p>
+<h3 id="用法-1">用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ion-side-menu-content</span></span><br><span class="line">  <span class="attribute">edge-drag-threshold</span>=<span class="value">"true"</span></span><br><span class="line">  <span class="attribute">drag-content</span>=<span class="value">"true"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ion-side-menu-content</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>更加完整的例子，请看<code>ionSideMenus</code></p>
+<h3 id="API-1">API</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">属性</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">详细说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">drag-content</td>
+<td style="text-align:center">boolean</td>
+<td style="text-align:center">内容区域是否可以被拖拽，默认为true</td>
+</tr>
+<tr>
+<td style="text-align:center">edge-drag-threshold</td>
+<td style="text-align:center">boolean,number</td>
+<td style="text-align:center">内容区域的拖拽是否仅在小于屏幕边距一定阈值的范围内有效。默认为false。</td>
+</tr>
+</tbody>
+</table>
+<p>接受三种类型的数值    </p>
+<ul>
+<li>如果给定一个非零的数字，距离屏幕边距指定的像素允许拖拽</li>
+<li>如果给定true，则默认25像素</li>
+<li>如果给定false或者0，边距拖拽阈值无效，可以从内容区域的任何区域拖拽</li>
+</ul>
+<h2 id="ion-side-menu">ion-side-menu</h2><p>Child of <code>ionSideMenus</code></p>
+<p>侧滑菜单的容器，与<code>ionSideMenuContent</code>平级。</p>
+<h3 id="用法-2">用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ion-side-menu</span></span><br><span class="line">  <span class="attribute">side</span>=<span class="value">"left"</span></span><br><span class="line">  <span class="attribute">width</span>=<span class="value">"myWidthValue + 20"</span></span><br><span class="line">  <span class="attribute">is-enabled</span>=<span class="value">"shouldLeftSideMenuBeEnabled()"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ion-side-menu</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>更加完整的例子，请看<code>ionSideMenus</code></p>
+<h3 id="API-2">API</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">属性</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">详细说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">side</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">菜单的位置，left或者right</td>
+</tr>
+<tr>
+<td style="text-align:center">is-enabled(可选)</td>
+<td style="text-align:center">boolean</td>
+<td style="text-align:center">菜单是否可用</td>
+</tr>
+<tr>
+<td style="text-align:center">width(可选)</td>
+<td style="text-align:center">number</td>
+<td style="text-align:center">菜单的宽度，默认275</td>
+</tr>
+</tbody>
+</table>
+<h2 id="menu-toggle">menu-toggle</h2><p>切换给定边的侧滑菜单</p>
+<h3 id="用法-3">用法</h3><p>下方的示例是在nav bar中link。点击link就会自动打开给定的侧滑菜单<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ion-view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ion-nav-buttons</span> <span class="attribute">side</span>=<span class="value">"left"</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="title">button</span> <span class="attribute">menu-toggle</span>=<span class="value">"left"</span> <span class="attribute">class</span>=<span class="value">"button button-icon icon ion-navicon"</span>&gt;</span><span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">ion-nav-buttons</span>&gt;</span></span><br><span class="line"> ...</span><br><span class="line"><span class="tag">&lt;/<span class="title">ion-view</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="menu-close">menu-close</h2><p>关闭当前的侧滑菜单</p>
+<h3 id="用法-4">用法</h3><p>下面的实例是在side menu中的link中，点击这个link则会自动关闭当前打开的菜单<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">a</span> <span class="attribute">menu-close</span> <span class="attribute">href</span>=<span class="value">"#/home"</span> <span class="attribute">class</span>=<span class="value">"item"</span>&gt;</span>Home<span class="tag">&lt;/<span class="title">a</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="$ionicSideMenuDelegate">$ionicSideMenuDelegate</h2><p>Delegate for controlling the <code>ionSideMenus</code> directive.</p>
+<p>通过<code>ionicSideMenuDelegate</code>服务调用的函数会控制所有的side menus。通过调用<code>$getByHandle</code>获取<code>ionSideMenus</code>实例。</p>
+<h3 id="用法-5">用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">body</span> <span class="attribute">ng-controller</span>=<span class="value">"MainCtrl"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ion-side-menus</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">ion-side-menu-content</span>&gt;</span></span><br><span class="line">      Content!</span><br><span class="line">      <span class="tag">&lt;<span class="title">button</span> <span class="attribute">ng-click</span>=<span class="value">"toggleLeftSideMenu()"</span>&gt;</span></span><br><span class="line">        Toggle Left Side Menu</span><br><span class="line">      <span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">ion-side-menu-content</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">ion-side-menu</span> <span class="attribute">side</span>=<span class="value">"left"</span>&gt;</span></span><br><span class="line">      Left Menu!</span><br><span class="line">    <span class="tag">&lt;<span class="title">ion-side-menu</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">ion-side-menus</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">MainCtrl</span><span class="params">($scope, $ionicSideMenuDelegate)</span> </span>&#123;</span><br><span class="line">  $scope.toggleLeftSideMenu = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    $ionicSideMenuDelegate.toggleLeft();</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="方法">方法</h3><h4 id="toggleLeft([isOpen])">toggleLeft([isOpen])</h4><p>如果存在左侧滑菜单，则切换。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">详细信息</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">isOpen(可选)</td>
+<td style="text-align:center">boolean</td>
+<td style="text-align:center">是否打开或关闭菜单，默认切换菜单。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="toggleRight([isOpen])">toggleRight([isOpen])</h4><p>用法同<code>toggleLeft([isOpen])</code></p>
+<h4 id="getOpenRatio()">getOpenRatio()</h4><p>返回已打开菜单的宽度占菜单宽度的比例。</p>
+<ul>
+<li>返回：<code>float</code>。没有任何打开则为0；左侧菜单打开或打开中为0至1之间，右侧淡菜打开或打开中为0至-1之间</li>
+</ul>
+<h4 id="isOpen()">isOpen()</h4><ul>
+<li>返回：<code>boolean</code>。左侧或右侧菜单处于打开状态</li>
+</ul>
+<h4 id="isOpenLeft()">isOpenLeft()</h4><ul>
+<li>返回：<code>boolean</code>。左侧菜单处于打开状态</li>
+</ul>
+<h4 id="isOpenRight()">isOpenRight()</h4><ul>
+<li>返回：<code>boolean</code>。右侧菜单处于打开状态</li>
+</ul>
+<h4 id="canDragContent([canDrag])">canDragContent([canDrag])</h4><table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">详细信息</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">canDrag(可选)</td>
+<td style="text-align:center">boolean</td>
+<td style="text-align:center">设置是否可以通过拖拽打开侧滑菜单</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>返回：<code>boolean</code>。是否可以通过拖拽打开侧滑菜单</li>
+</ul>
+<h4 id="edgeDragThreshold(value)">edgeDragThreshold(value)</h4><table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">详细信息</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">value</td>
+<td style="text-align:center">boolean,number</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>返回：<code>boolean</code>。是否可以在屏幕边距阈值内使用拖拽</li>
+</ul>
+<h4 id="$getByHandle(handle)">$getByHandle(handle)</h4><table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">详细信息</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">handle</td>
+<td style="text-align:center">string</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>返回:<code>delegateInstance</code>Returns:  A delegate instance that controls only the ionTabs directives with delegate-handle matching the given handle.</li>
+</ul>
+<p>示例: $ionicSideMenuDelegate.$getByHandle(‘my-handle’).toggleLeft();</p>
+<a id="more"></a>
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/08/10/Ionic/Navigation/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Navigation
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/08/10/Ionic/Tabs/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">ionic-Tabs</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="Ionic/Side Menus" data-title="Side Menus" data-url="http://violet-day.github.io/2014/08/10/Ionic/Side Menus/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2015 violet_day
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/mobile.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  </div>
+</body>
+</html>
