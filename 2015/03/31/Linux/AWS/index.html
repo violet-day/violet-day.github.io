@@ -6,17 +6,17 @@
   <title>AWS配置node | Nemo&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="isntall nvm&amp;amp;nodejs12345678curl https://raw.githubusercontent.com/creationix/nvm/v0.23.3/install.sh | bashsource ~/.bashrcnvm --versionnvm install v0.12.1nvm alias default v0.12.1node -v
-install po">
+1234567891">
 <meta property="og:type" content="article">
 <meta property="og:title" content="AWS配置node">
 <meta property="og:url" content="http://violet-day.github.io/2015/03/31/Linux/AWS/index.html">
 <meta property="og:site_name" content="Nemo's Blog">
 <meta property="og:description" content="isntall nvm&amp;amp;nodejs12345678curl https://raw.githubusercontent.com/creationix/nvm/v0.23.3/install.sh | bashsource ~/.bashrcnvm --versionnvm install v0.12.1nvm alias default v0.12.1node -v
-install po">
+1234567891">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AWS配置node">
 <meta name="twitter:description" content="isntall nvm&amp;amp;nodejs12345678curl https://raw.githubusercontent.com/creationix/nvm/v0.23.3/install.sh | bashsource ~/.bashrcnvm --versionnvm install v0.12.1nvm alias default v0.12.1node -v
-install po">
+1234567891">
   
     <link rel="alternative" href="/atom.xml" title="Nemo&#39;s Blog" type="application/atom+xml">
   
@@ -238,6 +238,10 @@ install po">
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="isntall_nvm&amp;nodejs">isntall nvm&amp;nodejs</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">curl https://raw.githubusercontent.com/creationix/nvm/v0.<span class="number">23.3</span>/install.sh | bash</span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br><span class="line">nvm --version</span><br><span class="line"></span><br><span class="line">nvm install v0.<span class="number">12.1</span></span><br><span class="line">nvm <span class="built_in">alias</span> default v0.<span class="number">12.1</span></span><br><span class="line">node -v</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">sudo git <span class="built_in">clone</span> https://github.com/creationix/nvm.git /opt/nvm-repo</span><br><span class="line"><span class="comment"># ^^^ this command clones the repo from github as root</span></span><br><span class="line">sudo mkdir /opt/nvm</span><br><span class="line">sudo chmod a+rx /opt/nvm</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"export NVM_DIR=/opt/nvm"</span> | sudo tee <span class="operator">-a</span> /root/.profile</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"source /opt/nvm-repo/nvm.sh"</span> | sudo tee <span class="operator">-a</span> /root/.profile</span><br><span class="line">sudo su -</span><br><span class="line"><span class="comment"># ^^^ To use 'sudo su' or just 'sudo' instead of 'sudo su -' or 'sudo -i':</span></span><br><span class="line"><span class="comment">#     source /root/.profile in /root/.bashrc</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># And then all of the following as root:</span></span><br><span class="line">nvm install <span class="number">0.10</span>.<span class="number">26</span></span><br><span class="line">ln <span class="operator">-s</span> /opt/nvm/v0.<span class="number">10.26</span>/bin/node /usr/<span class="built_in">local</span>/bin/node</span><br><span class="line">npm install -g nodemon</span><br><span class="line">ln <span class="operator">-s</span> /opt/nvm/v0.<span class="number">10.26</span>/bin/nodemon /usr/<span class="built_in">local</span>/bin/nodemon</span><br><span class="line">npm install -g forever</span><br><span class="line">ln <span class="operator">-s</span> /opt/nvm/v0.<span class="number">10.26</span>/bin/forever /usr/<span class="built_in">local</span>/bin/forever</span><br><span class="line">npm install -g grunt-cli</span><br><span class="line">ln <span class="operator">-s</span> /opt/nvm/v0.<span class="number">10.26</span>/bin/grunt /usr/<span class="built_in">local</span>/bin/grunt</span><br><span class="line"><span class="comment"># And likewise for any other packages you want to use</span></span><br></pre></td></tr></table></figure>
+<h1 id="Reference:">Reference:</h1><ul>
+<li><a href="https://qualocus.wordpress.com/2014/04/19/how-i-installed-nvm-and-node-js-globally/" target="_blank" rel="external">How I installed NVM and Node.JS globally</a></li>
+</ul>
 <h2 id="install_pomelo">install pomelo</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install pomelo -g</span><br><span class="line">pomelo --version</span><br></pre></td></tr></table></figure>
 
       
