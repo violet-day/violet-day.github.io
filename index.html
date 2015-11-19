@@ -145,6 +145,16 @@
         </li>
       
         
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
@@ -269,7 +279,7 @@
         
           <span itemprop="articleBody">
             
-              <h2 id="isntall_nvm&amp;nodejs">isntall nvm&amp;nodejs</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">curl https://raw.githubusercontent.com/creationix/nvm/v0.<span class="number">23.3</span>/install.sh | bash</span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br><span class="line">nvm --version</span><br><span class="line"></span><br><span class="line">nvm install v0.<span class="number">12.1</span></span><br><span class="line">nvm <span class="built_in">alias</span> default v0.<span class="number">12.1</span></span><br><span class="line">node -v</span><br></pre></td></tr></table></figure>
+              <h2 id="install_nvm&amp;nodejs">install nvm&amp;nodejs</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">curl https://raw.githubusercontent.com/creationix/nvm/v0.<span class="number">23.3</span>/install.sh | bash</span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br><span class="line">nvm --version</span><br><span class="line"></span><br><span class="line">nvm install v0.<span class="number">12.1</span></span><br><span class="line">nvm <span class="built_in">alias</span> default v0.<span class="number">12.1</span></span><br><span class="line">node -v</span><br></pre></td></tr></table></figure>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">sudo git <span class="built_in">clone</span> https://github.com/creationix/nvm.git /opt/nvm-repo</span><br><span class="line"><span class="comment"># ^^^ this command clones the repo from github as root</span></span><br><span class="line">sudo mkdir /opt/nvm</span><br><span class="line">sudo chmod a+rx /opt/nvm</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"export NVM_DIR=/opt/nvm"</span> | sudo tee <span class="operator">-a</span> /root/.profile</span><br><span class="line">	</span><br><span class="line">sudo su -</span><br><span class="line"><span class="comment"># ^^^ To use 'sudo su' or just 'sudo' instead of 'sudo su -' or 'sudo -i':</span></span><br><span class="line"><span class="comment">#     source /root/.profile in /root/.bashrc</span></span><br><span class="line"><span class="built_in">echo</span> <span class="built_in">source</span> ~/.profile &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="comment"># And then all of the following as root:</span></span><br><span class="line">nvm ls-remote</span><br><span class="line">nvm install stable</span><br><span class="line">node -v</span><br><span class="line">ln <span class="operator">-s</span> /opt/nvm/v0.<span class="number">12.4</span>/bin/node /usr/<span class="built_in">local</span>/bin/node</span><br><span class="line">npm install -g nodemon</span><br><span class="line">ln <span class="operator">-s</span> /opt/nvm/v0.<span class="number">12.4</span>/bin/nodemon /usr/<span class="built_in">local</span>/bin/nodemon</span><br><span class="line">npm install -g forever</span><br><span class="line">ln <span class="operator">-s</span> /opt/nvm/v0.<span class="number">10.26</span>/bin/forever /usr/<span class="built_in">local</span>/bin/forever</span><br><span class="line">npm install -g grunt-cli</span><br><span class="line">ln <span class="operator">-s</span> /opt/nvm/v0.<span class="number">10.26</span>/bin/grunt /usr/<span class="built_in">local</span>/bin/grunt</span><br><span class="line"><span class="comment"># And likewise for any other packages you want to use</span></span><br></pre></td></tr></table></figure>
 <h1 id="use_n">use n</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install npm</span><br><span class="line">sudo npm install -g n</span><br><span class="line">sudo n stable</span><br></pre></td></tr></table></figure>
 <h1 id="Reference:">Reference:</h1><ul>
@@ -1687,10 +1697,10 @@
           </div>
 
           <div class="site-state-item site-state-categories">
-            
+            <a href="/categories">
               <span class="site-state-item-count">8</span>
               <span class="site-state-item-name">分类</span>
-              
+              </a>
           </div>
 
           <div class="site-state-item site-state-tags">
@@ -1780,7 +1790,7 @@
   
 
   <script type="text/javascript">
-    var duoshuoQuery = {short_name:"violet-day.github.io"};
+    var duoshuoQuery = {short_name:"Violet_day"};
     (function() {
       var ds = document.createElement('script');
       ds.type = 'text/javascript';ds.async = true;
