@@ -196,6 +196,436 @@
 
     
     
+      
+      
+
+      
+    
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2014/08/12/Java/开发环境配置/" itemprop="url">
+                  开发环境配置
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2014-08-12T08:47:07+08:00" content="Aug 12 2014">
+              Aug 12 2014
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2014/08/12/Java/开发环境配置/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/12/Java/开发环境配置/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p><a href="http://www.eclipse.org/">Eclipse</a></p>
+<p><a href="http://www.eclipse.org/babel/downloads.php">Eclipse Babel Project</a></p>
+<p><a href="http://eclipsecolorthemes.org/">Eclipse Color Themes</a></p>
+<p><a href="http://maven.apache.org/download.cgi">Maven</a></p>
+<p><a href="http://eclipse.org/m2e/download/">Maven Integration (m2e)</a><br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/08/12/Java/开发环境配置/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2014/08/10/Ionic/Navigation/" itemprop="url">
+                  Navigation
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2014-08-10T21:48:52+08:00" content="Aug 10 2014">
+              Aug 10 2014
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/ionic/" itemprop="url" rel="index">
+                    <span itemprop="name">ionic</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2014/08/10/Ionic/Navigation/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/10/Ionic/Navigation/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h2 id="ion-nav-view">ion-nav-view</h2><p>当用户浏览整个应用程序，Ionic能够跟踪他们的浏览历史。通过了解他们的历史、视图之间的转换正确滑动或左或右，或没有过渡的。另一个优点是Ionic的导航系统是其管理多个历史能力。</p>
+<p>Ionic使用AngularUI Router模块，所以app的接口可以组织为”states”。和Angular的核心$route服务一样,URLs可以用来控制视图。然而，AngularUI Router提供了更加强大的状态管理功能，状态与name绑定,并且有嵌套或并行的视图，在一个页面允许多个视图。并且，每个状态没有一定需要绑定URL，可以更加灵活的将数据附加至状态。</p>
+<p>在你的应用程序用，ionNavView指示器用来渲染模板，每个模板都是一个状态的一部分。状态通常映射至URL，并且通过angular-ui-router来定义。（记住在示例中将ui-view替换为ion-nav-view）</p>
+<h3 id="用法">用法</h3><p>在这个例子中，我们将创建一个包含我们的不同状态的应用程序中的导航视图。</p>
+<p>要做到这一点，在我们的标记，我们使用ionNavView顶级的指令。要显示一个标题栏，我们使用<code>ionNavBar</code>指令，更新，因为我们通过导航堆栈导航。</p>
+<p>在navView的animation中，你可以使用任何<code>animation</code>的类。</p>
+<p>推荐的效果: ‘slide-left-right’, ‘slide-left-right-ios7’, ‘slide-in-up’.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ion-nav-bar</span>&gt;</span><span class="tag">&lt;/<span class="title">ion-nav-bar</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">ion-nav-view</span> <span class="attribute">animation</span>=<span class="value">"slide-left-right"</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- Center content --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ion-nav-view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>接下来，我们需要设置状态<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> app = angular.module(<span class="string">'myApp'</span>, [<span class="string">'ionic'</span>]);</span><br><span class="line">app.config(<span class="function"><span class="keyword">function</span>(<span class="params">$stateProvider</span>) </span>&#123;</span><br><span class="line">  $stateProvider</span><br><span class="line">  .state(<span class="string">'index'</span>, &#123;</span><br><span class="line">    url: <span class="string">'/'</span>,</span><br><span class="line">    templateUrl: <span class="string">'home.html'</span></span><br><span class="line">  &#125;)</span><br><span class="line">  .state(<span class="string">'music'</span>, &#123;</span><br><span class="line">    url: <span class="string">'/music'</span>,</span><br><span class="line">    templateUrl: <span class="string">'music.html'</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>当程序启动时，stateProvider会查看url，匹配index state，则会尝试去加载home.html至<ion-nav-view></p>
+<p>页面通过给定的URLs加载。在Angulr中创建templates的一个简单的办法就直接通过<code>&lt;script type=&quot;text/ng-template&quot;&gt;</code>语法在页面中创建。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">id</span>=<span class="value">"home"</span> <span class="attribute">type</span>=<span class="value">"text/ng-template"</span>&gt;</span><span class="handlebars"><span class="xml"></span><br><span class="line">  <span class="comment">&lt;!-- The title of the ion-view will be shown on the navbar --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ion-view</span> <span class="attribute">title</span>=<span class="value">"'Home'"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">ion-content</span> <span class="attribute">ng-controller</span>=<span class="value">"HomeCtrl"</span>&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- The content of the page --&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"#/music"</span>&gt;</span>Go to music page!<span class="tag">&lt;/<span class="title">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">ion-content</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">ion-view</span>&gt;</span></span><br><span class="line"></span></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这样的好处是因为缓存加载会非常快，而不是通过异步加载。</p>
+<h2 id="ion-view">ion-view</h2><p>Child of <code>ionNavView</code></p>
+<h3 id="用法-1">用法</h3><p>下面是一个例子，我们的页面将包含“My Page”为标题导航栏加载。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ion-nav-bar</span>&gt;</span><span class="tag">&lt;/<span class="title">ion-nav-bar</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">ion-nav-view</span> <span class="attribute">class</span>=<span class="value">"slide-left-right"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ion-view</span> <span class="attribute">title</span>=<span class="value">"My Page"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">ion-content</span>&gt;</span></span><br><span class="line">      Hello!</span><br><span class="line">    <span class="tag">&lt;/<span class="title">ion-content</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">ion-view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ion-nav-view</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="API">API</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">属性</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">详细说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">title(可选)</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">显示在<code>ionNavBar</code>的标题</td>
+</tr>
+<tr>
+<td style="text-align:center">hide-back-button(可选)</td>
+<td style="text-align:center">boolean</td>
+<td style="text-align:center">是否隐藏<code>ionNavBar</code>默认的后退按钮</td>
+</tr>
+<tr>
+<td style="text-align:center">hide-nav-bar(可选)</td>
+<td style="text-align:center">boolean</td>
+<td style="text-align:center">是否隐藏默认的<code>ionNavBar</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="ion-nav-bar">ion-nav-bar</h2><p>Delegate: <code>$ionicNavBarDelegate</code></p>
+<p>如果我们已经有了<code>ionNavView</code>,我们同样可以创建<code>&lt;ion-nav-bar&gt;</code>来更新程序的状态。</p>
+<p>我们可以在其中放置<code>ionNavBackButton</code>来添加返回按钮</p>
+<p>我们可以根据当前的可见视图使用<code>ionNavButtons</code>添加按钮</p>
+<p>通过在<code>animation</code>属性中添加animation class来达到title变化的动画效果。(推荐: ‘nav-title-slide-ios7’).</p>
+<p>注意：<code>ion-nav-bar</code>仅仅在ionView中存在的情况下才起效果</p>
+<h3 id="用法-2">用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">body</span> <span class="attribute">ng-app</span>=<span class="value">"starter"</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- The nav bar that will be updated as we navigate --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ion-nav-bar</span> <span class="attribute">class</span>=<span class="value">"bar-positive"</span> <span class="attribute">animation</span>=<span class="value">"nav-title-slide-ios7"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">ion-nav-bar</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">&lt;!-- where the initial view template will be rendered --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ion-nav-view</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">ion-view</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="title">ion-content</span>&gt;</span>Hello!<span class="tag">&lt;/<span class="title">ion-content</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">ion-view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">ion-nav-view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="API-1">API</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">属性</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">详细说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">delegate-handle(可选)</td>
+<td style="text-align:center">stirng</td>
+<td style="text-align:center">用来被<code>$ionicNavBarDelegate</code>识别</td>
+</tr>
+<tr>
+<td style="text-align:center">align-title(可选)</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">‘left’, ‘right’, ‘center’. 默认为’center’.</td>
+</tr>
+<tr>
+<td style="text-align:center">no-tap-scroll(可选)</td>
+<td style="text-align:center">boolean</td>
+<td style="text-align:center">默认的，点击的时候，会自动将内容滚动至顶部。通过设置为false可禁用这一行为。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="另外用法">另外用法</h3><p>你可能在每个视图中放置<code>ion-nav-bar</code>，这就要求你拥有整个nvabar，不仅仅contents、transition、view。</p>
+<p>这与在ion-view中使用header bar相似，但他有一个导航栏的功能。</p>
+<p>如果你这么做，很简单的就是在navbar放置nav buttons；不要使用<code>&lt;ion-nav-buttons&gt;</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ion-view</span> <span class="attribute">title</span>=<span class="value">"myTitle"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ion-nav-bar</span> <span class="attribute">class</span>=<span class="value">"bar-positive"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">ion-nav-back-button</span>&gt;</span></span><br><span class="line">      Back</span><br><span class="line">    <span class="tag">&lt;/<span class="title">ion-nav-back-button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"buttons right-buttons"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="title">button</span> <span class="attribute">class</span>=<span class="value">"button"</span>&gt;</span></span><br><span class="line">        Right Button</span><br><span class="line">      <span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">ion-nav-bar</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ion-view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="ion-nav-buttons">ion-nav-buttons</h2><p>Child of <code>ionNavView</code></p>
+<p>在<code>ionView</code>通过<code>ionNavButtons</code>来设置你<code>ionNavBar</code>上的按钮。</p>
+<p>任何你声明的按钮都会被放置在nvabar对应的地方，当离开视图的时候被销毁</p>
+<h3 id="用法-3">用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ion-nav-bar</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ion-nav-bar</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">ion-nav-view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ion-view</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">ion-nav-buttons</span> <span class="attribute">side</span>=<span class="value">"left"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="title">button</span> <span class="attribute">class</span>=<span class="value">"button"</span> <span class="attribute">ng-click</span>=<span class="value">"doSomething()"</span>&gt;</span></span><br><span class="line">        I'm a button on the left of the navbar!</span><br><span class="line">      <span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">ion-nav-buttons</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">ion-content</span>&gt;</span></span><br><span class="line">      Some super content here!</span><br><span class="line">    <span class="tag">&lt;/<span class="title">ion-content</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">ion-view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ion-nav-view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="API-2">API</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">属性</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">详细说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">side</td>
+<td style="text-align:center">sting</td>
+<td style="text-align:center">放置在ionNavBar的方向。’left’ or ‘right’.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="ion-nav-back-button">ion-nav-back-button</h2><p>Child of <code>ionNavBar</code></p>
+<p>在<code>ionNavBar</code>中创建返回的按钮.</p>
+<p>当用户可以返回的时候会显示出来。</p>
+<p>默认的，点击会返回。如果你希望有更多高级的功能，请看下面的例子。</p>
+<h3 id="用法-4">用法</h3><p>默认的点击行为<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ion-nav-bar</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ion-nav-back-button</span> <span class="attribute">class</span>=<span class="value">"button-clear"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">i</span> <span class="attribute">class</span>=<span class="value">"ion-arrow-left-c"</span>&gt;</span><span class="tag">&lt;/<span class="title">i</span>&gt;</span> Back</span><br><span class="line">  <span class="tag">&lt;/<span class="title">ion-nav-back-button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ion-nav-bar</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>自定义点击行为，使用<code>$ionicNavBarDelegate</code><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ion-nav-bar</span> <span class="attribute">ng-controller</span>=<span class="value">"MyCtrl"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ion-nav-back-button</span> <span class="attribute">class</span>=<span class="value">"button-clear"</span></span><br><span class="line">    <span class="attribute">ng-click</span>=<span class="value">"goBack()"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">i</span> <span class="attribute">class</span>=<span class="value">"ion-arrow-left-c"</span>&gt;</span><span class="tag">&lt;/<span class="title">i</span>&gt;</span> Back</span><br><span class="line">  <span class="tag">&lt;/<span class="title">ion-nav-back-button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ion-nav-bar</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyCtrl</span>(<span class="params">$scope, $ionicNavBarDelegate</span>) </span>&#123;</span><br><span class="line">  $scope.goBack = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    $ionicNavBarDelegate.back();</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在button上显示之前的标题，再次使用<code>$ionicNavBarDelegate</code><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ion-nav-bar</span> <span class="attribute">ng-controller</span>=<span class="value">"MyCtrl"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ion-nav-back-button</span> <span class="attribute">class</span>=<span class="value">"button-icon"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">i</span> <span class="attribute">class</span>=<span class="value">"icon ion-arrow-left-c"</span>&gt;</span><span class="tag">&lt;/<span class="title">i</span>&gt;</span>&#123;&#123;getPreviousTitle() || 'Back'&#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="title">ion-nav-back-button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ion-nav-bar</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyCtrl</span>(<span class="params">$scope, $ionicNavBarDelegate</span>) </span>&#123;</span><br><span class="line">  $scope.getPreviousTitle = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> $ionicNavBarDelegate.getPreviousTitle();</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="nav-clear">nav-clear</h2><p>nav-clear作为属性的指示器，应该使用在使视图发生变化的元素上，例如<a href>或者<button ui-sref>.</p>
+<p>当nav-clear作用的元素点击时，会 disable the next view transition. This directive is useful, for example, for links within a sideMenu.</p>
+<h3 id="用法-5">用法</h3><p>下面是一个在side menu中的添加了nav-clear的链接，点击的时候会禁用原来的动画效果<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">a</span> <span class="attribute">nav-clear</span> <span class="attribute">menu-close</span> <span class="attribute">href</span>=<span class="value">"#/home"</span> <span class="attribute">class</span>=<span class="value">"item"</span>&gt;</span>Home<span class="tag">&lt;/<span class="title">a</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="$ionicNavBarDelegate">$ionicNavBarDelegate</h2><p>Delegate for controlling the <code>ionNavBar</code> directive.</p>
+<h3 id="用法-6">用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">body</span> <span class="attribute">ng-controller</span>=<span class="value">"MyCtrl"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ion-nav-bar</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">button</span> <span class="attribute">ng-click</span>=<span class="value">"setNavTitle('banana')"</span>&gt;</span></span><br><span class="line">      Set title to banana!</span><br><span class="line">    <span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">ion-nav-bar</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyCtrl</span>(<span class="params">$scope, $ionicNavBarDelegate</span>) </span>&#123;</span><br><span class="line">  $scope.setNavTitle = <span class="function"><span class="keyword">function</span>(<span class="params">title</span>) </span>&#123;</span><br><span class="line">    $ionicNavBarDelegate.setTitle(title);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="方法">方法</h3><h4 id="back([event])">back([event])</h4><p>在视图历史中返回</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">详细信息</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">event(可选)</td>
+<td style="text-align:center">DOMEvent</td>
+<td style="text-align:center">The event object (eg from a tap event)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="align([direction])">align([direction])</h4><p>设置button中title的方向</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">详细信息</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">direction(可选)</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">‘left’, ‘right’, ‘center’. 默认: ‘center’.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="showBackButton([show])">showBackButton([show])</h4><p>设置/获取<code>ionNavBackButton</code>是否显示</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">详细信息</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">show(可选)</td>
+<td style="text-align:center">boolean</td>
+<td style="text-align:center">是否显示返回按钮</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>返回:<code>boolean</code>.是否显示返回按钮</li>
+</ul>
+<h4 id="showBar(show)">showBar(show)</h4><p>细节同上</p>
+<h4 id="setTitle(title)">setTitle(title)</h4><p>设置<code>ionNavBar</code>的标题</p>
+<h4 id="changeTitle(title,_direction)">changeTitle(title, direction)</h4><p>Change the title, transitioning the new title in and the old one out in a given direction.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">详细信息</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">title</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">The new title to show.</td>
+</tr>
+<tr>
+<td style="text-align:center">direction</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">The direction to transition the new title in. Available: ‘forward’, ‘back’.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="getTitle()">getTitle()</h4><ul>
+<li>返回:<code>string</code>.当前navbar的标题.</li>
+</ul>
+<h4 id="getPreviousTitle()">getPreviousTitle()</h4><ul>
+<li>返回:<code>string</code>.前一个navbar的标题.</li>
+</ul>
+<h4 id="$getByHandle(handle)">$getByHandle(handle)</h4><table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">详细信息</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">handle</td>
+<td style="text-align:center">string</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>返回:<code>delegateInstance</code>Returns:  A delegate instance that controls only the ionTabs directives with delegate-handle matching the given handle.</li>
+</ul>
+<p>示例: $ionicNavBarDelegate.$getByHandle(‘myHandle’).setTitle(‘newTitle’)</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/08/10/Ionic/Navigation/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -1162,127 +1592,6 @@
             
               
                 
-                <a class="post-title-link" href="/2014/08/05/Nodejs/在nodejs里定义全局变量/" itemprop="url">
-                  在nodejs里定义全局变量
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2014-08-05T05:44:12+08:00" content="Aug 5 2014">
-              Aug 5 2014
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/node/" itemprop="url" rel="index">
-                    <span itemprop="name">node</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2014/08/05/Nodejs/在nodejs里定义全局变量/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/05/Nodejs/在nodejs里定义全局变量/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <p>如果你正在使用一系列node模块，或许是一个像Express.js一样的框架，突然需要使用几个全局变量。怎样在nodejs里创建全局变量呢？<br>对此最常见的建议是“不使用‘var’关键字声明一个变量”或“给object对象添加一个变量”或“给OBJECT对象添加一个变量”。你会使用哪种方式呢？<br>首先，让我们分析下global对象。打开一个终端，启动一个node命令提示界面：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ node&#10;&#62;</span><br></pre></td></tr></table></figure></p>
-<p>在命令提示界面下看看关于global的所有信息：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#62; global</span><br></pre></td></tr></table></figure></p>
-<p>飞天怪物的神圣母亲!!!那是一个超级大的对象！事实上，你看到了node的核心。所有在node进程里的对象都挂在这个对象上。如果你非常熟悉javascript所在的浏览器环境，global对象是等同于window对象。<br>现在我们已经指导global对象是声明，让我们把玩下它：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#62; global.name&#10;undefined&#10;&#62; global.name = &#39;El Capitan&#39;&#10;&#62; global.name&#10;&#39;El Capitan&#39;&#10;&#62; GLOBAL.name&#10;&#39;El Capitan&#39;&#10;&#62; delete global.name&#10;true&#10;&#62; GLOBAL.name&#10;undefined&#10;&#62; name = &#39;El Capitan&#39;&#10;&#39;El Capitan&#39;&#10;&#62; global.name&#10;&#39;El Capitan&#39;&#10;&#62; GLOBAL.name&#10;&#39;El Capitan&#39;&#10;&#62; var name = &#39;Sparrow&#39;&#10;undefined&#10;&#62; global.name&#10;&#39;Sparrow&#39;</span><br></pre></td></tr></table></figure></p>
-<p>令人兴奋的观察！</p>
-<p>global和BLOBAL看起来是一个同一个东西且是一回事。确实，Global是global一个别名。</p>
-<p>令我们超感兴趣的是一个使用还是不使用var关键字声明的变量附加到global对象上。在node里创建一个全局变量的最基本的方式就是通过不使用var关键字声明一个变量。这种做法与使用一个模块(module)略有不同，接下来我讲解释它。</p>
-<p>当你启动一个node进程，将会启动一个模块，那么所有的模块将会被包含在它里面，所有模块都共享同一个global对象。应用上面的测试观察结合实际，你就会明白全局变量怎样在node里工作。然而有些轻微的变化，如果使用var关键字声明的变量将会保留在本地模块里；这些声明的变量没有附加到global对象里。</p>
-<p>那么现在你已经知道”没有使用var关键字声明的变量“，”向global里添加一个变量“，”给GLOBAL对象添加一个变量“，所有这些都是一回事。</p>
-<p>在一个module里全局声明的变量能够被其他任何模块使用它们的名字来引用，没必要从global对象引用它们。但是这不意味这你就可以这样做。为什么呢？请看这样:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> company = <span class="string">'Yahoo'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(global.company); <span class="comment">// 'Google'</span></span><br><span class="line"><span class="built_in">console</span>.log(company); <span class="comment">// 'Yahoo'</span></span><br></pre></td></tr></table></figure></p>
-<p>当你使用global.company时,你知道你使用的是全局变量，但是它的备用名字company在module是当作局部变量来使用的。</p>
-<p>如果你打算在你的node应用里使用全局变量，那么我们讨论的创建变量方法会工作的很好。然而，请不要过度使用它。话虽如此，还有可以不使用全局对象的替代解决方案吗？</p>
-<p>是的，有这么一个，它涉及到module.exports的使用。让我使用例子来演示：</p>
-<p>File: main.js<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">exports.company = <span class="string">'Google'</span>;</span><br><span class="line"><span class="keyword">var</span> m = <span class="built_in">require</span>(<span class="string">'./mod'</span>);</span><br></pre></td></tr></table></figure></p>
-<p>File: mod.js<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> company = <span class="built_in">require</span>(<span class="string">'./main'</span>).company;</span><br><span class="line"><span class="built_in">console</span>.log(company);</span><br></pre></td></tr></table></figure></p>
-<p>现在看看执行结果：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ node main.js&#10;Google</span><br></pre></td></tr></table></figure></p>
-<p>这样你就实现了，一个其他模块的的变量你可以在另外的模块中使用他而没有使用global对象。你可以include main.js在其他的module来访问company名字。</p>
-<p>注意：引用（include）一个已经被其他模块引用过的模块时，仅仅创建一个指向之前包体的引用，因此这意味着不会极度消耗内存。也因为没有重新创建一个真正的包体，在module里的所有初始化方法没有再执行。</p>
-<p>因此，一个包体中，有2钟创建node全局变量的方法，一个是使用global对象，另一个是使用modules.exports。哪个是我推荐的呢?global方法适用小的应用，modules.exprots适用于大的应用。</p>
-<p>原文：<a href="http://www.hacksparrow.com/global-variables-in-node-js.html" target="_blank" rel="external">http://www.hacksparrow.com/global-variables-in-node-js.html</a></p>
-
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
                 <a class="post-title-link" href="/2014/07/24/Nginx/Upstream负载均衡模块/" itemprop="url">
                   Upstream负载均衡模块
                 </a>
@@ -1384,226 +1693,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2014/07/24/Nginx/414Request-URITooLarge/" itemprop="url">
-                  Large Request-URI-Too-Large
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2014-07-24T05:59:54+08:00" content="Jul 24 2014">
-              Jul 24 2014
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/nginx/" itemprop="url" rel="index">
-                    <span itemprop="name">nginx</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2014/07/24/Nginx/414Request-URITooLarge/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/07/24/Nginx/414Request-URITooLarge/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <p>客户端请求头缓冲区大小，如果请求头总长度大于小于128k，则使用此缓冲区，<br>请求头总长度大于128k时使用large_client_header_buffers设置的缓存区<br><code>client_header_buffer_size 128k;</code></p>
-<p>large_client_header_buffers 指令参数4为个数，128k为大小，默认是8k。申请4个128k。<br><code>large_client_header_buffers 4 128k;</code></p>
-<p>当http 的URI太长或者request header过大时会报414 Request URI too large或400 bad request错误。</p>
-<p>可能原因:</p>
-<ol>
-<li>cookie中写入的值太大造成的，因为header中的其他参数的size一般比较固定，只有cookie可能被写入较大的数据</li>
-<li>请求参数太长，比如发布一个文章正文，用urlencode后，使用get方式传到后台。</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET http://www.264.cn/ HTTP/1.1&#10;Host: www.264.cn&#10;Connection: keep-alive&#10;Cache-Control: max-age=0&#10;Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8&#10;User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.31 &#10;Accept-Encoding: gzip,deflate,sdch&#10;Accept-Language: zh-CN,zh;q=0.8&#10;Accept-Charset: GBK,utf-8;q=0.7,*;q=0.3&#10;Cookie: bdshare_firstime=1363517175366; &#10;If-Modified-Since: Mon, 13 May 2013 13:40:02 GMT</span><br></pre></td></tr></table></figure>
-<p>当请求头过大时，超过large_client_header_buffer时，nginx可能返回”Request URI too large” (414)或者”Bad-request”(400)错误,</p>
-<p>如上例HTTP请求头由多行构成，其中”GET <a href="http://www.264.cn/" target="_blank" rel="external">http://www.264.cn/</a> HTTP/1.1”表示Request line</p>
-<p>当Request line的长度大于large_client_header_buffer的一个buffer(128k)时，nginx会返回”Request URI too large” (414)错误，对应上面的场景2。</p>
-<p>请求投中最长的一行也要小于large_client_header_buffer，当不是Request line的最长行大于一个buffer(128k)时，会返回”Bad-request”(400)错误，对应上面的场景1。</p>
-<p>解决办法：这时可以调大上述两个值。</p>
-<p>在http节点处添加</p>
-<p>client_header_buffer_size 512k;<br>large_client_header_buffers 4 512k;</p>
-
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2014/07/24/Nodejs/[翻译]statejs/" itemprop="url">
-                  [翻译]statejs
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2014-07-24T05:59:31+08:00" content="Jul 24 2014">
-              Jul 24 2014
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2014/07/24/Nodejs/[翻译]statejs/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/07/24/Nodejs/[翻译]statejs/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <h1 id="States">States</h1><p> <code>State</code> 的实例封装了<code>owner</code>在指定时刻下的条件和行为。 一个<code>State</code>是由methods, arbitrary data, events, guards, substates和 transition expressions的集合组成。<br>一个owner通常拥有多个<code>State</code>s, 并且指向其中一个作为 current state, 在current state中owner会表现出相应的方法和行为。通过行为来触发 transition使得由一个状态转变为另外一个状态。</p>
-<h1 id="Object_model">Object model</h1><p><code>State</code> objects are modeled by a set of relational references that define three distinct dimensions or “axes”.状态对象是由一组定义三个不同的维度或“轴”关系的参考蓝本。<br>从根本上来说，<code>State</code> 模型是分层次的，从 owner 拥有着唯一的root state开始，每个<code>state</code>都作为 superstate被 substates 继承。一个 <code>State</code> 可能从零个或者多个 parastates继承，提供了定义成分的关系，通过C3线性多重继承实现的一种手段。<br>如果owner的<code>state</code>树是由其他owner的prototypal继承而来 ，继承的owner将可以view their prototype’s States as protostates from which their own epistates inherit.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> p = &#123;&#125;;</span><br><span class="line">state(p, &#123;</span><br><span class="line">    A: state,</span><br><span class="line">    B: state(&#123;</span><br><span class="line">        BA: state,</span><br><span class="line">        BB: state</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> o = <span class="built_in">Object</span>.create(p);</span><br><span class="line">state(o, &#123;</span><br><span class="line">    A: state(&#123;</span><br><span class="line">        AA: state.extend(<span class="string">'X, Y'</span>)</span><br><span class="line">    &#125;),</span><br><span class="line">    X: state,</span><br><span class="line">    Y: state</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
-<p>State S 的继承顺序如下 relation precedence:<br>1.S的protostate继承链<br>2.S的parastates，按照声明的先后顺序<br>3.S的superstate<br>其中parastate和superstate线性加载，或者并行，protostate则按照顺序加载</p>
-<h2 id="The_root_state">The root state</h2><p>所有被 <code>State</code> 影响的 owner 都有单独的 root state。root state的名称为唯一的空字符串 ‘’.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">owner.state().root === owner.state(<span class="string">''</span>);   <span class="comment">// &gt;&gt;&gt; true (invariant)</span></span><br><span class="line">owner.state(<span class="string">'-&gt;'</span>);</span><br><span class="line">owner.state();                            <span class="comment">// &gt;&gt;&gt; State ''</span></span><br></pre></td></tr></table></figure></p>
-<p>默认的，owner的初始current state被设置为 root state — 除非 root state 被标记为 abstract attribute，或者另外一个 <code>State</code> 被标记为 initial attribute.<br>root state 还可以用来存储 methods 并且可以被owner的 <code>State</code>s重写。这些方法被替换至root state。如果没有被重写，则会调用默认的方法。</p>
-<h2 id="Superstates_and_substates">Superstates and substates</h2><p><strong>owner</strong> 表现得行为由 <strong>substates</strong> 决定 ，这些<strong>substates</strong> 由 <strong>superstates</strong> 生成<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o = &#123;&#125;;</span><br><span class="line">state( o, &#123;</span><br><span class="line">    A: state(&#123;</span><br><span class="line">        AA: state,</span><br><span class="line">        AB: state</span><br><span class="line">    &#125;),</span><br><span class="line">    B: state</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> root = o.state(<span class="string">''</span>);                    <span class="comment">// &gt;&gt;&gt; RootState</span></span><br><span class="line">o.state() === root;                        <span class="comment">// &gt;&gt;&gt; true</span></span><br><span class="line">o.state(<span class="string">'-&gt; AA'</span>);</span><br><span class="line">o.state() === o.state(<span class="string">'AA'</span>);               <span class="comment">// &gt;&gt;&gt; true</span></span><br><span class="line">o.state().superstate === o.state(<span class="string">'A'</span>);     <span class="comment">// &gt;&gt;&gt; true</span></span><br><span class="line">o.state().superstate.superstate === root;  <span class="comment">// &gt;&gt;&gt; true</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="Parastates_and_composition">Parastates and composition</h2><p>除了通过 <strong>superstates</strong> 继承，<code>State</code> 模型还支持通过 <strong>parastate</strong> 关系实现多继承。<br>最孤单的就是RootState，它不承担任何关系。<br>Parastates 通过 <code>state.extend</code> 函数声明, 参数为一个或多个字符串 to parastates, along with optional parameters attributes and expression, and returns a StateExpression that can be used to produce a State with the named parastates.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o = &#123;&#125;;</span><br><span class="line">state( o, &#123;</span><br><span class="line">    A: state(&#123;</span><br><span class="line">        AA: state.extend(<span class="string">'X, Y'</span>)</span><br><span class="line">    &#125;),</span><br><span class="line">    X: state,</span><br><span class="line">    Y: state</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
-<h1 id="状态表达式(Expressions)">状态表达式(Expressions)</h1><p><code>State</code> 通过 <em>state expression</em> 数据结构以声明的方式定义。<br><code>StateExpression</code> 通过调用不包含<code>owner</code>参数的 <code>state()</code> 函数创建，仅提供一个 <code>expression</code> 参数，还可以提供由空格分隔的 <code>attributes</code>参数。<br>在其内部， 状态表达式的内容根据对象的 categories 设置，其中包含 <code>data</code>, <code>methods</code>, <code>events</code>, <code>guards</code>, <code>substates</code> 和 <code>transitions</code>。<code>state()</code> 的 <code>expression</code>可以根据这些 categories形成结构化，或者可以通过类型推断来简化实现一些更加简单的缩写。</p>
-<h2 id="结构化状态表达式(Structured_state_expressions)">结构化状态表达式(Structured state expressions)</h2><p>以入门的例子为基础，我们可以写一个包含明确分类的expression，包含子状态、方法、事件等。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> longformExpression = state(&#123;</span><br><span class="line">    methods: &#123;</span><br><span class="line">        greet: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="string">"Hello."</span>; &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    states: &#123;</span><br><span class="line">        Formal: &#123;</span><br><span class="line">            methods: &#123;</span><br><span class="line">                greet: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="string">"How do you do?"</span>; &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            events: &#123;</span><br><span class="line">                enter: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">this</span>.wearTux(); &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        Casual: &#123;</span><br><span class="line">            methods: &#123;</span><br><span class="line">                greet: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="string">"Hi!"</span>; &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            events: &#123;</span><br><span class="line">                enter: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">this</span>.wearJeans(); &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// &gt;&gt;&gt; StateExpression</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="简写(Shorthand)">简写(Shorthand)</h2><p>明确的分类是很准确的，但是这样显得很冗余。所有 state() 同样接受更加简便的表达形式。效果同上面的一样。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> shorthandExpression = state(&#123;</span><br><span class="line">    greet: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="string">"Hello."</span>; &#125;,</span><br><span class="line"></span><br><span class="line">    Formal: &#123;</span><br><span class="line">        enter: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">this</span>.wearTux(); &#125;,</span><br><span class="line">        greet: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="string">"How do you do?"</span>; &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    Casual: &#123;</span><br><span class="line">        enter: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">this</span>.wearJeans(); &#125;,</span><br><span class="line">        greet: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="string">"Hi!"</span>; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// &gt;&gt;&gt; StateExpression</span></span><br></pre></td></tr></table></figure></p>
-<p>在这个例子中，<code>state()</code> 根据以下规则解释：<br><em>识别缺乏键名的类别 ，推断 <code>Formal</code> 和 <code>Casual</code> 为状态
-</em>将 <code>enter</code> 识别为内置的事件类型，将关联的函数作为 <code>enter</code> 事件的监听器，别且在被所在的 <code>state</code> 触发。<br>*推断 <code>greet</code> 不是一个内置的事件类型，所以被认为是一个方法。<br>所有显示的定义可以通过简写来实现，但是要避免出现含糊不清的情况 (例如，创建一个名为 <code>data</code> 的状态，或者方法名叫做 <code>enter</code>。</p>
-<h2 id="表达式推断(Interpreting_expression_input)">表达式推断(Interpreting expression input)</h2><p>提供给 <code>state()</code>的 <code>StateExpression</code>根据以下规则推断解释：<br>1.如果输入的值的类型为<code>StateExpression</code>或<code>TransitionExpression</code>并且推断如此，则使用输入的键名为它的名称，如果输入的值是<code>state</code>函数自身，则推断为名称为键名的空状态。<br>2.如果键名是类名，它的值是一个对象或null，那么它将被解释，因为它会在长期形成的结构化格式。<br>3.如果键名同 built-in event type 匹配，或者值是string， 则推断值作为一个事件监听函数，, an array of event listeners, or a named transition target to be bound to that event type.<br>4.Otherwise, if an entry’s key matches a guard action (i.e., admit, release), interpret the value as a guard condition (or array of guard conditions).<br>5.Otherwise, if an entry’s value is an object, interpret it as a substate whose name is the entry’s key, or if the entry’s value is a function, interpret it as a method whose name is the entry’s key.</p>
-<h1 id="Transitions过渡">Transitions过渡</h1><p>Whenever an object’s current state changes, a transition state is created, which temporarily assumes the role of the current state while the object is travelling from its origin or source state to its target state.<br>每当一个对象的当前状态的变化，会创建一个过渡状态，这暂时假定当前状态的角色，而对象从它的源状态变化到目标状态。</p>
-<h2 id="Transition_expressions">Transition expressions</h2><p>A state expression may include any number of transition expressions, which define some action to be performed, either synchronously or asynchronously, along with selectors for the origin/source and target states to which the transition should apply, and guards to determine the appropriate transition to employ.<br>状态表达式可以包括任何数量的过渡表达式，它定义要执行的操作，同步或异步，以及选择的原产地/来源和目标状态的过渡应适用的，和警卫来确定合适的过渡聘请。<br>Before an object undergoes a state change, it examines the transition expressions available for the given origin and target, and selects one to be enacted. To test each expression, its origin state is validated against its admit transition guards, and its target state is validated against its release transition guards. The object then instantiates a Transition based on the first valid transition expression it encounters, or, if no transition expression is available, a generic actionless Transition.<br>对象经历一个状态的改变之前，它会检查过渡表达式对于源状态和目标状态是否可用，并选择一个制定。要测试每个表达式，它的起源状态进行验证针对其承认过渡卫士，并将其目标状态及其对过渡释放警卫进行了验证。该对象，然后实例化基于它遇到的第一个有效的过渡表达一个过渡，或者，如果没有过渡表达式是可用的，一个通用的无为过渡。<br>Where transition expressions should be situated in the state hierarchy is largely a matter of discretion. In determining the appropriate transition expression for a given origin–target pairing, the search proceeds, in order:<br>过渡表达式在状态层次的设置应该非常慎重。<br>1.at 过渡表达式的<code>target</code>状态(CSS3过渡是相对于类声明的方式)<br>2.at 过渡表达式的<code>origin</code>状态<br>progressively up the superstate chain of target<br>progressively up the superstate chain of origin<br>Transitions can therefore be organized in a variety of ways, but ambiguity resolution is regular and predictable, as demonstrated with the Zig transition in the example below:<br>过渡可以实现为不同的方式，但是这是有规律并且可预测的，如示例中<code>Zig</code>过渡<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
-
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1650,7 +1739,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-count">23</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1664,7 +1753,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">23</span>
+              <span class="site-state-item-count">27</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
@@ -1710,7 +1799,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2015</span>
+  <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
     <i class="icon-next-heart fa fa-heart"></i>
   </span>

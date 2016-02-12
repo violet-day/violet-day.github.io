@@ -219,6 +219,236 @@
             
               
                 
+                <a class="post-title-link" href="/2016/02/12/Nodejs/RabbitMQ中的Back-off和retry/" itemprop="url">
+                  RabbitMQ中的Back-off和retry
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2016-02-12T12:52:37+08:00" content="Feb 12 2016">
+              Feb 12 2016
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/02/12/Nodejs/RabbitMQ中的Back-off和retry/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/12/Nodejs/RabbitMQ中的Back-off和retry/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <p>使用第三方API的一个常见问题是峰值期间可用性问题。即便是非峰值期间，API请求仍可能被拒绝、超时或者失败。这篇文章中，我将讲解对于RabbitMQ消费者轻量级的<a href="http://en.wikipedia.org/wiki/Exponential_backoff" target="_blank" rel="external">指数退避</a>和重试机制。</p>
+<h2 id="New_API,_new_service">New API, new service</h2><p>当用户从我们的一个网站删除了一张照片之后，我们会将它从我们的CDN服务中删除。我们的后端是面向服务的架构，这里使用了CDN purge服务。这个服务对核心web应用发生的事情做出反应，发送消息队列，并且调用CDN的API清除资源。最近我更新了这个服务来使用<a href="https://api.ccu.akamai.com/ccu/v2/docs/index.html" target="_blank" rel="external">Akamai CCU REST API</a>。</p>
+<p>由于现有的服务已经存在很久了，我们决定重写它。对于一个初级开发者来说，这是一个很好的机会使用<a href="http://www.rabbitmq.com/" target="_blank" rel="external">RabbitMQ</a>和<a href="http://nodejs.org/" target="_blank" rel="external">Node.js</a>来实现后台任务。</p>
+<p>正如Paul在他最近的blog中所说<a href="http://dev.venntro.com/2014/04/rabbitmq-from-the-front-line/" target="_blank" rel="external">RabbitMQ: Front the Front Line</a>，我们是RabbitMQ的重度使用者。尽管我们很多消费者都是实用Ruby来实现的，但是我们发现Node.js在很少的业务逻辑下也是非常实用。事件驱动和消息流很契合，并且适用于快速编码。我们实用<a href="https://github.com/postwait/node-amqp" target="_blank" rel="external">node-amqp</a>作为我们的RabbitMQ客户端。</p>
+<p>一旦新的服务运行起来，很显然负载会很高，尤其是高峰8pm-2am。我们很快发现，我们的API被集中在晚上调用。这个API有一个内部队列用来处理purge请求，当队列满了的时候它会返回<code>507 queue is full</code>。</p>
+<p><img src="http://dev.venntro.com/images/uploads/2014/07/week-of-api-responses.png" alt="CDN response pattern over one week
+"></p>
+<p>观察调用成功和失败的API，很显然我们在高峰时期需要强大的退避和重试机制。</p>
+<h2 id="Starting_point">Starting point</h2><p>我们的平台发送多个不同的消息路由至CDN purge队列。CDN purge服务消费这些消息并且发送对应的请求给CDN API。下图描述了从平台到API的信息流。</p>
+<p><img src="http://dev.venntro.com/images/uploads/2014/07/cdn-purge-messages.png" alt="Diagram of our CDN purge process"></p>
+<p>当API请求被拒绝的时候，我们想过一段时间再重试。与此同时，我们该如何处理消息？</p>
+<h2 id="Let_RabbitMQ_do_the_work">Let RabbitMQ do the work</h2><p>实现退避和重试机制，我的第一直觉是创建一个新的<code>wait queue</code>，把失败的请求放在里面，过一段时间继续重试。由于我刚刚使用RabbitMQ，有这么几个问题需要考虑：</p>
+<ul>
+<li>是否我需要消费者处理<code>wait queue</code>中的消息</li>
+<li>是否我能控制每个消息的重试等待时间</li>
+<li>是否我能追踪每个API请求我重试的次数</li>
+<li>是否能在一个<code>wait queue</code>中处理多个平台的事情</li>
+</ul>
+<p>感谢的是，RabbitMQ有很多<a href="https://www.rabbitmq.com/extensions.html" target="_blank" rel="external">protocol extensions</a>扩展了<a href="http://www.amqp.org/" target="_blank" rel="external">AMQP</a>规范。<br><code>dead letter exchanges</code>和<code>per-message TTL</code>正是<code>wait queue</code>需要的功能。</p>
+<h2 id="Dead_letter_exchanges_(DLX)">Dead letter exchanges (DLX)</h2><p>术语<a href="http://en.wikipedia.org/wiki/Dead_letter_mail" target="_blank" rel="external">dead letter mail 死信邮件</a>在邮政行业仍在使用，用来描述信件没有办法被送达。在RabbitMQ中，消息有以下几种情况的时候会被认为dead-lettered</p>
+<ul>
+<li>消息被拒绝</li>
+<li>消息已经过期</li>
+<li>队列已经满了</li>
+</ul>
+<p>邮政服务会将死信邮件返还给发送者，和这很相似，RabbitMQ会做一些工作并且重新将<code>dead-lettered</code>的消息发送给我们选择的exchange-dead letter exchange。</p>
+<p>既然我们想要一个<code>wait queue</code>，消息过期最容易触发<code>dead-lettering</code>。我们将控制消息短期内过期。</p>
+<p>任何队列都能设置dead-letter消息。<code>dead letter exchange</code>是队列的一个参数，当你声明的时候可以通过<code>x-dead-letter-exchange</code>参数来设定。这是一个使用<a href="https://github.com/postwait/node-amqp" target="_blank" rel="external">node-amqp</a>的例子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> queueOptions = &#123; <span class="built_in">arguments</span>: &#123; <span class="string">"x-dead-letter-exchange"</span>: <span class="string">"exchange"</span> &#125; &#125;;</span><br><span class="line"></span><br><span class="line">connection.queue(<span class="string">"wait-queue"</span>, queueOptions, <span class="function"><span class="keyword">function</span>(<span class="params">waitQueue</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Bind to exchange</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>尽管<code>dead letter exchanges</code>没有做什么特别的配置，我们仍是有了<code>wait queue</code>。下一步我们将设置消息过期，这样RabbitMQ就能为我们重新分配。</p>
+<p>更多信息: <a href="https://www.rabbitmq.com/dlx.html" target="_blank" rel="external">RabbitMQ docs on DLX</a></p>
+<h2 id="Per-message_TTL">Per-message TTL</h2><p>消息可以使用默认的<code>expiry</code>或者<code>TTL</code>来声明。然而为了实现指数退避，我们需要对每个消息逐个设置过期时间。</p>
+<p>当你发布消息的时候，你可以设置expiration字段的毫秒值：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> messageOptions = &#123; expiration: <span class="number">10000</span> &#125;;</span><br><span class="line"></span><br><span class="line">exchange.publish(<span class="string">"routing-key"</span>, <span class="string">"body"</span>, messageOptions);</span><br></pre></td></tr></table></figure>
+<p>看起很简单，但是这也意味着，当一个purge请求失败的时候，因为需要<code>expiration</code>字段，我们的消费者需要复制消息。注意：如果你声明了你的队列使用消息确认机制，不要忘记确认原来的消息。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> subscribeOptions = &#123; ack: <span class="literal">true</span> &#125;;</span><br><span class="line"></span><br><span class="line">queue.subscribe(subscribeOptions, <span class="function"><span class="keyword">function</span>(<span class="params">message, headers, deliveryInfo, messageObject</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Post request to API</span></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// If the API request fails</span></span><br><span class="line">  <span class="keyword">var</span> messageOptions = &#123;</span><br><span class="line">    appId: messageObject.appId,</span><br><span class="line">    timestamp: messageObject.timestamp,</span><br><span class="line">    contentType: messageObject.contentType,</span><br><span class="line">    deliveryMode: messageObject.deliveryMode,</span><br><span class="line">    headers: headers,</span><br><span class="line">    expiration: <span class="number">10000</span></span><br><span class="line">  &#125;;</span><br><span class="line">  exchange.publish(deliveryInfo.routingKey, message, messageOptions);</span><br><span class="line">  messageObject.acknowledge(<span class="literal">false</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>你需要确保你复制你自己的消息的详细信息。下面让我们增加每次API调用失败时的的超时时间。</p>
+<p>更多信息: <a href="https://www.rabbitmq.com/ttl.html" target="_blank" rel="external">RabbitMQ docs on per-message TTL</a></p>
+<h2 id="Handling_dead-lettered_messages">Handling dead-lettered messages</h2><p>当消息<code>dead-lettered</code>之后，RabbitMQ对它做了一些很有用的变化，在header中记录了这些变化。对于我们的<code>wait queue</code>，我们仅仅关心对<code>expiration</code>字段发生了什么。</p>
+<p><code>expiration</code>字段被移除了，并且重新在headers中的<code>x-death</code>中作为<code>original-expiration</code>值记录着。这允许我们找到上次的过期时间并且防止消息再次过期。重要的是，<code>x-death</code>header是有序数组，第一个是最近的值。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> expiration;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (headers[<span class="string">"x-death"</span>]) &#123;</span><br><span class="line">  expiration = (headers[<span class="string">"x-death"</span>][<span class="number">0</span>][<span class="string">"original-expiration"</span>] * <span class="number">3</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  expiration = <span class="number">10000</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Apply some randomness to the expiration</span></span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
+<p>这个例子中，第一个个过期时间是10000毫秒，每次重试的时候它都会乘以3。这是指数退避算法中比较常见的实践。我们的例子中，我们增加了一点随即值来提高API调用的成功可能性。</p>
+<p>下面我们来组织我们的队列，这样他能管理多个平台的事件。</p>
+<h2 id="Routing_dead-lettered_messages">Routing dead-lettered messages</h2><p>我们的CDN purge服务对于多个平台发生的事情做出反应，每个都有它自己的routing key。最简单的方式路由多个routing key的是声明单独的<code>wait exchange</code>。</p>
+<p>使用单独的<code>wait exchange</code>之后，你可以不用理会<code>routing keys</code>。当失败的消息发送到<code>wait exchange</code>时，你不需要改变<code>routing key</code>。仅仅需要将<code>wait queue</code>和<code>primary queue</code>绑定同样的<code>routing key</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> routingKeys = [<span class="string">"routing-key-a"</span>, <span class="string">"routing-key-b"</span>];</span><br><span class="line"></span><br><span class="line">connection.exchange(<span class="string">"wait-exchange"</span>, waitExchangeOptions, <span class="function"><span class="keyword">function</span>(<span class="params">waitExchange</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> waitQueueOptions = &#123; <span class="built_in">arguments</span>: &#123; <span class="string">"x-dead-letter-exchange"</span>: <span class="string">"exchange"</span> &#125; &#125;;</span><br><span class="line"></span><br><span class="line">  connection.queue(<span class="string">"wait-queue"</span>, waitQueueOptions, <span class="function"><span class="keyword">function</span>(<span class="params">waitQueue</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Bind wait queue to all routing keys on wait exchange</span></span><br><span class="line">    routingKeys.map(<span class="function"><span class="keyword">function</span>(<span class="params">routingKey</span>) </span>&#123;</span><br><span class="line">      waitQueue.bind(<span class="string">"wait-exchange"</span>, routingKey);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">connection.exchange(<span class="string">"primary-exchange"</span>, primaryExchangeOptions, <span class="function"><span class="keyword">function</span>(<span class="params">primaryExchange</span>) </span>&#123;</span><br><span class="line">  connection.queue(<span class="string">"primary-queue"</span>, primaryQueueOptions, <span class="function"><span class="keyword">function</span>(<span class="params">primaryQueue</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Bind primary queue to all routing keys on primary exchange</span></span><br><span class="line">    routingKeys.map(<span class="function"><span class="keyword">function</span>(<span class="params">routingKey</span>) </span>&#123;</span><br><span class="line">      primaryQueue.bind(<span class="string">"primary-exchange"</span>, routingKey);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">// Subscribe to messages</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>这样配置之后，当消息被<code>wait queue</code> <code>dead-lettered</code>之后，会重新发布至<code>primary exchange</code>，<code>routing key</code>会保持不变。这样以后添加和移除<code>routing key</code>会很简单。</p>
+<h2 id="All_together_now">All together now</h2><p>现在把所有的代码合并在一起。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> amqp = <span class="built_in">require</span>(<span class="string">"amqp"</span>);</span><br><span class="line"></span><br><span class="line">connection = amqp.createConnection(&#123; host: <span class="string">"localhost"</span> &#125;);</span><br><span class="line"></span><br><span class="line">connection.on(<span class="string">"ready"</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> waitExchange,</span><br><span class="line">      routingKeys = [<span class="string">"routing-key-a"</span>, <span class="string">"routing-key-b"</span>];</span><br><span class="line"></span><br><span class="line">  waitExchange = connection.exchange(<span class="string">"wait-exchange"</span>, waitExchangeOptions, <span class="function"><span class="keyword">function</span>(<span class="params">waitExchange</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> waitQueueOptions = &#123; <span class="built_in">arguments</span>: &#123; <span class="string">"x-dead-letter-exchange"</span>: <span class="string">"primary-exchange"</span> &#125; &#125;;</span><br><span class="line"></span><br><span class="line">    connection.queue(<span class="string">"wait-queue"</span>, waitQueueOptions, <span class="function"><span class="keyword">function</span>(<span class="params">waitQueue</span>) </span>&#123;</span><br><span class="line">      routingKeys.map(<span class="function"><span class="keyword">function</span>(<span class="params">routingKey</span>) </span>&#123;</span><br><span class="line">        waitQueue.bind(<span class="string">"wait-exchange"</span>, routingKey);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  connection.exchange(<span class="string">"primary-exchange"</span>, primaryExchangeOptions, <span class="function"><span class="keyword">function</span>(<span class="params">primaryExchange</span>) </span>&#123;</span><br><span class="line">    connection.queue(<span class="string">"primary-queue"</span>, primaryQueueOptions, <span class="function"><span class="keyword">function</span>(<span class="params">primaryQueue</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> subscribeOptions = &#123; ack: <span class="literal">true</span> &#125;;</span><br><span class="line"></span><br><span class="line">      routingKeys.map(<span class="function"><span class="keyword">function</span>(<span class="params">routingKey</span>) </span>&#123;</span><br><span class="line">        primaryQueue.bind(<span class="string">"primary-exchange"</span>, routingKey);</span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">      primaryQueue.subscribe(subscribeOptions, <span class="function"><span class="keyword">function</span>(<span class="params">message, headers, deliveryInfo, messageObject</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> expiration, messageOptions;</span><br><span class="line">        <span class="comment">// Post request to API</span></span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// If the API request fails</span></span><br><span class="line">        <span class="keyword">if</span> (headers[<span class="string">"x-death"</span>]) &#123;</span><br><span class="line">          expiration = (headers[<span class="string">"x-death"</span>][<span class="number">0</span>][<span class="string">"original-expiration"</span>] * <span class="number">3</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          expiration = <span class="number">10000</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        messageOptions = &#123;</span><br><span class="line">          appId: messageObject.appId,</span><br><span class="line">          timestamp: messageObject.timestamp,</span><br><span class="line">          contentType: messageObject.contentType,</span><br><span class="line">          deliveryMode: messageObject.deliveryMode,</span><br><span class="line">          headers: headers,</span><br><span class="line">          expiration: expiration</span><br><span class="line">        &#125;;</span><br><span class="line">        waitExchange.publish(deliveryInfo.routingKey, message, messageOptions);</span><br><span class="line">        messageObject.acknowledge(<span class="literal">false</span>);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="Summary">Summary</h2><p>我已经介绍了如何使用<code>dead letter exchanges</code>和<code>per-message TTL</code>来实现轻量级别的指数退避和重试机制。上面的示例代码展示了在Node.js中使用node-amqp如何实现。下图表述了这个机制原理：</p>
+<p><img src="http://dev.venntro.com/images/uploads/2014/07/rabbitmq-back-off-and-retry.png" alt="Diagram of back-off and retry mechanism"></p>
+<p>如果你和第一个图比较，我希望可以清楚的解释其中原理。最后，下面对开始的问题做一些简要的回答：</p>
+<h3 id="是否我需要消费者处理wait_queue中的消息?">是否我需要消费者处理<code>wait queue</code>中的消息?</h3><p>否。RabbitMQ可以做这个工作，声明一个带<code>x-dead-letter-exchange</code>参数的<code>wait queue</code>，RabbitMQ会在他们过期的时候重新发布。</p>
+<h3 id="是否我能控制每个消息的重试等待时间?">是否我能控制每个消息的重试等待时间?</h3><p>可以。但是<code>per-message TTL</code>仅能在你发送消息的时候设置。所以的你的消费者需要复制消息体并且发送的时候需要携带<code>expiration</code>字段。注意：如果使用了消息确认机制，不要忘了确认原来的消息。</p>
+<h3 id="是否我能追踪每个API请求我重试的次数?">是否我能追踪每个API请求我重试的次数?</h3><p>是。每次消息变为dead-lettered时，RabbitMQ都会记录有用的信息在它的<code>x-death</code>header。第一条记录的是最新的，并且会包含<code>original-expiration</code></p>
+<h3 id="是否能在一个wait_queue中处理多个平台的事情">是否能在一个<code>wait queue</code>中处理多个平台的事情</h3><p>是。最简单的管理多个<code>routing key</code>的做法是为你的<code>wait queue</code>声明一个单独的exchange，然后和<code>primary exchange</code>绑定同样的<code>routing key</code>。</p>
+<h2 id="原文_Back-off_and_retry_with_RabbitMQ">原文 <a href="http://dev.venntro.com/2014/07/back-off-and-retry-with-rabbitmq/" target="_blank" rel="external">Back-off and retry with RabbitMQ</a></h2>
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/01/15/Nodejs/Preserving-Data-Across-Async-Callbacks/" itemprop="url">
+                  Node.js – Preserving Data Across Async Callbacks
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2016-01-15T16:50:35+08:00" content="Jan 15 2016">
+              Jan 15 2016
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/01/15/Nodejs/Preserving-Data-Across-Async-Callbacks/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/15/Nodejs/Preserving-Data-Across-Async-Callbacks/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/03/31/Linux/AWS/" itemprop="url">
                   AWS配置node
                 </a>
@@ -1220,431 +1450,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2014/08/12/Java/开发环境配置/" itemprop="url">
-                  开发环境配置
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2014-08-12T08:47:07+08:00" content="Aug 12 2014">
-              Aug 12 2014
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2014/08/12/Java/开发环境配置/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/12/Java/开发环境配置/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p><a href="http://www.eclipse.org/">Eclipse</a></p>
-<p><a href="http://www.eclipse.org/babel/downloads.php">Eclipse Babel Project</a></p>
-<p><a href="http://eclipsecolorthemes.org/">Eclipse Color Themes</a></p>
-<p><a href="http://maven.apache.org/download.cgi">Maven</a></p>
-<p><a href="http://eclipse.org/m2e/download/">Maven Integration (m2e)</a><br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/08/12/Java/开发环境配置/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2014/08/10/Ionic/Navigation/" itemprop="url">
-                  Navigation
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2014-08-10T21:48:52+08:00" content="Aug 10 2014">
-              Aug 10 2014
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/ionic/" itemprop="url" rel="index">
-                    <span itemprop="name">ionic</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2014/08/10/Ionic/Navigation/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/10/Ionic/Navigation/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h2 id="ion-nav-view">ion-nav-view</h2><p>当用户浏览整个应用程序，Ionic能够跟踪他们的浏览历史。通过了解他们的历史、视图之间的转换正确滑动或左或右，或没有过渡的。另一个优点是Ionic的导航系统是其管理多个历史能力。</p>
-<p>Ionic使用AngularUI Router模块，所以app的接口可以组织为”states”。和Angular的核心$route服务一样,URLs可以用来控制视图。然而，AngularUI Router提供了更加强大的状态管理功能，状态与name绑定,并且有嵌套或并行的视图，在一个页面允许多个视图。并且，每个状态没有一定需要绑定URL，可以更加灵活的将数据附加至状态。</p>
-<p>在你的应用程序用，ionNavView指示器用来渲染模板，每个模板都是一个状态的一部分。状态通常映射至URL，并且通过angular-ui-router来定义。（记住在示例中将ui-view替换为ion-nav-view）</p>
-<h3 id="用法">用法</h3><p>在这个例子中，我们将创建一个包含我们的不同状态的应用程序中的导航视图。</p>
-<p>要做到这一点，在我们的标记，我们使用ionNavView顶级的指令。要显示一个标题栏，我们使用<code>ionNavBar</code>指令，更新，因为我们通过导航堆栈导航。</p>
-<p>在navView的animation中，你可以使用任何<code>animation</code>的类。</p>
-<p>推荐的效果: ‘slide-left-right’, ‘slide-left-right-ios7’, ‘slide-in-up’.</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ion-nav-bar</span>&gt;</span><span class="tag">&lt;/<span class="title">ion-nav-bar</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">ion-nav-view</span> <span class="attribute">animation</span>=<span class="value">"slide-left-right"</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- Center content --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ion-nav-view</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>接下来，我们需要设置状态<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> app = angular.module(<span class="string">'myApp'</span>, [<span class="string">'ionic'</span>]);</span><br><span class="line">app.config(<span class="function"><span class="keyword">function</span>(<span class="params">$stateProvider</span>) </span>&#123;</span><br><span class="line">  $stateProvider</span><br><span class="line">  .state(<span class="string">'index'</span>, &#123;</span><br><span class="line">    url: <span class="string">'/'</span>,</span><br><span class="line">    templateUrl: <span class="string">'home.html'</span></span><br><span class="line">  &#125;)</span><br><span class="line">  .state(<span class="string">'music'</span>, &#123;</span><br><span class="line">    url: <span class="string">'/music'</span>,</span><br><span class="line">    templateUrl: <span class="string">'music.html'</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
-<p>当程序启动时，stateProvider会查看url，匹配index state，则会尝试去加载home.html至<ion-nav-view></p>
-<p>页面通过给定的URLs加载。在Angulr中创建templates的一个简单的办法就直接通过<code>&lt;script type=&quot;text/ng-template&quot;&gt;</code>语法在页面中创建。</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">id</span>=<span class="value">"home"</span> <span class="attribute">type</span>=<span class="value">"text/ng-template"</span>&gt;</span><span class="handlebars"><span class="xml"></span><br><span class="line">  <span class="comment">&lt;!-- The title of the ion-view will be shown on the navbar --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ion-view</span> <span class="attribute">title</span>=<span class="value">"'Home'"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">ion-content</span> <span class="attribute">ng-controller</span>=<span class="value">"HomeCtrl"</span>&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- The content of the page --&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"#/music"</span>&gt;</span>Go to music page!<span class="tag">&lt;/<span class="title">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">ion-content</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">ion-view</span>&gt;</span></span><br><span class="line"></span></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>这样的好处是因为缓存加载会非常快，而不是通过异步加载。</p>
-<h2 id="ion-view">ion-view</h2><p>Child of <code>ionNavView</code></p>
-<h3 id="用法-1">用法</h3><p>下面是一个例子，我们的页面将包含“My Page”为标题导航栏加载。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ion-nav-bar</span>&gt;</span><span class="tag">&lt;/<span class="title">ion-nav-bar</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">ion-nav-view</span> <span class="attribute">class</span>=<span class="value">"slide-left-right"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ion-view</span> <span class="attribute">title</span>=<span class="value">"My Page"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">ion-content</span>&gt;</span></span><br><span class="line">      Hello!</span><br><span class="line">    <span class="tag">&lt;/<span class="title">ion-content</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">ion-view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ion-nav-view</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="API">API</h3><table>
-<thead>
-<tr>
-<th style="text-align:center">属性</th>
-<th style="text-align:center">类型</th>
-<th style="text-align:center">详细说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">title(可选)</td>
-<td style="text-align:center">string</td>
-<td style="text-align:center">显示在<code>ionNavBar</code>的标题</td>
-</tr>
-<tr>
-<td style="text-align:center">hide-back-button(可选)</td>
-<td style="text-align:center">boolean</td>
-<td style="text-align:center">是否隐藏<code>ionNavBar</code>默认的后退按钮</td>
-</tr>
-<tr>
-<td style="text-align:center">hide-nav-bar(可选)</td>
-<td style="text-align:center">boolean</td>
-<td style="text-align:center">是否隐藏默认的<code>ionNavBar</code></td>
-</tr>
-</tbody>
-</table>
-<h2 id="ion-nav-bar">ion-nav-bar</h2><p>Delegate: <code>$ionicNavBarDelegate</code></p>
-<p>如果我们已经有了<code>ionNavView</code>,我们同样可以创建<code>&lt;ion-nav-bar&gt;</code>来更新程序的状态。</p>
-<p>我们可以在其中放置<code>ionNavBackButton</code>来添加返回按钮</p>
-<p>我们可以根据当前的可见视图使用<code>ionNavButtons</code>添加按钮</p>
-<p>通过在<code>animation</code>属性中添加animation class来达到title变化的动画效果。(推荐: ‘nav-title-slide-ios7’).</p>
-<p>注意：<code>ion-nav-bar</code>仅仅在ionView中存在的情况下才起效果</p>
-<h3 id="用法-2">用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">body</span> <span class="attribute">ng-app</span>=<span class="value">"starter"</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- The nav bar that will be updated as we navigate --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ion-nav-bar</span> <span class="attribute">class</span>=<span class="value">"bar-positive"</span> <span class="attribute">animation</span>=<span class="value">"nav-title-slide-ios7"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">ion-nav-bar</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">&lt;!-- where the initial view template will be rendered --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ion-nav-view</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">ion-view</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="title">ion-content</span>&gt;</span>Hello!<span class="tag">&lt;/<span class="title">ion-content</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">ion-view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">ion-nav-view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="API-1">API</h3><table>
-<thead>
-<tr>
-<th style="text-align:center">属性</th>
-<th style="text-align:center">类型</th>
-<th style="text-align:center">详细说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">delegate-handle(可选)</td>
-<td style="text-align:center">stirng</td>
-<td style="text-align:center">用来被<code>$ionicNavBarDelegate</code>识别</td>
-</tr>
-<tr>
-<td style="text-align:center">align-title(可选)</td>
-<td style="text-align:center">string</td>
-<td style="text-align:center">‘left’, ‘right’, ‘center’. 默认为’center’.</td>
-</tr>
-<tr>
-<td style="text-align:center">no-tap-scroll(可选)</td>
-<td style="text-align:center">boolean</td>
-<td style="text-align:center">默认的，点击的时候，会自动将内容滚动至顶部。通过设置为false可禁用这一行为。</td>
-</tr>
-</tbody>
-</table>
-<h3 id="另外用法">另外用法</h3><p>你可能在每个视图中放置<code>ion-nav-bar</code>，这就要求你拥有整个nvabar，不仅仅contents、transition、view。</p>
-<p>这与在ion-view中使用header bar相似，但他有一个导航栏的功能。</p>
-<p>如果你这么做，很简单的就是在navbar放置nav buttons；不要使用<code>&lt;ion-nav-buttons&gt;</code></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ion-view</span> <span class="attribute">title</span>=<span class="value">"myTitle"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ion-nav-bar</span> <span class="attribute">class</span>=<span class="value">"bar-positive"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">ion-nav-back-button</span>&gt;</span></span><br><span class="line">      Back</span><br><span class="line">    <span class="tag">&lt;/<span class="title">ion-nav-back-button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"buttons right-buttons"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="title">button</span> <span class="attribute">class</span>=<span class="value">"button"</span>&gt;</span></span><br><span class="line">        Right Button</span><br><span class="line">      <span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">ion-nav-bar</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ion-view</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="ion-nav-buttons">ion-nav-buttons</h2><p>Child of <code>ionNavView</code></p>
-<p>在<code>ionView</code>通过<code>ionNavButtons</code>来设置你<code>ionNavBar</code>上的按钮。</p>
-<p>任何你声明的按钮都会被放置在nvabar对应的地方，当离开视图的时候被销毁</p>
-<h3 id="用法-3">用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ion-nav-bar</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ion-nav-bar</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">ion-nav-view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ion-view</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">ion-nav-buttons</span> <span class="attribute">side</span>=<span class="value">"left"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="title">button</span> <span class="attribute">class</span>=<span class="value">"button"</span> <span class="attribute">ng-click</span>=<span class="value">"doSomething()"</span>&gt;</span></span><br><span class="line">        I'm a button on the left of the navbar!</span><br><span class="line">      <span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">ion-nav-buttons</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">ion-content</span>&gt;</span></span><br><span class="line">      Some super content here!</span><br><span class="line">    <span class="tag">&lt;/<span class="title">ion-content</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">ion-view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ion-nav-view</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="API-2">API</h3><table>
-<thead>
-<tr>
-<th style="text-align:center">属性</th>
-<th style="text-align:center">类型</th>
-<th style="text-align:center">详细说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">side</td>
-<td style="text-align:center">sting</td>
-<td style="text-align:center">放置在ionNavBar的方向。’left’ or ‘right’.</td>
-</tr>
-</tbody>
-</table>
-<h2 id="ion-nav-back-button">ion-nav-back-button</h2><p>Child of <code>ionNavBar</code></p>
-<p>在<code>ionNavBar</code>中创建返回的按钮.</p>
-<p>当用户可以返回的时候会显示出来。</p>
-<p>默认的，点击会返回。如果你希望有更多高级的功能，请看下面的例子。</p>
-<h3 id="用法-4">用法</h3><p>默认的点击行为<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ion-nav-bar</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ion-nav-back-button</span> <span class="attribute">class</span>=<span class="value">"button-clear"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">i</span> <span class="attribute">class</span>=<span class="value">"ion-arrow-left-c"</span>&gt;</span><span class="tag">&lt;/<span class="title">i</span>&gt;</span> Back</span><br><span class="line">  <span class="tag">&lt;/<span class="title">ion-nav-back-button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ion-nav-bar</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>自定义点击行为，使用<code>$ionicNavBarDelegate</code><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ion-nav-bar</span> <span class="attribute">ng-controller</span>=<span class="value">"MyCtrl"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ion-nav-back-button</span> <span class="attribute">class</span>=<span class="value">"button-clear"</span></span><br><span class="line">    <span class="attribute">ng-click</span>=<span class="value">"goBack()"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">i</span> <span class="attribute">class</span>=<span class="value">"ion-arrow-left-c"</span>&gt;</span><span class="tag">&lt;/<span class="title">i</span>&gt;</span> Back</span><br><span class="line">  <span class="tag">&lt;/<span class="title">ion-nav-back-button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ion-nav-bar</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyCtrl</span>(<span class="params">$scope, $ionicNavBarDelegate</span>) </span>&#123;</span><br><span class="line">  $scope.goBack = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    $ionicNavBarDelegate.back();</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在button上显示之前的标题，再次使用<code>$ionicNavBarDelegate</code><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">ion-nav-bar</span> <span class="attribute">ng-controller</span>=<span class="value">"MyCtrl"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ion-nav-back-button</span> <span class="attribute">class</span>=<span class="value">"button-icon"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">i</span> <span class="attribute">class</span>=<span class="value">"icon ion-arrow-left-c"</span>&gt;</span><span class="tag">&lt;/<span class="title">i</span>&gt;</span>&#123;&#123;getPreviousTitle() || 'Back'&#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="title">ion-nav-back-button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ion-nav-bar</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyCtrl</span>(<span class="params">$scope, $ionicNavBarDelegate</span>) </span>&#123;</span><br><span class="line">  $scope.getPreviousTitle = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> $ionicNavBarDelegate.getPreviousTitle();</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="nav-clear">nav-clear</h2><p>nav-clear作为属性的指示器，应该使用在使视图发生变化的元素上，例如<a href>或者<button ui-sref>.</p>
-<p>当nav-clear作用的元素点击时，会 disable the next view transition. This directive is useful, for example, for links within a sideMenu.</p>
-<h3 id="用法-5">用法</h3><p>下面是一个在side menu中的添加了nav-clear的链接，点击的时候会禁用原来的动画效果<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">a</span> <span class="attribute">nav-clear</span> <span class="attribute">menu-close</span> <span class="attribute">href</span>=<span class="value">"#/home"</span> <span class="attribute">class</span>=<span class="value">"item"</span>&gt;</span>Home<span class="tag">&lt;/<span class="title">a</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="$ionicNavBarDelegate">$ionicNavBarDelegate</h2><p>Delegate for controlling the <code>ionNavBar</code> directive.</p>
-<h3 id="用法-6">用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">body</span> <span class="attribute">ng-controller</span>=<span class="value">"MyCtrl"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">ion-nav-bar</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">button</span> <span class="attribute">ng-click</span>=<span class="value">"setNavTitle('banana')"</span>&gt;</span></span><br><span class="line">      Set title to banana!</span><br><span class="line">    <span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">ion-nav-bar</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyCtrl</span>(<span class="params">$scope, $ionicNavBarDelegate</span>) </span>&#123;</span><br><span class="line">  $scope.setNavTitle = <span class="function"><span class="keyword">function</span>(<span class="params">title</span>) </span>&#123;</span><br><span class="line">    $ionicNavBarDelegate.setTitle(title);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="方法">方法</h3><h4 id="back([event])">back([event])</h4><p>在视图历史中返回</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">参数名</th>
-<th style="text-align:center">类型</th>
-<th style="text-align:center">详细信息</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">event(可选)</td>
-<td style="text-align:center">DOMEvent</td>
-<td style="text-align:center">The event object (eg from a tap event)</td>
-</tr>
-</tbody>
-</table>
-<h4 id="align([direction])">align([direction])</h4><p>设置button中title的方向</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">参数名</th>
-<th style="text-align:center">类型</th>
-<th style="text-align:center">详细信息</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">direction(可选)</td>
-<td style="text-align:center">string</td>
-<td style="text-align:center">‘left’, ‘right’, ‘center’. 默认: ‘center’.</td>
-</tr>
-</tbody>
-</table>
-<h4 id="showBackButton([show])">showBackButton([show])</h4><p>设置/获取<code>ionNavBackButton</code>是否显示</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">参数名</th>
-<th style="text-align:center">类型</th>
-<th style="text-align:center">详细信息</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">show(可选)</td>
-<td style="text-align:center">boolean</td>
-<td style="text-align:center">是否显示返回按钮</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>返回:<code>boolean</code>.是否显示返回按钮</li>
-</ul>
-<h4 id="showBar(show)">showBar(show)</h4><p>细节同上</p>
-<h4 id="setTitle(title)">setTitle(title)</h4><p>设置<code>ionNavBar</code>的标题</p>
-<h4 id="changeTitle(title,_direction)">changeTitle(title, direction)</h4><p>Change the title, transitioning the new title in and the old one out in a given direction.</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">参数名</th>
-<th style="text-align:center">类型</th>
-<th style="text-align:center">详细信息</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">title</td>
-<td style="text-align:center">string</td>
-<td style="text-align:center">The new title to show.</td>
-</tr>
-<tr>
-<td style="text-align:center">direction</td>
-<td style="text-align:center">string</td>
-<td style="text-align:center">The direction to transition the new title in. Available: ‘forward’, ‘back’.</td>
-</tr>
-</tbody>
-</table>
-<h4 id="getTitle()">getTitle()</h4><ul>
-<li>返回:<code>string</code>.当前navbar的标题.</li>
-</ul>
-<h4 id="getPreviousTitle()">getPreviousTitle()</h4><ul>
-<li>返回:<code>string</code>.前一个navbar的标题.</li>
-</ul>
-<h4 id="$getByHandle(handle)">$getByHandle(handle)</h4><table>
-<thead>
-<tr>
-<th style="text-align:center">参数名</th>
-<th style="text-align:center">类型</th>
-<th style="text-align:center">详细信息</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">handle</td>
-<td style="text-align:center">string</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>返回:<code>delegateInstance</code>Returns:  A delegate instance that controls only the ionTabs directives with delegate-handle matching the given handle.</li>
-</ul>
-<p>示例: $ionicNavBarDelegate.$getByHandle(‘myHandle’).setTitle(‘newTitle’)</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/08/10/Ionic/Navigation/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1691,7 +1496,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-count">23</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1705,7 +1510,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">23</span>
+              <span class="site-state-item-count">27</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
@@ -1751,7 +1556,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2015</span>
+  <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
     <i class="icon-next-heart fa fa-heart"></i>
   </span>
