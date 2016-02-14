@@ -219,6 +219,265 @@
             
               
                 
+                <a class="post-title-link" href="/2016/02/14/Nodejs/hubot-scripting/" itemprop="url">
+                  hubot-scripting
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2016-02-14T13:24:37+08:00" content="Feb 14 2016">
+              Feb 14 2016
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/02/14/Nodejs/hubot-scripting/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/14/Nodejs/hubot-scripting/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <h2 id="Anatomy_of_a_script">Anatomy of a script</h2><p>当你创建了你的hubot之后，生成器同样创建了一个scripts目录。你如果打开看看，会发现一样示例脚本。为了让脚本生效，你需要：</p>
+<ul>
+<li>脚本需要位于hubot的脚本加载目录中(默认为<code>src/scripts</code>和<code>scripts</code>)</li>
+<li><code>.coffee</code>或<code>.js</code>文件</li>
+<li>export为一个函数</li>
+</ul>
+<p>export为一个函数，即：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">module.exports = (robot) -&gt;</span><br><span class="line">  # your code here</span><br></pre></td></tr></table></figure>
+<p>参数<code>robot</code>是的一个robot的一个实例。现在我们可以干一些碉堡了的事情了。</p>
+<h2 id="Hearing_and_responding">Hearing and responding</h2><p>既然这是一个聊天机器人，那么最常见的互动方式就是基于消息的。Hubot可以<code>hear</code>房间中说的消息，也可以直接<code>respond</code>。这些方法都接受一个正则表达式和一个回调函数作为参数。例如：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">module.exports = (robot) -&gt;</span><br><span class="line">  robot.hear /badger/i, (res) -&gt;</span><br><span class="line">    # your code here</span><br><span class="line"></span><br><span class="line">  robot.respond /open the pod bay doors/i, (res) -&gt;</span><br><span class="line">    # your code here</span><br></pre></td></tr></table></figure>
+<p><code>robot.hear /badger/</code>，回调函数会在任何任何消息文本匹配时之行。比如：</p>
+<ul>
+<li>Stop badgering the witness</li>
+<li>badger me</li>
+<li>what exactly is a badger anyways</li>
+</ul>
+<p><code>robot.respond /open the pod bay doors/i</code>的回调函数仅在机器人的名字或别名在消息文本前面的时候执行。如果机器人的名字时HAL，别名时/，这些情况下回调触发：</p>
+<ul>
+<li>hal open the pod bay doors</li>
+<li>HAL: open the pod bay doors</li>
+<li>@HAL open the pod bay doors</li>
+<li>/open the pod bay doors</li>
+</ul>
+<p>这些情况下不会触发：</p>
+<ul>
+<li><p>HAL: please open the pod bay doors</p>
+<ul>
+<li>因为<code>respond</code>需要文本信息之前跟着机器人名称</li>
+</ul>
+</li>
+<li><p>has anyone ever mentioned how lovely you are when you open the pod bay doors?</p>
+<ul>
+<li>缺少机器人名称</li>
+</ul>
+</li>
+</ul>
+<h2 id="Send_&amp;_reply">Send &amp; reply</h2><p><code>res</code>参数是<code>Response</code>的一个实例(historically, this parameter was msg and you may see other scripts use it this way)。你可以通过它<code>send</code>消息回去，<code>emote</code>消息（如果你的adapter支持的话），或者<code>reply</code>那个发送消息的用户。例如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = (robot) -&gt;</span><br><span class="line">  robot.hear /badger/i, (res) -&gt;</span><br><span class="line">    res.send <span class="string">"Badgers? BADGERS? WE DON'T NEED NO STINKIN BADGERS"</span></span><br><span class="line"></span><br><span class="line">  robot.respond /open the pod bay doors/i, (res) -&gt;</span><br><span class="line">    res.reply <span class="string">"I'm afraid I can't let you do that."</span></span><br><span class="line"></span><br><span class="line">  robot.hear /I like pie/i, (res) -&gt;</span><br><span class="line">    res.emote <span class="string">"makes a freshly baked pie"</span></span><br></pre></td></tr></table></figure>
+<p><code>robot.hear /badgers/</code>的回调不管谁发送的消息直接回复，”Badgers? BADGERS? WE DON’T NEED NO STINKIN BADGERS”。</p>
+<p>如果一个用户Dave说 “HAL: open the pod bay doors”, <code>robot.respond /open the pod bay doors/i</code>的回调函数就会发送消息”Dave: I’m afraid I can’t let you do that.”</p>
+<h2 id="Capturing_data">Capturing data</h2><p>至今，我们的脚本都是静态的回复，相对比较无趣一点。<code>res.match</code>包含了消息中正则匹配的部分。这是JavaScript的特性，返回一个数组，索引为0的是匹配正则表达式的全文本。比如：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">robot.respond /open the (.*) doors/i, (res) -&gt;</span><br><span class="line">  # your code here</span><br></pre></td></tr></table></figure>
+<p>如果Dave说”HAL: open the pod bay doors”, <code>res.match[0]</code>是”open the pod bay doors”, <code>res.match[1]</code>就是”pod bay”。现在，我们可以做一些更动态的事情了：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">robot.respond /open the (.*) doors/i, (res) -&gt;</span><br><span class="line">  doorType = res.match[<span class="number">1</span>]</span><br><span class="line">  <span class="keyword">if</span> doorType is <span class="string">"pod bay"</span></span><br><span class="line">    res.reply <span class="string">"I'm afraid I can't let you do that."</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    res.reply <span class="string">"Opening #&#123;doorType&#125; doors"</span></span><br></pre></td></tr></table></figure>
+<h2 id="Making_HTTP_calls_Unmaintained">Making HTTP calls <em>Unmaintained</em></h2><h2 id="JSON">JSON</h2><h2 id="XML">XML</h2><h2 id="Screen_scraping">Screen scraping</h2><h2 id="Random">Random</h2><p>一个常见的场景就是听到或者相应一个命令，从数组中随即发送图片或者文本。JavaScript和CoffeeScript并没有提供什么方法，所以Hubot提供了一个方便的方法:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lulz = [<span class="string">'lol'</span>, <span class="string">'rofl'</span>, <span class="string">'lmao'</span>]</span><br><span class="line"></span><br><span class="line">res.send res.random lulz</span><br></pre></td></tr></table></figure>
+<h2 id="Topic">Topic</h2><p>如果adapter支持的话，Hubot可以对房间的主题变更作出相应的反应。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = (robot) -&gt;</span><br><span class="line">  robot.topic (res) -&gt;</span><br><span class="line">    res.send <span class="string">"#&#123;res.message.text&#125;? That's a Paddlin'"</span></span><br></pre></td></tr></table></figure>
+<h2 id="Entering_and_leaving">Entering and leaving</h2><p>如果adapter支持，Hubot可以看到用户进入和离开。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">enterReplies = [<span class="string">'Hi'</span>, <span class="string">'Target Acquired'</span>, <span class="string">'Firing'</span>, <span class="string">'Hello friend.'</span>, <span class="string">'Gotcha'</span>, <span class="string">'I see you'</span>]</span><br><span class="line">leaveReplies = [<span class="string">'Are you still there?'</span>, <span class="string">'Target lost'</span>, <span class="string">'Searching'</span>]</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = (robot) -&gt;</span><br><span class="line">  robot.enter (res) -&gt;</span><br><span class="line">    res.send res.random enterReplies</span><br><span class="line">  robot.leave (res) -&gt;</span><br><span class="line">    res.send res.random leaveReplies</span><br></pre></td></tr></table></figure>
+<h2 id="Custom_Listeners">Custom Listeners</h2><p>上面涵盖了普通用户的大部分功能需求 (hear, respond, enter, leave, topic)，有时候，我们需要特别的匹配逻辑。如果这样，你可以使用<code>listen</code>来制定自定义的函数，而不是正则表达式。</p>
+<p>如果想回调函数执行，match函数必须返回可以转化为true的值，返回值会传递给<code>response.match</code></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">module.exports = (robot) -&gt;</span><br><span class="line">  robot.listen(</span><br><span class="line">    (message) -&gt; # Match function</span><br><span class="line">      # Occassionally respond to things that Steve says</span><br><span class="line">      message.user.name is "Steve" and Math.random() &gt; 0.8</span><br><span class="line">    (response) -&gt; # Standard listener callback</span><br><span class="line">      # Let Steve know how happy you are that he exists</span><br><span class="line">      response.reply "HI STEVE! YOU'RE MY BEST FRIEND! (but only like #&#123;response.match * 100&#125;% of the time)"</span><br><span class="line">  )</span><br></pre></td></tr></table></figure>
+<h2 id="Events">Events</h2><p>Hubot还可以对事件作出相应，这可以用来script之间传递数据。<code>robot.emit</code>和<code>robot.on</code>通过Nodej.js的<code>EventEmitter</code>封装。</p>
+<p>一个例子就是有一个脚本和服务互动，当请求来的时候触发事件。比如，我们可以有一个脚本从Github的post-commit钩子接受数据，触发commit事件，另一个脚本处理这些commits。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># src/scripts/github-commits.coffee</span><br><span class="line">module.exports = (robot) -&gt;</span><br><span class="line">  robot.router.post "/hubot/gh-commits", (req, res) -&gt;</span><br><span class="line">    robot.emit "commit", &#123;</span><br><span class="line">        user    : &#123;&#125;, #hubot user object</span><br><span class="line">        repo    : 'https://github.com/github/hubot',</span><br><span class="line">        hash  : '2e1951c089bd865839328592ff673d2f08153643'</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># src/scripts/heroku.coffee</span><br><span class="line">module.exports = (robot) -&gt;</span><br><span class="line">  robot.on "commit", (commit) -&gt;</span><br><span class="line">    robot.send commit.user, "Will now deploy #&#123;commit.hash&#125; from #&#123;commit.repo&#125;!"</span><br><span class="line">    #deploy code goes here</span><br></pre></td></tr></table></figure>
+<p>如果提供事件，非常建议包含一个在数据中包含一个hubot用户或者房间，这样允许hubot来在聊天中通知用户或房间。</p>
+<h2 id="Error_Handling">Error Handling</h2><p>没有代码是完美的，错误和异常都是可以接受的。先前，未捕获的异常会导致hubot实例crash。Hubot现在包含了<code>uncaughtException</code>处理，他来提供脚本来做一些异常处理。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># src/scripts/does-not-compute.coffee</span><br><span class="line">module.exports = (robot) -&gt;</span><br><span class="line">  robot.error (err, res) -&gt;</span><br><span class="line">    robot.logger.error "DOES NOT COMPUTE"</span><br><span class="line"></span><br><span class="line">    if res?</span><br><span class="line">      res.reply "DOES NOT COMPUTE"</span><br></pre></td></tr></table></figure>
+<p>这里你可以做任何处理处理，但是如果你想做一些额外的补救措施、记录日志的话，最好是异步的代码。否则，你可能会遇到递归错误而且还不知道。</p>
+<p>会有一个<code>error</code>事件触发，用错误处理函数来消费这个事件。因此，不管会不会发生，你都要处理好自己的异常，并且自己触发他们。第一个参数是触发的错误对象，第二个是可选参数来描述错误。用上面一个例子：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">robot.router.post '/hubot/chatsecrets/:room', (req, res) -&gt;</span><br><span class="line">  room = req.params.room</span><br><span class="line">  data = null</span><br><span class="line">  try</span><br><span class="line">    data = JSON.parse req.body.payload</span><br><span class="line">  catch err</span><br><span class="line">    robot.emit 'error', err</span><br><span class="line"></span><br><span class="line">  # rest of the code here</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">robot.hear /midnight train/i, (res)</span><br><span class="line">  robot.http("https://midnight-train")</span><br><span class="line">    .get() (err, res, body) -&gt;</span><br><span class="line">      if err</span><br><span class="line">        res.reply "Had problems taking the midnight train"</span><br><span class="line">        robot.emit 'error', err, res</span><br><span class="line">        return</span><br><span class="line">      # rest of code here</span><br></pre></td></tr></table></figure>
+<p>第二个例子中，很值得思考下用户会看到什么样子的信息。如果你有一个错误处理函数来回复用户，你可能不需要添加一个自定义的错误提示给用户，但是这个也取决于你对异常提示有多公开。</p>
+<h2 id="Persistence">Persistence</h2><p>Hubot有一个基于内存的key-value存储，通过<code>robot.brain</code>来存储、设置数据。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">robot.respond /have a soda/i, (res) -&#62;&#10;  # Get number of sodas had (coerced to a number).&#10;  sodasHad = robot.brain.get(&#39;totalSodas&#39;) * 1 or 0&#10;&#10;  if sodasHad &#62; 4&#10;    res.reply &#34;I&#39;m too fizzy..&#34;&#10;&#10;  else&#10;    res.reply &#39;Sure!&#39;&#10;&#10;    robot.brain.set &#39;totalSodas&#39;, sodasHad+1&#10;robot.respond /sleep it off/i, (res) -&#62;&#10;  robot.brain.set &#39;totalSodas&#39;, 0&#10;  msg.reply &#39;zzzzz&#39;</span><br></pre></td></tr></table></figure>
+<p>如果脚本需要寻找用户信息，有一些方法在<code>robot.brain</code>中可以用来通过id、name或者模糊匹配来查找一个或多个用户:<code>userForName</code>, <code>userForId</code>, <code>userForFuzzyName</code>, <code>usersForFuzzyName</code>。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">module.exports = (robot) -&gt;</span><br><span class="line"></span><br><span class="line">  robot.respond /who is @?([\w .\-]+)\?*$/i, (res) -&gt;</span><br><span class="line">    name = res.match[1].trim()</span><br><span class="line"></span><br><span class="line">    users = robot.brain.usersForFuzzyName(name)</span><br><span class="line">    if users.length is 1</span><br><span class="line">      user = users[0]</span><br><span class="line">      # Do something interesting here..</span><br><span class="line"></span><br><span class="line">      res.send "#&#123;name&#125; is user - #&#123;user&#125;"</span><br></pre></td></tr></table></figure>
+<h2 id="LISTENER_METADATA">LISTENER METADATA</h2><p>出了正则表达式和回调函数，<code>hear</code>和<code>respond</code>接受一个可选的Object参数，可以很容易的对即将创建的Listener对象添加metadata信息。metadata可以很容易的扩展脚本信息而不需要修改脚本本身。</p>
+<p>最重要而且最常见的metadata的key是<code>id</code>，每个Listener都应有被给予一个唯一的id(option.id，默认为null)。通过模块名来划分命名空间(‘my-module.my-listener’)。这些名称允许其他脚本很轻松的定位listeners，扩展像authorization和rate limiting的功能也不需要额外的函数。</p>
+<p>额外的扩展可能需要定义额外的metadata key。</p>
+<p>提前看个例子：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">module.exports = (robot) -&gt;</span><br><span class="line">  robot.respond /annoy me/, id:'annoyance.start', (msg)</span><br><span class="line">    # code to annoy someone</span><br><span class="line"></span><br><span class="line">  robot.respond /unannoy me/, id:'annoyance.stop', (msg)</span><br><span class="line">    # code to stop annoying someone</span><br></pre></td></tr></table></figure>
+<p>这些定义允许你扩展一些新的行为，比如：</p>
+<ul>
+<li>authorization策略，允许annoyers组的每个人执行<code>annoyers.*</code>命令</li>
+<li>rate limiting:30分钟内只能调用<code>annoyance.start</code>一次</li>
+</ul>
+<h2 id="MIDDLEWARE">MIDDLEWARE</h2><p>有三种类型的中间件: Receive, Listener and Response.</p>
+<p>Receive 中间件在 listeners 检查之前运行<br>Listener 中间件运行在每个listener匹配消息之后<br>Response 中间件在每个消息发送出去时运行</p>
+<h3 id="Execution_Process_and_API">Execution Process and API</h3><p>和<a href="http://expressjs.com/api.html#middleware" target="_blank" rel="external">Express middleware</a>相似,<br>Hubot按定义顺序执行中间件。每个中间件通过<code>next</code>继续中间件，通过<code>done</code>打断中间件。</p>
+<p>Middleware调用的时候有以下参数：</p>
+<ul>
+<li><code>context</code><ul>
+<li>详见每个不同中间件的的API</li>
+</ul>
+</li>
+<li><code>next</code><ul>
+<li>一个没有任何额外属性的函数，用来被执行继续下一个中间件或者执行Listener的回调函数。</li>
+<li><code>next</code>调用时有一个可选参数，可以是<code>done</code>函数，或者是一个新的最终会调用<code>done</code>的函数。如果参数未指定，则认为传入了<code>done</code></li>
+</ul>
+</li>
+<li><code>done</code><ul>
+<li>一个没有任何额外属性的函数。当需要结束中间件调用和结束整个函数时调用。</li>
+<li>调用时没有参数</li>
+</ul>
+</li>
+</ul>
+<p>每个中间键都接受相同的API签名，<code>context</code>、<code>next</code>和<code>done</code>。不同类型的中间件在context中接受不同的信息。</p>
+<h3 id="Error_Handling-1">Error Handling</h3><p>对于同步的中间件（不会产生事件循环），hubot会自动捕获错误并且触发<code>error</code>事件。Hubot还会调用最近的<code>done</code>回调来结束中间件调用。异步中间件应该自己捕获异常，触发error事件，调用done函数。任何未捕获的异常都会打断中间件的所有回调。</p>
+<h2 id="LISTENER_MIDDLEWARE">LISTENER MIDDLEWARE</h2><p>Listener中间件在匹配消息和执行listener之间插入逻辑。这允许你为每个匹配的脚本创建扩展。比如，集中的认证策略、调用限制、日志、指标。Middleware的实现和其他脚本一样，但是并不是使用<code>hear</code>和<code>respond</code>，中间件使用<code>listenerMiddleware</code></p>
+<h3 id="Listener_Middleware_Examples">Listener Middleware Examples</h3><p>完整的例子可以参见<a href="hubot-rate-limit">hubot-rate-limit</a>。</p>
+<p>一个记录执行命令的中间件：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">module.exports = (robot) -&gt;</span><br><span class="line">  robot.listenerMiddleware (context, next, done) -&gt;</span><br><span class="line">    # Log commands</span><br><span class="line">    robot.logger.info "#&#123;context.response.message.user.name&#125; asked me to #&#123;context.response.message.text&#125;"</span><br><span class="line">    # Continue executing middleware</span><br><span class="line">    next()</span><br><span class="line">```    </span><br><span class="line">   </span><br><span class="line">这个例子中，每个匹配的消息都会写下日志信息。</span><br><span class="line"></span><br><span class="line">更加复杂的调用限制的例子：</span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">module.exports = (robot) -&gt;</span><br><span class="line">  # Map of listener ID to last time it was executed</span><br><span class="line">  lastExecutedTime = &#123;&#125;</span><br><span class="line"></span><br><span class="line">  robot.listenerMiddleware (context, next, done) -&gt;</span><br><span class="line">    try</span><br><span class="line">      # Default to 1s unless listener provides a different minimum period</span><br><span class="line">      minPeriodMs = context.listener.options?.rateLimits?.minPeriodMs? or 1000</span><br><span class="line"></span><br><span class="line">      # See if command has been executed recently</span><br><span class="line">      if lastExecutedTime.hasOwnProperty(context.listener.options.id) and</span><br><span class="line">         lastExecutedTime[context.listener.options.id] &gt; Date.now() - minPeriodMs</span><br><span class="line">        # Command is being executed too quickly!</span><br><span class="line">        done()</span><br><span class="line">      else</span><br><span class="line">        next -&gt;</span><br><span class="line">          lastExecutedTime[context.listener.options.id] = Date.now()</span><br><span class="line">          done()</span><br><span class="line">    catch err</span><br><span class="line">      robot.emit('error', err, context.response)</span><br></pre></td></tr></table></figure>
+<p>这个例子中，中间件检查listener是否在最近的1s中被调用。如果有，中间件里面调用<code>done</code>，阻止listenr的回调调用。如果listenr允许执行，中间件在next中添加<code>done</code>，这样就能调用记录结束时间。</p>
+<p>这个例子同样展示了通过特定的metadata可以创建出很有用的扩展：使用限制中间件，脚本开发人员可以通过设置listener option参数创建调用限制的命令。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">module.exports = (robot) -&gt;</span><br><span class="line">  robot.hear /hello/, id: 'my-hello', rateLimits: &#123;minPeriodMs: 10000&#125;, (msg) -&gt;</span><br><span class="line">    # This will execute no faster than once every ten seconds</span><br><span class="line">    msg.reply 'Why, hello there!'</span><br></pre></td></tr></table></figure>
+<h3 id="Listener_Middleware_API">Listener Middleware API</h3><p>Listener中间件的回调函数接受3个参数:<code>context</code>、<code>next</code>和<code>done</code>。</p>
+<p><code>context</code>包含这些字段：</p>
+<p>＊ <code>listener</code><br>    ＊     options: 一个Object对象，包含listener中定义的metadata。</p>
+<ul>
+<li><code>response</code><ul>
+<li>所有的response API都包含</li>
+<li>中间件用一些额外的信息来装饰（不是修改）response（比如为<code>response.message.user</code>添加LDAP groups信息）</li>
+<li>注意：文本信息(<code>response.message.text</code>)应该被考虑为不要改变</li>
+</ul>
+</li>
+</ul>
+<h2 id="RECEIVE_MIDDLEWARE">RECEIVE MIDDLEWARE</h2><p>Receive中间件在所有的listeners执行之前。很适合用来实现黑名单功能而不用考虑ID，metrics等。</p>
+<h3 id="Receive_Middleware_Example">Receive Middleware Example</h3><p>示例中间件禁止特定的用户使用包括<code>hear</code>在内的功能。如果一个用户想使用一个命令，会返回一条错误信息。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">BLACKLISTED_USERS = [</span><br><span class="line">  '12345' # Restrict access for a user ID for a contractor</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">robot.receiveMiddleware (context, next, done) -&gt;</span><br><span class="line">  if context.response.message.user.id in BLACKLISTED_USERS</span><br><span class="line">    # Don't process this message further.</span><br><span class="line">    context.response.message.finish()</span><br><span class="line"></span><br><span class="line">    # If the message starts with 'hubot' or the alias pattern, this user was</span><br><span class="line">    # explicitly trying to run a command, so respond with an error message.</span><br><span class="line">    if context.response.message.text?.match(robot.respondPattern(''))</span><br><span class="line">      context.response.reply "I'm sorry @#&#123;context.response.message.user.name&#125;, but I'm configured to ignore your commands."</span><br><span class="line"></span><br><span class="line">    # Don't process further middleware.</span><br><span class="line">    done()</span><br><span class="line">  else</span><br><span class="line">    next(done)</span><br></pre></td></tr></table></figure>
+<h2 id="Receive_Middleware_API">Receive Middleware API</h2><p>Receive中间件的回调函数接受3个参数:<code>context</code>、<code>next</code>和<code>done</code>。</p>
+<p><code>context</code>包含这些字段：</p>
+<ul>
+<li>response<ul>
+<li>response此时并没有match属性，因为listeners还没有被执行所以还没有匹配。</li>
+<li>中间件用一些额外的信息来装饰（不是修改）response（比如为<code>response.message.user</code>添加LDAP groups信息）</li>
+<li>中间可以修改<code>response.message</code>对象</li>
+</ul>
+</li>
+</ul>
+<h2 id="RESPONSE_MIDDLEWARE">RESPONSE MIDDLEWARE</h2><p>Response中间件在hubot发送消息给聊天室的时候执行。对消息格式化，防止密码泄漏，指标等很有用。</p>
+<h3 id="Response_Middleware_Example">Response Middleware Example</h3><p>示例修改了发送至聊天室的链接。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = (robot) -&gt;</span><br><span class="line">  robot.responseMiddleware (context, next, done) -&gt;</span><br><span class="line">    <span class="keyword">return</span> unless context.plaintext?</span><br><span class="line">    context.strings = (string.replace(<span class="regexp">/\[([^\[\]]*?)\]\((https?:\/\/.*?)\)/</span>, <span class="string">"&lt;$2|$1&gt;"</span>) <span class="keyword">for</span> string <span class="keyword">in</span> context.strings)</span><br><span class="line">    next()</span><br></pre></td></tr></table></figure>
+<h3 id="Response_Middleware_API">Response Middleware API</h3><p>Response中间件的回调函数接受3个参数:<code>context</code>、<code>next</code>和<code>done</code>。</p>
+<p><code>context</code>包含这些字段：</p>
+<ul>
+<li><code>response</code><ul>
+<li>response可以用来在中间件中发送新的消息。中间件会再次执行。小心无限循环。</li>
+</ul>
+</li>
+<li><code>strings</code><ul>
+<li>发送给聊天适配器的字符串数组。你可以修改这些信息，或者像<code>context.strings = [&quot;new strings&quot;]</code>这样来替换</li>
+</ul>
+</li>
+<li><code>method</code><ul>
+<li>字符串类型，表示listener发送的消息类型，比如<code>send</code>, <code>reply</code>, <code>emote</code> 或者 <code>topic</code></li>
+</ul>
+</li>
+<li><code>plaintext</code><ul>
+<li><code>true</code>或者<code>undefined</code>。如果消息是正常的 plaintext类型，则会设为<code>true</code>。比如<code>send</code> 和<code>reply</code>。该属性只读。</li>
+</ul>
+</li>
+</ul>
+<h2 id="TESTING_HUBOT_SCRIPTS">TESTING HUBOT SCRIPTS</h2><p><a href="https://github.com/mtsmfm/hubot-test-helper" target="_blank" rel="external">hubot-test-helper</a>是用来测试Hubot脚本的很好的测试框架。</p>
+<p>安装包：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">% npm install hubot-test-helper --save-dev</span><br></pre></td></tr></table></figure></p>
+<p>同时还需要安装:</p>
+<ul>
+<li>一个测试框架，如 <em>Mocha</em></li>
+<li>断言库，如 <em>chai</em> 或者 <em>expect.js</em></li>
+</ul>
+<p>可能还需要安装:</p>
+<ul>
+<li>coffee-script (如果你想用CoffeeScript写测试)</li>
+<li>mock的库，比如 <em>Sinon.js</em> (如果你的脚本运行是webservice或者其他异步的服务)</li>
+</ul>
+<p>这里是个简单的例子，使用 <code>Mocha</code>, <code>chai</code>, <code>coffee-script</code> 和 <code>hubot-test-helper</code>:</p>
+<p><strong>test/example-test.coffee</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">Helper = <span class="built_in">require</span>(<span class="string">'hubot-test-helper'</span>)</span><br><span class="line">chai = <span class="built_in">require</span> <span class="string">'chai'</span></span><br><span class="line"></span><br><span class="line">expect = chai.expect</span><br><span class="line"></span><br><span class="line">helper = <span class="keyword">new</span> Helper(<span class="string">'../scripts/example.coffee'</span>)</span><br><span class="line"></span><br><span class="line">describe <span class="string">'example script'</span>, -&gt;</span><br><span class="line">  beforeEach -&gt;</span><br><span class="line">    @room = helper.createRoom()</span><br><span class="line"></span><br><span class="line">  afterEach -&gt;</span><br><span class="line">    @room.destroy()</span><br><span class="line"></span><br><span class="line">  it <span class="string">'doesn\'t need badgers'</span>, -&gt;</span><br><span class="line">    @room.user.say(<span class="string">'alice'</span>, <span class="string">'did someone call for a badger?'</span>).then =&gt;</span><br><span class="line">      expect(@room.messages).to.eql [</span><br><span class="line">        [<span class="string">'alice'</span>, <span class="string">'did someone call for a badger?'</span>]</span><br><span class="line">        [<span class="string">'hubot'</span>, <span class="string">'Badgers? BADGERS? WE DON\'T NEED NO STINKIN BADGERS'</span>]</span><br><span class="line">      ]</span><br><span class="line"></span><br><span class="line">  it <span class="string">'won\'t open the pod bay doors'</span>, -&gt;</span><br><span class="line">    @room.user.say(<span class="string">'bob'</span>, <span class="string">'@hubot open the pod bay doors'</span>).then =&gt;</span><br><span class="line">      expect(@room.messages).to.eql [</span><br><span class="line">        [<span class="string">'bob'</span>, <span class="string">'@hubot open the pod bay doors'</span>]</span><br><span class="line">        [<span class="string">'hubot'</span>, <span class="string">'@bob I\'m afraid I can\'t let you do that.'</span>]</span><br><span class="line">      ]</span><br><span class="line"></span><br><span class="line">  it <span class="string">'will open the dutch doors'</span>, -&gt;</span><br><span class="line">    @room.user.say(<span class="string">'bob'</span>, <span class="string">'@hubot open the dutch doors'</span>).then =&gt;</span><br><span class="line">      expect(@room.messages).to.eql [</span><br><span class="line">        [<span class="string">'bob'</span>, <span class="string">'@hubot open the dutch doors'</span>]</span><br><span class="line">        [<span class="string">'hubot'</span>, <span class="string">'@bob Opening dutch doors'</span>]</span><br><span class="line">      ]</span><br></pre></td></tr></table></figure>
+<p><strong>sample output</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">% mocha --compilers <span class="string">"coffee:coffee-script/register"</span> <span class="built_in">test</span>/*.coffee</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  example script</span><br><span class="line">    ✓ doesn<span class="string">'t need badgers</span><br><span class="line">    ✓ won'</span>t open the pod bay doors</span><br><span class="line">    ✓ will open the dutch doors</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="number">3</span> passing (<span class="number">212</span>ms)</span><br></pre></td></tr></table></figure>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/02/12/Nodejs/RabbitMQ中的Back-off和retry/" itemprop="url">
                   RabbitMQ中的Back-off和retry
                 </a>
@@ -1253,203 +1512,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2014/08/17/Java/Hibernate各种主键生成策略与配置详解/" itemprop="url">
-                  Hibernate各种主键生成策略与配置详解
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2014-08-17T01:32:28+08:00" content="Aug 17 2014">
-              Aug 17 2014
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2014/08/17/Java/Hibernate各种主键生成策略与配置详解/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/17/Java/Hibernate各种主键生成策略与配置详解/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h2 id="assigned">assigned</h2><p>主键由外部程序负责生成，在 save() 之前必须指定一个。Hibernate不负责维护主键生成。与Hibernate和底层数据库都无关，可以跨数据库。在存储对象前，必须要使用主键的setter方法给主键赋值，至于这个值怎么生成，完全由自己决定，这种方法应该尽量避免。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"assigned"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>“ud”是自定义的策略名，人为起的名字，后面均用“ud”表示。</p>
-<p><em>特点：可以跨数据库，人为控制主键生成，应尽量避免。</em></p>
-<h2 id="increment">increment</h2><p>由Hibernate从数据库中取出主键的最大值（每个session只取1次），以该值为基础，每次增量为1，在内存中生成主键，不依赖于底层的数据库，因此可以跨数据库。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"increment"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>Hibernate调用org.hibernate.id.IncrementGenerator类里面的generate()方法，使用select max(idColumnName) from tableName语句获取主键最大值。该方法被声明成了synchronized，所以在一个独立的Java虚拟机内部是没有问题的，然而，在多个JVM同时并发访问数据库select max时就可能取出相同的值，再insert就会发生Dumplicate entry的错误。所以只能有一个Hibernate应用进程访问数据库，否则就可能产生主键冲突，所以不适合多进程并发更新数据库，适合单一进程访问数据库，不能用于群集环境。</p>
-<p>官方文档：只有在没有其他进程往同一张表中插入数据时才能使用，在集群下不要使用。</p>
-<p><em>特点：跨数据库，不适合多进程并发更新数据库，适合单一进程访问数据库，不能用于群集环境。</em></p>
-<h2 id="hilo">hilo</h2><p>hilo（高低位方式high low）是hibernate中最常用的一种生成方式，需要一张额外的表保存hi的值。保存hi值的表至少有一条记录（只与第一条记录有关），否则会出现错误。可以跨数据库。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"hilo"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"table"</span>&gt;</span>hibernate_hilo<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"column"</span>&gt;</span>next_hi<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"max_lo"</span>&gt;</span>100<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">generator</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"table"</span>&gt;</span>hibernate_hilo<span class="tag">&lt;/<span class="title">param</span>&gt;</span> 指定保存hi值的表名</span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"column"</span>&gt;</span>next_hi<span class="tag">&lt;/<span class="title">param</span>&gt;</span> 指定保存hi值的列名</span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"max_lo"</span>&gt;</span>100<span class="tag">&lt;/<span class="title">param</span>&gt;</span> 指定低位的最大值</span><br></pre></td></tr></table></figure>
-<p>也可以省略table和column配置，其默认的表为hibernate_unique_key，列为next_hi</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"hilo"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"max_lo"</span>&gt;</span>100<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">generator</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>hilo生成器生成主键的过程（以hibernate_unique_key表，next_hi列为例）：</p>
-<ol>
-<li>获得hi值：读取并记录数据库的hibernate_unique_key表中next_hi字段的值，数据库中此字段值加1保存。</li>
-<li>获得lo值：从0到max_lo循环取值，差值为1，当值为max_lo值时，重新获取hi值，然后lo值继续从0到max_lo循环。</li>
-<li>根据公式 hi * (max_lo + 1) + lo计算生成主键值。</li>
-</ol>
-<p>注意：当hi值是0的时候，那么第一个值不是0*(max_lo+1)+0=0，而是lo跳过0从1开始，直接是1、2、3……</p>
-<p>那max_lo配置多大合适呢？</p>
-<p>这要根据具体情况而定，如果系统一般不重启，而且需要用此表建立大量的主键，可以吧max_lo配置大一点，这样可以减少读取数据表的次数，提高效率；反之，如果服务器经常重启，可以吧max_lo配置小一点，可以避免每次重启主键之间的间隔太大，造成主键值主键不连贯。</p>
-<p><em>特点：跨数据库，hilo算法生成的标志只能在一个数据库中保证唯一。</em></p>
-<h2 id="seqhilo">seqhilo</h2><p>与hilo类似，通过hi/lo算法实现的主键生成机制，只是将hilo中的数据表换成了序列sequence，需要数据库中先创建sequence，适用于支持sequence的数据库，如Oracle。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"seqhilo"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"sequence"</span>&gt;</span>hibernate_seq<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"max_lo"</span>&gt;</span>100<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">generator</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p><em>特点：与hilo类似，只能在支持序列的数据库中使用。</em></p>
-<h2 id="sequence">sequence</h2><p>采用数据库提供的sequence机制生成主键，需要数据库支持sequence。如oralce、DB、SAP DB、PostgerSQL、McKoi中的sequence。MySQL这种不支持sequence的数据库则不行（可以使用identity）。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"sequence"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"sequence"</span>&gt;</span>hibernate_id<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">generator</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"sequence"</span>&gt;</span>hibernate_id<span class="tag">&lt;/<span class="title">param</span>&gt;</span> 指定sequence的名称</span><br></pre></td></tr></table></figure>
-<p>Hibernate生成主键时，查找sequence并赋给主键值，主键值由数据库生成，Hibernate不负责维护，使用时必须先创建一个sequence，如果不指定sequence名称，则使用Hibernate默认的sequence，名称为hibernate_sequence，前提要在数据库中创建该sequence。</p>
-<p><em>特点：只能在支持序列的数据库中使用，如Oracle。</em></p>
-<h2 id="identity">identity</h2><p>identity由底层数据库生成标识符。identity是由数据库自己生成的，但这个主键必须设置为自增长，使用identity的前提条件是底层数据库支持自动增长字段类型，如DB2、SQL Server、MySQL、Sybase和HypersonicSQL等，Oracle这类没有自增字段的则不支持。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"identity"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>例：如果使用MySQL数据库，则主键字段必须设置成auto_increment。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id int(11) primary key auto_increment</span><br></pre></td></tr></table></figure>
-<p><em>特点：只能用在支持自动增长的字段数据库中使用，如MySQL。</em></p>
-<h2 id="native">native</h2><p>native由hibernate根据使用的数据库自行判断采用identity、hilo、sequence其中一种作为主键生成方式，灵活性很强。如果能支持identity则使用identity，如果支持sequence则使用sequence。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"native"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>例如MySQL使用identity，Oracle使用sequence</p>
-<p>注意：如果Hibernate自动选择sequence或者hilo，则所有的表的主键都会从Hibernate默认的sequence或hilo表中取。并且，有的数据库对于默认情况主键生成测试的支持，效率并不是很高。</p>
-<p>使用sequence或hilo时，可以加入参数，指定sequence名称或hi值表名称等，如</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"sequence"</span>&gt;</span>hibernate_id<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p><em>特点：根据数据库自动选择，项目中如果用到多个数据库时，可以使用这种方式，使用时需要设置表的自增字段或建立序列，建立表等。</em></p>
-<h2 id="uuid">uuid</h2><p>UUID：Universally Unique Identifier，是指在一台机器上生成的数字，它保证对在同一时空中的所有机器都是唯一的。按照开放软件基金会(OSF)制定的标准计算，用到了以太网卡地址、纳秒级时间、芯片ID码和许多可能的数字，标准的UUID格式为：</p>
-<p>xxxxxxxx-xxxx-xxxx-xxxxxx-xxxxxxxxxx (8-4-4-4-12)</p>
-<p>其中每个 x 是 0-9 或 a-f 范围内的一个十六进制的数字。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"uuid"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>Hibernate在保存对象时，生成一个UUID字符串作为主键，保证了唯一性，但其并无任何业务逻辑意义，只能作为主键，唯一缺点长度较大，32位（Hibernate将UUID中间的“-”删除了）的字符串，占用存储空间大，但是有两个很重要的优点，Hibernate在维护主键时，不用去数据库查询，从而提高效率，而且它是跨数据库的，以后切换数据库极其方便。</p>
-<p><em>特点：uuid长度大，占用空间大，跨数据库，不用访问数据库就生成主键值，所以效率高且能保证唯一性，移植非常方便，推荐使用。</em></p>
-<h2 id="guid">guid</h2><p>GUID：Globally Unique Identifier全球唯一标识符，也称作 UUID，是一个128位长的数字，用16进制表示。算法的核心思想是结合机器的网卡、当地时间、一个随即数来生成GUID。从理论上讲，如果一台机器每秒产生10000000个GUID，则可以保证（概率意义上）3240年不重复。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"guid"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>Hibernate在维护主键时，先查询数据库，获得一个uuid字符串，该字符串就是主键值，该值唯一，缺点长度较大，支持数据库有限，优点同uuid，跨数据库，但是仍然需要访问数据库。</p>
-<p><em>注意：长度因数据库不同而不同</em></p>
-<p>MySQL中使用select uuid()语句获得的为36位（包含标准格式的“-”）</p>
-<p>Oracle中，使用select rawtohex(sys_guid()) from dual语句获得的为32位（不包含“-”） 特点：需要数据库支持查询uuid，生成时需要查询数据库，效率没有uuid高，推荐使用uuid。</p>
-<h2 id="foreign">foreign</h2><p>使用另外一个相关联的对象的主键作为该对象主键。主要用于一对一关系中。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"foreign"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"property"</span>&gt;</span>user<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">generator</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">one-to-one</span> <span class="attribute">name</span>=<span class="value">"user"</span> <span class="attribute">class</span>=<span class="value">"domain.User"</span> <span class="attribute">constrained</span>=<span class="value">"true"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
-<p>该例使用domain.User的主键作为本类映射的主键。</p>
-<p><em>特点：很少使用，大多用在一对一关系中。</em></p>
-<h2 id="select">select</h2><p>使用触发器生成主键，主要用于早期的数据库主键生成机制，能用到的地方非常少。</p>
-<h2 id="其他注释方式配置">其他注释方式配置</h2><p>注释方式与配置文件底层实现方式相同，只是配置的方式换成了注释方式</p>
-<ol>
-<li><p>自动增长，适用于支持自增字段的数据库</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Id</span></span><br><span class="line"><span class="annotation">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>根据底层数据库自动选择方式，需要底层数据库的设置<br>如MySQL，会使用自增字段，需要将主键设置成auto_increment。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Id</span></span><br><span class="line"><span class="annotation">@GeneratedValue</span>(strategy = GenerationType.AUTO)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>使用表存储生成的主键，可以跨数据库。<br>每次需要主键值时，查询名为”hibernate_table”的表，查找主键列”gen_pk”值为”2”记录，得到这条记录的”gen_val”值，根据这个值，和allocationSize的值生成主键值。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Id</span></span><br><span class="line"><span class="annotation">@GeneratedValue</span>(strategy = GenerationType.TABLE, generator = <span class="string">"ud"</span>)</span><br><span class="line"><span class="annotation">@TableGenerator</span>(name = <span class="string">"ud"</span>,</span><br><span class="line">table = <span class="string">"hibernate_table"</span>,</span><br><span class="line">pkColumnName= <span class="string">"gen_pk"</span>,</span><br><span class="line">pkColumnValue = <span class="string">"2"</span>,</span><br><span class="line">valueColumnName = <span class="string">"gen_val"</span>,</span><br><span class="line">initialValue = <span class="number">2</span>,</span><br><span class="line">allocationSize = <span class="number">5</span>)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>使用序列存储主键值</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Id</span></span><br><span class="line"><span class="annotation">@GeneratedValue</span>(strategy = GenerationType.SEQUENCE, generator = <span class="string">"ud"</span>)</span><br><span class="line"><span class="annotation">@SequenceGenerator</span>(name = <span class="string">"ud"</span>,</span><br><span class="line">sequenceName = <span class="string">"hibernate_seq"</span>,</span><br><span class="line">allocationSize = <span class="number">1</span>,</span><br><span class="line">initialValue = <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>uuid生成主键</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Id</span></span><br><span class="line"><span class="annotation">@GenericGenerator</span>(name = <span class="string">"systemUUID"</span>, strategy = <span class="string">"uuid"</span>)</span><br><span class="line"><span class="annotation">@GeneratedValue</span>(generator = <span class="string">"systemUUID"</span>)</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="小结">小结</h2><ol>
-<li><p>为了保证对象标识符的唯一性与不可变性，应该让Hibernate来为主键赋值，而不是程序。</p>
-</li>
-<li><p>正常使用Hibernate维护主键，最好将主键的setter方法设置成private，从而避免人为或程序修改主键，而使用assigned方式，就不能用private，否则无法给主键赋值。</p>
-</li>
-<li><p>Hibernate中唯一一种最简单通用的主键生成器就是uuid。虽然是个32位难读的长字符串，但是它没有跨数据库的问题，将来切换数据库极其简单方便，推荐使用！</p>
-</li>
-<li><p>关于hilo机制注意：<br>hilo算法生成的标志只能在一个数据库中保证唯一。<br>当用户为Hibernate自行提供连接，或者Hibernate通过JTA，从应用服务器的数据源获取数据库连接时，无法使用hilo，因为这不能保证hilo单独在新的数据库连接的事务中访问hi值表，这种情况，如果数据库支持序列，可以使用seqhilo。</p>
-</li>
-<li><p>使用identity、native、GenerationType.AUTO等方式生成主键时，只要用到自增字段，数据库表的字段必须设置成自动增加的，否则出错。</p>
-</li>
-<li><p>还有一些方法未列出来，例如uuid.hex，sequence-identity等，这些方法不是很常用，且已被其他方法代替，如uuid.hex，官方文档里建议不使用，而直接使用uuid方法。</p>
-</li>
-<li><p>Hibernate的各版本主键生成策略配置有略微差别，但实现基本相同。如，有的版本默认sequence不指定序列名，则使用名为hibernate_sequence的序列，有的版本则必须指定序列名。</p>
-</li>
-<li><p>还可以自定义主键生成策略，这里暂时不讨论，只讨论官方自带生成策略。</p>
-</li>
-</ol>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/08/17/Java/Hibernate各种主键生成策略与配置详解/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1496,7 +1558,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">23</span>
+              <span class="site-state-item-count">24</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

@@ -224,6 +224,203 @@
             
               
                 
+                <a class="post-title-link" href="/2014/08/17/Java/Hibernate各种主键生成策略与配置详解/" itemprop="url">
+                  Hibernate各种主键生成策略与配置详解
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2014-08-17T01:32:28+08:00" content="Aug 17 2014">
+              Aug 17 2014
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2014/08/17/Java/Hibernate各种主键生成策略与配置详解/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/17/Java/Hibernate各种主键生成策略与配置详解/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h2 id="assigned">assigned</h2><p>主键由外部程序负责生成，在 save() 之前必须指定一个。Hibernate不负责维护主键生成。与Hibernate和底层数据库都无关，可以跨数据库。在存储对象前，必须要使用主键的setter方法给主键赋值，至于这个值怎么生成，完全由自己决定，这种方法应该尽量避免。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"assigned"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>“ud”是自定义的策略名，人为起的名字，后面均用“ud”表示。</p>
+<p><em>特点：可以跨数据库，人为控制主键生成，应尽量避免。</em></p>
+<h2 id="increment">increment</h2><p>由Hibernate从数据库中取出主键的最大值（每个session只取1次），以该值为基础，每次增量为1，在内存中生成主键，不依赖于底层的数据库，因此可以跨数据库。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"increment"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Hibernate调用org.hibernate.id.IncrementGenerator类里面的generate()方法，使用select max(idColumnName) from tableName语句获取主键最大值。该方法被声明成了synchronized，所以在一个独立的Java虚拟机内部是没有问题的，然而，在多个JVM同时并发访问数据库select max时就可能取出相同的值，再insert就会发生Dumplicate entry的错误。所以只能有一个Hibernate应用进程访问数据库，否则就可能产生主键冲突，所以不适合多进程并发更新数据库，适合单一进程访问数据库，不能用于群集环境。</p>
+<p>官方文档：只有在没有其他进程往同一张表中插入数据时才能使用，在集群下不要使用。</p>
+<p><em>特点：跨数据库，不适合多进程并发更新数据库，适合单一进程访问数据库，不能用于群集环境。</em></p>
+<h2 id="hilo">hilo</h2><p>hilo（高低位方式high low）是hibernate中最常用的一种生成方式，需要一张额外的表保存hi的值。保存hi值的表至少有一条记录（只与第一条记录有关），否则会出现错误。可以跨数据库。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"hilo"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"table"</span>&gt;</span>hibernate_hilo<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"column"</span>&gt;</span>next_hi<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"max_lo"</span>&gt;</span>100<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">generator</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"table"</span>&gt;</span>hibernate_hilo<span class="tag">&lt;/<span class="title">param</span>&gt;</span> 指定保存hi值的表名</span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"column"</span>&gt;</span>next_hi<span class="tag">&lt;/<span class="title">param</span>&gt;</span> 指定保存hi值的列名</span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"max_lo"</span>&gt;</span>100<span class="tag">&lt;/<span class="title">param</span>&gt;</span> 指定低位的最大值</span><br></pre></td></tr></table></figure>
+<p>也可以省略table和column配置，其默认的表为hibernate_unique_key，列为next_hi</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"hilo"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"max_lo"</span>&gt;</span>100<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">generator</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>hilo生成器生成主键的过程（以hibernate_unique_key表，next_hi列为例）：</p>
+<ol>
+<li>获得hi值：读取并记录数据库的hibernate_unique_key表中next_hi字段的值，数据库中此字段值加1保存。</li>
+<li>获得lo值：从0到max_lo循环取值，差值为1，当值为max_lo值时，重新获取hi值，然后lo值继续从0到max_lo循环。</li>
+<li>根据公式 hi * (max_lo + 1) + lo计算生成主键值。</li>
+</ol>
+<p>注意：当hi值是0的时候，那么第一个值不是0*(max_lo+1)+0=0，而是lo跳过0从1开始，直接是1、2、3……</p>
+<p>那max_lo配置多大合适呢？</p>
+<p>这要根据具体情况而定，如果系统一般不重启，而且需要用此表建立大量的主键，可以吧max_lo配置大一点，这样可以减少读取数据表的次数，提高效率；反之，如果服务器经常重启，可以吧max_lo配置小一点，可以避免每次重启主键之间的间隔太大，造成主键值主键不连贯。</p>
+<p><em>特点：跨数据库，hilo算法生成的标志只能在一个数据库中保证唯一。</em></p>
+<h2 id="seqhilo">seqhilo</h2><p>与hilo类似，通过hi/lo算法实现的主键生成机制，只是将hilo中的数据表换成了序列sequence，需要数据库中先创建sequence，适用于支持sequence的数据库，如Oracle。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"seqhilo"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"sequence"</span>&gt;</span>hibernate_seq<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"max_lo"</span>&gt;</span>100<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">generator</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><em>特点：与hilo类似，只能在支持序列的数据库中使用。</em></p>
+<h2 id="sequence">sequence</h2><p>采用数据库提供的sequence机制生成主键，需要数据库支持sequence。如oralce、DB、SAP DB、PostgerSQL、McKoi中的sequence。MySQL这种不支持sequence的数据库则不行（可以使用identity）。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"sequence"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"sequence"</span>&gt;</span>hibernate_id<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">generator</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"sequence"</span>&gt;</span>hibernate_id<span class="tag">&lt;/<span class="title">param</span>&gt;</span> 指定sequence的名称</span><br></pre></td></tr></table></figure>
+<p>Hibernate生成主键时，查找sequence并赋给主键值，主键值由数据库生成，Hibernate不负责维护，使用时必须先创建一个sequence，如果不指定sequence名称，则使用Hibernate默认的sequence，名称为hibernate_sequence，前提要在数据库中创建该sequence。</p>
+<p><em>特点：只能在支持序列的数据库中使用，如Oracle。</em></p>
+<h2 id="identity">identity</h2><p>identity由底层数据库生成标识符。identity是由数据库自己生成的，但这个主键必须设置为自增长，使用identity的前提条件是底层数据库支持自动增长字段类型，如DB2、SQL Server、MySQL、Sybase和HypersonicSQL等，Oracle这类没有自增字段的则不支持。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"identity"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>例：如果使用MySQL数据库，则主键字段必须设置成auto_increment。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id int(11) primary key auto_increment</span><br></pre></td></tr></table></figure>
+<p><em>特点：只能用在支持自动增长的字段数据库中使用，如MySQL。</em></p>
+<h2 id="native">native</h2><p>native由hibernate根据使用的数据库自行判断采用identity、hilo、sequence其中一种作为主键生成方式，灵活性很强。如果能支持identity则使用identity，如果支持sequence则使用sequence。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"native"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>例如MySQL使用identity，Oracle使用sequence</p>
+<p>注意：如果Hibernate自动选择sequence或者hilo，则所有的表的主键都会从Hibernate默认的sequence或hilo表中取。并且，有的数据库对于默认情况主键生成测试的支持，效率并不是很高。</p>
+<p>使用sequence或hilo时，可以加入参数，指定sequence名称或hi值表名称等，如</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"sequence"</span>&gt;</span>hibernate_id<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><em>特点：根据数据库自动选择，项目中如果用到多个数据库时，可以使用这种方式，使用时需要设置表的自增字段或建立序列，建立表等。</em></p>
+<h2 id="uuid">uuid</h2><p>UUID：Universally Unique Identifier，是指在一台机器上生成的数字，它保证对在同一时空中的所有机器都是唯一的。按照开放软件基金会(OSF)制定的标准计算，用到了以太网卡地址、纳秒级时间、芯片ID码和许多可能的数字，标准的UUID格式为：</p>
+<p>xxxxxxxx-xxxx-xxxx-xxxxxx-xxxxxxxxxx (8-4-4-4-12)</p>
+<p>其中每个 x 是 0-9 或 a-f 范围内的一个十六进制的数字。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"uuid"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Hibernate在保存对象时，生成一个UUID字符串作为主键，保证了唯一性，但其并无任何业务逻辑意义，只能作为主键，唯一缺点长度较大，32位（Hibernate将UUID中间的“-”删除了）的字符串，占用存储空间大，但是有两个很重要的优点，Hibernate在维护主键时，不用去数据库查询，从而提高效率，而且它是跨数据库的，以后切换数据库极其方便。</p>
+<p><em>特点：uuid长度大，占用空间大，跨数据库，不用访问数据库就生成主键值，所以效率高且能保证唯一性，移植非常方便，推荐使用。</em></p>
+<h2 id="guid">guid</h2><p>GUID：Globally Unique Identifier全球唯一标识符，也称作 UUID，是一个128位长的数字，用16进制表示。算法的核心思想是结合机器的网卡、当地时间、一个随即数来生成GUID。从理论上讲，如果一台机器每秒产生10000000个GUID，则可以保证（概率意义上）3240年不重复。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"guid"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Hibernate在维护主键时，先查询数据库，获得一个uuid字符串，该字符串就是主键值，该值唯一，缺点长度较大，支持数据库有限，优点同uuid，跨数据库，但是仍然需要访问数据库。</p>
+<p><em>注意：长度因数据库不同而不同</em></p>
+<p>MySQL中使用select uuid()语句获得的为36位（包含标准格式的“-”）</p>
+<p>Oracle中，使用select rawtohex(sys_guid()) from dual语句获得的为32位（不包含“-”） 特点：需要数据库支持查询uuid，生成时需要查询数据库，效率没有uuid高，推荐使用uuid。</p>
+<h2 id="foreign">foreign</h2><p>使用另外一个相关联的对象的主键作为该对象主键。主要用于一对一关系中。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">id</span> <span class="attribute">name</span>=<span class="value">"id"</span> <span class="attribute">column</span>=<span class="value">"id"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">generator</span> <span class="attribute">class</span>=<span class="value">"foreign"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">param</span> <span class="attribute">name</span>=<span class="value">"property"</span>&gt;</span>user<span class="tag">&lt;/<span class="title">param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">generator</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">one-to-one</span> <span class="attribute">name</span>=<span class="value">"user"</span> <span class="attribute">class</span>=<span class="value">"domain.User"</span> <span class="attribute">constrained</span>=<span class="value">"true"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<p>该例使用domain.User的主键作为本类映射的主键。</p>
+<p><em>特点：很少使用，大多用在一对一关系中。</em></p>
+<h2 id="select">select</h2><p>使用触发器生成主键，主要用于早期的数据库主键生成机制，能用到的地方非常少。</p>
+<h2 id="其他注释方式配置">其他注释方式配置</h2><p>注释方式与配置文件底层实现方式相同，只是配置的方式换成了注释方式</p>
+<ol>
+<li><p>自动增长，适用于支持自增字段的数据库</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Id</span></span><br><span class="line"><span class="annotation">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>根据底层数据库自动选择方式，需要底层数据库的设置<br>如MySQL，会使用自增字段，需要将主键设置成auto_increment。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Id</span></span><br><span class="line"><span class="annotation">@GeneratedValue</span>(strategy = GenerationType.AUTO)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用表存储生成的主键，可以跨数据库。<br>每次需要主键值时，查询名为”hibernate_table”的表，查找主键列”gen_pk”值为”2”记录，得到这条记录的”gen_val”值，根据这个值，和allocationSize的值生成主键值。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Id</span></span><br><span class="line"><span class="annotation">@GeneratedValue</span>(strategy = GenerationType.TABLE, generator = <span class="string">"ud"</span>)</span><br><span class="line"><span class="annotation">@TableGenerator</span>(name = <span class="string">"ud"</span>,</span><br><span class="line">table = <span class="string">"hibernate_table"</span>,</span><br><span class="line">pkColumnName= <span class="string">"gen_pk"</span>,</span><br><span class="line">pkColumnValue = <span class="string">"2"</span>,</span><br><span class="line">valueColumnName = <span class="string">"gen_val"</span>,</span><br><span class="line">initialValue = <span class="number">2</span>,</span><br><span class="line">allocationSize = <span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用序列存储主键值</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Id</span></span><br><span class="line"><span class="annotation">@GeneratedValue</span>(strategy = GenerationType.SEQUENCE, generator = <span class="string">"ud"</span>)</span><br><span class="line"><span class="annotation">@SequenceGenerator</span>(name = <span class="string">"ud"</span>,</span><br><span class="line">sequenceName = <span class="string">"hibernate_seq"</span>,</span><br><span class="line">allocationSize = <span class="number">1</span>,</span><br><span class="line">initialValue = <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>uuid生成主键</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Id</span></span><br><span class="line"><span class="annotation">@GenericGenerator</span>(name = <span class="string">"systemUUID"</span>, strategy = <span class="string">"uuid"</span>)</span><br><span class="line"><span class="annotation">@GeneratedValue</span>(generator = <span class="string">"systemUUID"</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="小结">小结</h2><ol>
+<li><p>为了保证对象标识符的唯一性与不可变性，应该让Hibernate来为主键赋值，而不是程序。</p>
+</li>
+<li><p>正常使用Hibernate维护主键，最好将主键的setter方法设置成private，从而避免人为或程序修改主键，而使用assigned方式，就不能用private，否则无法给主键赋值。</p>
+</li>
+<li><p>Hibernate中唯一一种最简单通用的主键生成器就是uuid。虽然是个32位难读的长字符串，但是它没有跨数据库的问题，将来切换数据库极其简单方便，推荐使用！</p>
+</li>
+<li><p>关于hilo机制注意：<br>hilo算法生成的标志只能在一个数据库中保证唯一。<br>当用户为Hibernate自行提供连接，或者Hibernate通过JTA，从应用服务器的数据源获取数据库连接时，无法使用hilo，因为这不能保证hilo单独在新的数据库连接的事务中访问hi值表，这种情况，如果数据库支持序列，可以使用seqhilo。</p>
+</li>
+<li><p>使用identity、native、GenerationType.AUTO等方式生成主键时，只要用到自增字段，数据库表的字段必须设置成自动增加的，否则出错。</p>
+</li>
+<li><p>还有一些方法未列出来，例如uuid.hex，sequence-identity等，这些方法不是很常用，且已被其他方法代替，如uuid.hex，官方文档里建议不使用，而直接使用uuid方法。</p>
+</li>
+<li><p>Hibernate的各版本主键生成策略配置有略微差别，但实现基本相同。如，有的版本默认sequence不指定序列名，则使用名为hibernate_sequence的序列，有的版本则必须指定序列名。</p>
+</li>
+<li><p>还可以自定义主键生成策略，这里暂时不讨论，只讨论官方自带生成策略。</p>
+</li>
+</ol>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/08/17/Java/Hibernate各种主键生成策略与配置详解/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2014/08/12/Java/开发环境配置/" itemprop="url">
                   开发环境配置
                 </a>
@@ -1592,8 +1789,8 @@
             
               
                 
-                <a class="post-title-link" href="/2014/07/24/Nginx/Upstream负载均衡模块/" itemprop="url">
-                  Upstream负载均衡模块
+                <a class="post-title-link" href="/2014/08/05/Nodejs/在nodejs里定义全局变量/" itemprop="url">
+                  在nodejs里定义全局变量
                 </a>
               
             
@@ -1603,8 +1800,8 @@
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2014-07-24T06:00:38+08:00" content="Jul 24 2014">
-              Jul 24 2014
+            <time itemprop="dateCreated" datetime="2014-08-05T05:44:12+08:00" content="Aug 5 2014">
+              Aug 5 2014
             </time>
           </span>
 
@@ -1613,8 +1810,8 @@
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/nginx/" itemprop="url" rel="index">
-                    <span itemprop="name">nginx</span>
+                  <a href="/categories/node/" itemprop="url" rel="index">
+                    <span itemprop="name">node</span>
                   </a>
                 </span>
 
@@ -1629,8 +1826,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2014/07/24/Nginx/Upstream负载均衡模块/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/07/24/Nginx/Upstream负载均衡模块/" itemprop="commentsCount"></span>
+                <a href="/2014/08/05/Nodejs/在nodejs里定义全局变量/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/05/Nodejs/在nodejs里定义全局变量/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -1652,26 +1849,25 @@
         
           <span itemprop="articleBody">
             
-              <p>Nginx 的 HttpUpstreamModule 提供对后端（backend）服务器的简单负载均衡。一个最简单的 upstream 写法如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">upstream backend &#123;&#10;    server backend1.example.com;&#10;    server backend2.example.com;&#10;    server.backend3.example.com;&#10;&#125;&#10;&#10;server &#123;&#10;    location / &#123;&#10;        proxy_pass http://backend;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="1-后端服务器">1.后端服务器</h2><p>通过 upstream 可以设定后端服务器，指定的方式可以是 IP 地址与端口、域名、UNIX 套接字（socket）。其中如果域名可以被解析为多个地址，则这些地址都作为 backend。下面举例说明：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">upstream backend &#123;&#10;    server blog.csdn.net/poechant;&#10;    server 145.223.156.89:8090;&#10;    server unix:/tmp/backend3;&#10;&#125;</span><br></pre></td></tr></table></figure>
-<p>第一个 backend 是用域名指定的。第二个 backend 是用 IP 和端口号指定的。第三个 backend 是用 UNIX 套接字指定的。</p>
-<h2 id="2-负载均衡策略">2.负载均衡策略</h2><p>Nginx 提供轮询（round robin）、用户 IP 哈希（client IP）和指定权重 3 种方式。<br>默认情况下，Nginx 会为你提供轮询作为负载均衡策略。但是这并不一定能够让你满意。比如，某一时段内的一连串访问都是由同一个用户 Michael 发起的，那么第一次 Michael 的请求可能是 backend2，而下一次是 backend3，然后是 backend1、backend2、backend3…… 在大多数应用场景中，这样并不高效。当然，也正因如此，Nginx 为你提供了一个按照 Michael、Jason、David 等等这些乱七八糟的用户的 IP 来 hash 的方式，这样每个 client 的访问请求都会被甩给同一个后端服务器。（另外，由于最近发现很多网站以不留原文链接的方式盗取本博博文，所以我就在这插一下本博的地址“<a href="http://blog.csdn.net/poechant”）具体的使用方式如下：" target="_blank" rel="external">http://blog.csdn.net/poechant”）具体的使用方式如下：</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">upstream backend &#123;&#10;    ip_hash;&#10;    server backend1.example.com;&#10;    server backend2.example.com;&#10;    server.backend3.example.com;&#10;&#125;</span><br></pre></td></tr></table></figure>
-<p>这种策略中，用于进行 hash 运算的 key，是 client 的 C 类 IP 地址（C 类 IP 地址就是范围在 192.0.0.0 到 223.255.255.255 之间，前三段号码表示子网，第四段号码为本地主机的 IP 地址类别）。这样的方式保证一个 client 每次请求都将到达同一个 backend。当然，如果所 hash 到的 backend 当前不可用，则请求会被转移到其他 backend。</p>
-<p>再介绍一个和 ip_hash 配合使用的关键字：down。当某个一个 server 暂时性的宕机（down）时，你可以使用“down”来标示出来，并且这样被标示的 server 就不会接受请求去处理。具体如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">upstream backend &#123;&#10;    server blog.csdn.net/poechant down;&#10;    server 145.223.156.89:8090;&#10;    server unix:/tmp/backend3;&#10;&#125;</span><br></pre></td></tr></table></figure>
-<p>还可以使用指定权重（weight）的方式，如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">upstream backend &#123;&#10;    server backend1.example.com;&#10;    server 123.321.123.321:456 weight=4;&#10;&#125;</span><br></pre></td></tr></table></figure>
-<p>默认情况下 weight 为 1，对于上面的例子，第一个 server 的权重取默认值 1，第二个是 4，所以相当于第一个 server 接收 20% 的请求，第二接收 80% 的。要注意的是 weight 与 ip_hash 是不能同时使用的，原因很简单，他们是不同且彼此冲突的策略。</p>
-<h2 id="3-重试策略">3.重试策略</h2><p>可以为每个 backend 指定最大的重试次数，和重试时间间隔。所使用的关键字是 max_fails 和 fail_timeout。如下所示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">upstream backend &#123;&#10;    server backend1.example.com weight=5;&#10;    server 54.244.56.3:8081 max_fails=3 fail_timeout=30s;&#10;&#125;</span><br></pre></td></tr></table></figure>
-<p>在上例中，最大失败次数为 3，也就是最多进行 3 次尝试，且超时时间为 30秒。max_fails 的默认值为 1，fail_timeout 的默认值是 10s。传输失败的情形，由 proxy_next_upstream 或 fastcgi_next_upstream 指定。而且可以使用 proxy_connect_timeout 和 proxy_read_timeout 控制 upstream 响应时间。</p>
-<p>有一种情况需要注意，就是 upstream 中只有一个 server 时，max_fails 和 fail_timeout 参数可能不会起作用。导致的问题就是 nginx 只会尝试一次 upstream 请求，如果失败这个请求就被抛弃了 : ( ……解决的方法，比较取巧，就是在 upstream 中将你这个可怜的唯一 server 多写几次，如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">upstream backend &#123;&#10;    server backend.example.com max_fails fail_timeout=30s;&#10;    server backend.example.com max_fails fail_timeout=30s;&#10;    server backend.example.com max_fails fail_timeout=30s;&#10;&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="4-备机策略">4.备机策略</h2><p>从 Nginx 的 0.6.7 版本开始，可以使用“backup”关键字。当所有的非备机（non-backup）都宕机（down）或者繁忙（busy）的时候，就只使用由 backup 标注的备机。必须要注意的是，backup 不能和 ip_hash 关键字一起使用。举例如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">upstream backend &#123;&#10;    server backend1.example.com;&#10;    server backend2.example.com backup;&#10;    server backend3.example.com;&#10;&#125;</span><br></pre></td></tr></table></figure>
-<p>转载请注明来自“柳大的CSDN博客”：<a href="http://blog.csdn.net/poechant" target="_blank" rel="external">http://blog.csdn.net/poechant</a><br>更多文章请浏览CSDN专栏《Nginx高性能Web服务器》或 服务器后端开发系列——《实战Nginx高性能Web服务器》</p>
+              <p>如果你正在使用一系列node模块，或许是一个像Express.js一样的框架，突然需要使用几个全局变量。怎样在nodejs里创建全局变量呢？<br>对此最常见的建议是“不使用‘var’关键字声明一个变量”或“给object对象添加一个变量”或“给OBJECT对象添加一个变量”。你会使用哪种方式呢？<br>首先，让我们分析下global对象。打开一个终端，启动一个node命令提示界面：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ node&#10;&#62;</span><br></pre></td></tr></table></figure></p>
+<p>在命令提示界面下看看关于global的所有信息：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#62; global</span><br></pre></td></tr></table></figure></p>
+<p>飞天怪物的神圣母亲!!!那是一个超级大的对象！事实上，你看到了node的核心。所有在node进程里的对象都挂在这个对象上。如果你非常熟悉javascript所在的浏览器环境，global对象是等同于window对象。<br>现在我们已经指导global对象是声明，让我们把玩下它：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#62; global.name&#10;undefined&#10;&#62; global.name = &#39;El Capitan&#39;&#10;&#62; global.name&#10;&#39;El Capitan&#39;&#10;&#62; GLOBAL.name&#10;&#39;El Capitan&#39;&#10;&#62; delete global.name&#10;true&#10;&#62; GLOBAL.name&#10;undefined&#10;&#62; name = &#39;El Capitan&#39;&#10;&#39;El Capitan&#39;&#10;&#62; global.name&#10;&#39;El Capitan&#39;&#10;&#62; GLOBAL.name&#10;&#39;El Capitan&#39;&#10;&#62; var name = &#39;Sparrow&#39;&#10;undefined&#10;&#62; global.name&#10;&#39;Sparrow&#39;</span><br></pre></td></tr></table></figure></p>
+<p>令人兴奋的观察！</p>
+<p>global和BLOBAL看起来是一个同一个东西且是一回事。确实，Global是global一个别名。</p>
+<p>令我们超感兴趣的是一个使用还是不使用var关键字声明的变量附加到global对象上。在node里创建一个全局变量的最基本的方式就是通过不使用var关键字声明一个变量。这种做法与使用一个模块(module)略有不同，接下来我讲解释它。</p>
+<p>当你启动一个node进程，将会启动一个模块，那么所有的模块将会被包含在它里面，所有模块都共享同一个global对象。应用上面的测试观察结合实际，你就会明白全局变量怎样在node里工作。然而有些轻微的变化，如果使用var关键字声明的变量将会保留在本地模块里；这些声明的变量没有附加到global对象里。</p>
+<p>那么现在你已经知道”没有使用var关键字声明的变量“，”向global里添加一个变量“，”给GLOBAL对象添加一个变量“，所有这些都是一回事。</p>
+<p>在一个module里全局声明的变量能够被其他任何模块使用它们的名字来引用，没必要从global对象引用它们。但是这不意味这你就可以这样做。为什么呢？请看这样:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> company = <span class="string">'Yahoo'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(global.company); <span class="comment">// 'Google'</span></span><br><span class="line"><span class="built_in">console</span>.log(company); <span class="comment">// 'Yahoo'</span></span><br></pre></td></tr></table></figure></p>
+<p>当你使用global.company时,你知道你使用的是全局变量，但是它的备用名字company在module是当作局部变量来使用的。</p>
+<p>如果你打算在你的node应用里使用全局变量，那么我们讨论的创建变量方法会工作的很好。然而，请不要过度使用它。话虽如此，还有可以不使用全局对象的替代解决方案吗？</p>
+<p>是的，有这么一个，它涉及到module.exports的使用。让我使用例子来演示：</p>
+<p>File: main.js<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">exports.company = <span class="string">'Google'</span>;</span><br><span class="line"><span class="keyword">var</span> m = <span class="built_in">require</span>(<span class="string">'./mod'</span>);</span><br></pre></td></tr></table></figure></p>
+<p>File: mod.js<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> company = <span class="built_in">require</span>(<span class="string">'./main'</span>).company;</span><br><span class="line"><span class="built_in">console</span>.log(company);</span><br></pre></td></tr></table></figure></p>
+<p>现在看看执行结果：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ node main.js&#10;Google</span><br></pre></td></tr></table></figure></p>
+<p>这样你就实现了，一个其他模块的的变量你可以在另外的模块中使用他而没有使用global对象。你可以include main.js在其他的module来访问company名字。</p>
+<p>注意：引用（include）一个已经被其他模块引用过的模块时，仅仅创建一个指向之前包体的引用，因此这意味着不会极度消耗内存。也因为没有重新创建一个真正的包体，在module里的所有初始化方法没有再执行。</p>
+<p>因此，一个包体中，有2钟创建node全局变量的方法，一个是使用global对象，另一个是使用modules.exports。哪个是我推荐的呢?global方法适用小的应用，modules.exprots适用于大的应用。</p>
+<p>原文：<a href="http://www.hacksparrow.com/global-variables-in-node-js.html" target="_blank" rel="external">http://www.hacksparrow.com/global-variables-in-node-js.html</a></p>
 
             
           </span>
@@ -1739,7 +1935,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">23</span>
+              <span class="site-state-item-count">24</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
