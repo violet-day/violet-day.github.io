@@ -1,57 +1,11 @@
-<!doctype html>
-<html class="theme-next   use-motion ">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
-
-
-
-
-  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-
-
-
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Navigation,ionic," />
-
-
-
-
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
-
-
-
-
-
-
-<meta name="description" content="ion-nav-view当用户浏览整个应用程序，Ionic能够跟踪他们的浏览历史。通过了解他们的历史、视图之间的转换正确滑动或左或右，或没有过渡的。另一个优点是Ionic的导航系统是其管理多个历史能力。
+  <meta charset="utf-8">
+  
+  <title>Navigation | Nemo&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="ion-nav-view当用户浏览整个应用程序，Ionic能够跟踪他们的浏览历史。通过了解他们的历史、视图之间的转换正确滑动或左或右，或没有过渡的。另一个优点是Ionic的导航系统是其管理多个历史能力。
 Ionic使用AngularUI Router模块，所以app的接口可以组织为”states”。和Angular的核心$route服务一样,URLs可以用来控制视图。然而，AngularUI Ro">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Navigation">
@@ -64,212 +18,210 @@ Ionic使用AngularUI Router模块，所以app的接口可以组织为”states�
 <meta name="twitter:title" content="Navigation">
 <meta name="twitter:description" content="ion-nav-view当用户浏览整个应用程序，Ionic能够跟踪他们的浏览历史。通过了解他们的历史、视图之间的转换正确滑动或左或右，或没有过渡的。另一个优点是Ionic的导航系统是其管理多个历史能力。
 Ionic使用AngularUI Router模块，所以app的接口可以组织为”states”。和Angular的核心$route服务一样,URLs可以用来控制视图。然而，AngularUI Ro">
-
-
-
-<script type="text/javascript" id="hexo.configuration">
-  var CONFIG = {
-    scheme: '',
-    sidebar: 'post',
-    motion: true
-  };
-</script>
-
-  <title> Navigation | Nemo's Blog </title>
+  
+    <link rel="alternative" href="/atom.xml" title="Nemo&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
 </head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img src="https://avatars2.githubusercontent.com/u/5970246?v=3&amp;s=460">
+		</a>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+		<hgroup>
+		  <h1 class="header-author"><a href="/">violet_day</a></h1>
+		</hgroup>
 
-  <!--[if lte IE 8]>
-  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
-    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
-      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
-           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
-           style='margin-left:auto;margin-right:auto;display: block;'/>
-    </a>
-  </div>
-<![endif]-->
-  
+		
+		<p class="header-subtitle">Ride The Lightning</p>
+		
 
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
 
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-67357558-7', 'auto');
-  ga('send', 'pageview');
-</script>
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/categories">随笔</a></li>
+				        
+							<li><a href="/tags">标签</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/violet-day" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+					        
+								<a class="mail" target="_blank" href="/violet_day@live.com" title="mail">mail</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Hibernate/" style="font-size: 10px;">Hibernate</a> <a href="/tags/Navigation/" style="font-size: 10px;">Navigation</a> <a href="/tags/SecureCRT/" style="font-size: 10px;">SecureCRT</a> <a href="/tags/Tabs/" style="font-size: 10px;">Tabs</a> <a href="/tags/aws/" style="font-size: 10px;">aws</a> <a href="/tags/back-off/" style="font-size: 10px;">back-off</a> <a href="/tags/cordova/" style="font-size: 10px;">cordova</a> <a href="/tags/eclipse/" style="font-size: 10px;">eclipse</a> <a href="/tags/git/" style="font-size: 12.5px;">git</a> <a href="/tags/gitflow/" style="font-size: 10px;">gitflow</a> <a href="/tags/gitosis/" style="font-size: 10px;">gitosis</a> <a href="/tags/hubot/" style="font-size: 10px;">hubot</a> <a href="/tags/ionic/" style="font-size: 15px;">ionic</a> <a href="/tags/java/" style="font-size: 12.5px;">java</a> <a href="/tags/linux/" style="font-size: 17.5px;">linux</a> <a href="/tags/nginx/" style="font-size: 17.5px;">nginx</a> <a href="/tags/node/" style="font-size: 20px;">node</a> <a href="/tags/rabbitmq/" style="font-size: 10px;">rabbitmq</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/retry/" style="font-size: 10px;">retry</a> <a href="/tags/side-menus/" style="font-size: 10px;">side menus</a> <a href="/tags/strongloop/" style="font-size: 10px;">strongloop</a> <a href="/tags/主键/" style="font-size: 10px;">主键</a> <a href="/tags/全部变量/" style="font-size: 10px;">全部变量</a> <a href="/tags/守护进程/" style="font-size: 10px;">守护进程</a> <a href="/tags/负载均衡/" style="font-size: 10px;">负载均衡</a> <a href="/tags/集合/" style="font-size: 10px;">集合</a>
+					</div>
+				</section>
+				
+				
+				
 
-
-
-
-
-  <div class="container one-column page-post-detail">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
-  
-
-  <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">Nemo's Blog</span>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-  </div>
-  <p class="site-subtitle">Ride The Lightning</p>
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
 </div>
-
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
-</div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu ">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
-            首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
-            
-            分类
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
-            归档
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
-            
-            标签
-          </a>
-        </li>
-      
-
-      
-      
-    </ul>
-  
-
-  
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">violet_day</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="https://avatars2.githubusercontent.com/u/5970246?v=3&amp;s=460">
+				<hgroup>
+				  <h1 class="header-author">violet_day</h1>
+				</hgroup>
+			</div>
+			
+			<p class="header-subtitle">Ride The Lightning</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/categories">随笔</a></li>
+		        
+					<li><a href="/tags">标签</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/violet-day" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+			        
+						<a class="mail" target="_blank" href="/violet_day@live.com" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
 </nav>
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div id="content" class="content">
-          
-
-  <div id="posts" class="posts-expand">
+      <div class="body-wrap"><article id="post-Ionic/Navigation" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2014/08/10/Ionic/Navigation/" class="article-date">
+  	<time datetime="2014-08-10T13:48:52.000Z" itemprop="datePublished">Aug 10 2014</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
     
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
+      <input type="hidden" class="isFancy" />
     
-      <header class="post-header">
-
+    
+      <header class="article-header">
         
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                Navigation
-              
-            
-          </h1>
-        
+  
+    <h1 class="article-title" itemprop="name">
+      Navigation
+    </h1>
+  
 
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2014-08-10T21:48:52+08:00" content="Aug 10 2014">
-              Aug 10 2014
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/ionic/" itemprop="url" rel="index">
-                    <span itemprop="name">ionic</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2014/08/10/Ionic/Navigation/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/10/Ionic/Navigation/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
       </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Navigation/">Navigation</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ionic/">ionic</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/ionic/">ionic</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
     
-
-
-    <div class="post-body">
-
+    <div class="article-entry" itemprop="articleBody">
       
-      
-
-      
-        <span itemprop="articleBody"><h2 id="ion-nav-view">ion-nav-view</h2><p>当用户浏览整个应用程序，Ionic能够跟踪他们的浏览历史。通过了解他们的历史、视图之间的转换正确滑动或左或右，或没有过渡的。另一个优点是Ionic的导航系统是其管理多个历史能力。</p>
+        <h2 id="ion-nav-view">ion-nav-view</h2><p>当用户浏览整个应用程序，Ionic能够跟踪他们的浏览历史。通过了解他们的历史、视图之间的转换正确滑动或左或右，或没有过渡的。另一个优点是Ionic的导航系统是其管理多个历史能力。</p>
 <p>Ionic使用AngularUI Router模块，所以app的接口可以组织为”states”。和Angular的核心$route服务一样,URLs可以用来控制视图。然而，AngularUI Router提供了更加强大的状态管理功能，状态与name绑定,并且有嵌套或并行的视图，在一个页面允许多个视图。并且，每个状态没有一定需要绑定URL，可以更加灵活的将数据附加至状态。</p>
 <p>在你的应用程序用，ionNavView指示器用来渲染模板，每个模板都是一个状态的一部分。状态通常映射至URL，并且通过angular-ui-router来定义。（记住在示例中将ui-view替换为ion-nav-view）</p>
 <h3 id="用法">用法</h3><p>在这个例子中，我们将创建一个包含我们的不同状态的应用程序中的导航视图。</p>
@@ -485,445 +437,124 @@ Ionic使用AngularUI Router模块，所以app的接口可以组织为”states�
 <li>返回:<code>delegateInstance</code>Returns:  A delegate instance that controls only the ionTabs directives with delegate-handle matching the given handle.</li>
 </ul>
 <p>示例: $ionicNavBarDelegate.$getByHandle(‘myHandle’).setTitle(‘newTitle’)</p>
-<a id="more"></a></span>
+<a id="more"></a>
       
     </div>
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Navigation/" rel="tag">#Navigation</a>
-          
-            <a href="/tags/ionic/" rel="tag">#ionic</a>
-          
-        </div>
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2014/08/10/Ionic/Side Menus/" rel="next" title="Side Menus">
-                <i class="fa fa-chevron-left"></i> Side Menus
-              </a>
-            
-          </div>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2014/08/12/Java/开发环境配置/" rel="prev" title="开发环境配置">
-                开发环境配置 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </article>
-
-
-
-    <div class="post-spread">
-      
-        <div class="ds-share flat" data-thread-key="2014/08/10/Ionic/Navigation/"
-     data-title="Navigation"
-     data-content=""
-     data-url="http://violet-day.github.io/2014/08/10/Ionic/Navigation/">
-  <div class="ds-share-inline">
-    <ul  class="ds-share-icons-16">
-
-      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
-      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
-      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
-      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
-      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
-
-    </ul>
-    <div class="ds-share-icons-more">
-    </div>
-  </div>
-</div>
-      
-    </div>
-  </div>
-
-
-        </div>
-
-        
-
-
-        
-  <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2014/08/10/Ionic/Navigation/"
-           data-title="Navigation" data-url="http://violet-day.github.io/2014/08/10/Ionic/Navigation/">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/08/12/Java/开发环境配置/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          开发环境配置
+        
       </div>
-    
-  </div>
-
-
-      </div>
-
-      
-        
+    </a>
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+  
+    <a href="/2014/08/10/Ionic/Side Menus/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Side Menus</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="Ionic/Navigation" data-title="Navigation" data-url="http://violet-day.github.io/2014/08/10/Ionic/Navigation/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 violet_day
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
     </div>
   </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" src="https://avatars2.githubusercontent.com/u/5970246?v=3&s=460" alt="violet_day" itemprop="image"/>
-          <p class="site-author-name" itemprop="name">violet_day</p>
-        </div>
-        <p class="site-description motion-element" itemprop="description"></p>
-        <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/archives">
-              <span class="site-state-item-count">24</span>
-              <span class="site-state-item-name">日志</span>
-            </a>
-          </div>
-
-          <div class="site-state-item site-state-categories">
-            <a href="/categories">
-              <span class="site-state-item-count">8</span>
-              <span class="site-state-item-name">分类</span>
-              </a>
-          </div>
-
-          <div class="site-state-item site-state-tags">
-            <a href="/tags">
-              <span class="site-state-item-count">27</span>
-              <span class="site-state-item-name">标签</span>
-              </a>
-          </div>
-
-        </nav>
-
-        
-
-        <div class="links-of-author motion-element">
-          
-            
-              <span class="links-of-author-item">
-                <a href="https://github.com/violet-day" target="_blank">
-                  
-                    <i class="fa fa-github"></i> GitHub
-                  
-                </a>
-              </span>
-            
-          
-        </div>
-
-        
-        
-
-        <div class="links-of-author motion-element">
-          
-        </div>
-
-      </section>
-
-      
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc-indicator-top post-toc-indicator">
-            <i class="fa fa-angle-double-up"></i>
-          </div>
-          <div class="post-toc">
-            
-              
-            
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ion-nav-view"><span class="nav-number">1.</span> <span class="nav-text">ion-nav-view</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用法"><span class="nav-number">1.1.</span> <span class="nav-text">用法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ion-view"><span class="nav-number">2.</span> <span class="nav-text">ion-view</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用法-1"><span class="nav-number">2.1.</span> <span class="nav-text">用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#API"><span class="nav-number">2.2.</span> <span class="nav-text">API</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ion-nav-bar"><span class="nav-number">3.</span> <span class="nav-text">ion-nav-bar</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用法-2"><span class="nav-number">3.1.</span> <span class="nav-text">用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#API-1"><span class="nav-number">3.2.</span> <span class="nav-text">API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#另外用法"><span class="nav-number">3.3.</span> <span class="nav-text">另外用法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ion-nav-buttons"><span class="nav-number">4.</span> <span class="nav-text">ion-nav-buttons</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用法-3"><span class="nav-number">4.1.</span> <span class="nav-text">用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#API-2"><span class="nav-number">4.2.</span> <span class="nav-text">API</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ion-nav-back-button"><span class="nav-number">5.</span> <span class="nav-text">ion-nav-back-button</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用法-4"><span class="nav-number">5.1.</span> <span class="nav-text">用法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nav-clear"><span class="nav-number">6.</span> <span class="nav-text">nav-clear</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用法-5"><span class="nav-number">6.1.</span> <span class="nav-text">用法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#$ionicNavBarDelegate"><span class="nav-number">7.</span> <span class="nav-text">$ionicNavBarDelegate</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用法-6"><span class="nav-number">7.1.</span> <span class="nav-text">用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法"><span class="nav-number">7.2.</span> <span class="nav-text">方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#back([event])"><span class="nav-number">7.2.1.</span> <span class="nav-text">back([event])</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#align([direction])"><span class="nav-number">7.2.2.</span> <span class="nav-text">align([direction])</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#showBackButton([show])"><span class="nav-number">7.2.3.</span> <span class="nav-text">showBackButton([show])</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#showBar(show)"><span class="nav-number">7.2.4.</span> <span class="nav-text">showBar(show)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#setTitle(title)"><span class="nav-number">7.2.5.</span> <span class="nav-text">setTitle(title)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#changeTitle(title,_direction)"><span class="nav-number">7.2.6.</span> <span class="nav-text">changeTitle(title, direction)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getTitle()"><span class="nav-number">7.2.7.</span> <span class="nav-text">getTitle()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getPreviousTitle()"><span class="nav-number">7.2.8.</span> <span class="nav-text">getPreviousTitle()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#$getByHandle(handle)"><span class="nav-number">7.2.9.</span> <span class="nav-text">$getByHandle(handle)</span></a></li></ol></li></ol></li></ol></div>
-            
-          </div>
-          <div class="post-toc-indicator-bottom post-toc-indicator">
-            <i class="fa fa-angle-double-down"></i>
-          </div>
-        </section>
-      
-
+</footer>
     </div>
-  </aside>
-
-
-      
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright" >
-  
-  &copy; 
-  <span itemprop="copyrightYear">2016</span>
-  <span class="with-love">
-    <i class="icon-next-heart fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">violet_day</span>
-</div>
-
-<div class="powered-by">
-  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
-</div>
-
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT
-  </a>
-</div>
-
-
-
-      </div>
-    </footer>
-
-    <div class="back-to-top"></div>
-  </div>
-
-  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
-
-  
-  
-
-  
     
-
-  
-    
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"Violet_day"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-    
-     
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
 
 
-    
-  
-
-  
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
-  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.2"></script>
+<script src="/js/mobile.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
 
 
-  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.2"></script>
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
-<script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
-
-<script type="text/javascript" src="/js/motion.js?v=0.4.5.2" id="motion.global"></script>
 
 
-  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
 
-  
-  
-<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.2" id="bootstrap.scrollspy.custom"></script>
+<! -- mathjax config similar to math.stackexchange -->
 
-
-<script type="text/javascript" id="sidebar.toc.highlight">
-  $(document).ready(function () {
-    var tocSelector = '.post-toc';
-    var $tocSelector = $(tocSelector);
-    var activeCurrentSelector = '.active-current';
-
-    $tocSelector
-      .on('activate.bs.scrollspy', function () {
-        var $currentActiveElement = $(tocSelector + ' .active').last();
-
-        removeCurrentActiveClass();
-        $currentActiveElement.addClass('active-current');
-
-        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
-      })
-      .on('clear.bs.scrollspy', function () {
-        removeCurrentActiveClass();
-      });
-
-    function removeCurrentActiveClass () {
-      $(tocSelector + ' ' + activeCurrentSelector)
-        .removeClass(activeCurrentSelector.substring(1));
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
     }
+});
 
-    function processTOC () {
-      getTOCMaxHeight();
-      toggleTOCOverflowIndicators();
-    }
-
-    function getTOCMaxHeight () {
-      var height = $('.sidebar').height() -
-                   $tocSelector.position().top -
-                   $('.post-toc-indicator-bottom').height();
-
-      $tocSelector.css('height', height);
-
-      return height;
-    }
-
-    function toggleTOCOverflowIndicators () {
-      tocOverflowIndicator(
-        '.post-toc-indicator-top',
-        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
-      );
-
-      tocOverflowIndicator(
-        '.post-toc-indicator-bottom',
-        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
-      )
-    }
-
-    $(document).on('sidebar.motion.complete', function () {
-      processTOC();
-    });
-
-    $('body').scrollspy({ target: tocSelector });
-    $(window).on('resize', function () {
-      if ( $('.sidebar').hasClass('sidebar-active') ) {
-        processTOC();
-      }
-    });
-
-    onScroll($tocSelector);
-
-    function onScroll (element) {
-      element.on('mousewheel DOMMouseScroll', function (event) {
-          var oe = event.originalEvent;
-          var delta = oe.wheelDelta || -oe.detail;
-
-          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
-          event.preventDefault();
-
-          toggleTOCOverflowIndicators();
-      });
-    }
-
-    function tocOverflowIndicator (indicator, action) {
-      var $indicator = $(indicator);
-      var opacity = action === 'show' ? 1 : 0;
-      $indicator.velocity ?
-        $indicator.velocity('stop').velocity({
-          opacity: opacity
-        }, { duration: 100 }) :
-        $indicator.stop().animate({
-          opacity: opacity
-        }, 100);
-    }
-
-  });
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
 </script>
 
-<script type="text/javascript" id="sidebar.nav">
-  $(document).ready(function () {
-    var html = $('html');
-    var TAB_ANIMATE_DURATION = 200;
-    var hasVelocity = $.isFunction(html.velocity);
-
-    $('.sidebar-nav li').on('click', function () {
-      var item = $(this);
-      var activeTabClassName = 'sidebar-nav-active';
-      var activePanelClassName = 'sidebar-panel-active';
-      if (item.hasClass(activeTabClassName)) {
-        return;
-      }
-
-      var currentTarget = $('.' + activePanelClassName);
-      var target = $('.' + item.data('target'));
-
-      hasVelocity ?
-        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
-          target
-            .velocity('stop')
-            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
-            .addClass(activePanelClassName);
-        }) :
-        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
-          currentTarget.hide();
-          target
-            .stop()
-            .css({'opacity': 0, 'display': 'block'})
-            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
-              currentTarget.removeClass(activePanelClassName);
-              target.addClass(activePanelClassName);
-            });
-        });
-
-      item.siblings().removeClass(activeTabClassName);
-      item.addClass(activeTabClassName);
-    });
-
-    $('.post-toc a').on('click', function (e) {
-      e.preventDefault();
-      var targetSelector = escapeSelector(this.getAttribute('href'));
-      var offset = $(targetSelector).offset().top;
-      hasVelocity ?
-        html.velocity('stop').velocity('scroll', {
-          offset: offset  + 'px',
-          mobileHA: false
-        }) :
-        $('html, body').stop().animate({
-          scrollTop: offset
-        }, 500);
-    });
-
-    // Expand sidebar on post detail page by default, when post has a toc.
-    motionMiddleWares.sidebar = function () {
-      var $tocContent = $('.post-toc-content');
-      if (CONFIG.sidebar === 'post') {
-        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
-          displaySidebar();
-        }
-      }
-    };
-  });
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
 
 
-  <script type="text/javascript" src="/js/bootstrap.js"></script>
-
-  
-  
-
-  
-  
-
+  </div>
 </body>
 </html>
