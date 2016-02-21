@@ -1,11 +1,63 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
+<!doctype html>
+
+
+
   
-  <title>hubot-scripting | Nemo&#39;s Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Anatomy of a script当你创建了你的hubot之后，生成器同样创建了一个scripts目录。你如果打开看看，会发现一样示例脚本。为了让脚本生效，你需要：
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="hubot,node," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="Anatomy of a script当你创建了你的hubot之后，生成器同样创建了一个scripts目录。你如果打开看看，会发现一样示例脚本。为了让脚本生效，你需要：
 
 脚本需要位于hubot的脚本加载目录中(默认为src/scripts和scripts)
 .coffee或.js文件
@@ -36,206 +88,208 @@ export为一个函数
 
 export为一个函数，即：
 12module.exports = (robot) -">
-  
-    <link rel="alternative" href="/atom.xml" title="Nemo&#39;s Blog" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  <link rel="stylesheet" href="/css/style.css" type="text/css">
-  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 6218687468384814000,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> hubot-scripting | Nemo's Blog </title>
 </head>
-<body>
-  <div id="container">
-    <div class="left-col">
-    <div class="overlay"></div>
-<div class="intrude-less">
-	<header id="header" class="inner">
-		<a href="/" class="profilepic">
-			<img src="https://avatars2.githubusercontent.com/u/5970246?v=3&amp;s=460">
-		</a>
 
-		<hgroup>
-		  <h1 class="header-author"><a href="/">violet_day</a></h1>
-		</hgroup>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
-		
-		<p class="header-subtitle">Ride The Lightning</p>
-		
+  
 
-		
-			<div class="switch-btn">
-				<div class="icon">
-					<div class="icon-ctn">
-						<div class="icon-wrap icon-house" data-idx="0">
-							<div class="birdhouse"></div>
-							<div class="birdhouse_holes"></div>
-						</div>
-						<div class="icon-wrap icon-ribbon hide" data-idx="1">
-							<div class="ribbon"></div>
-						</div>
-						
-						
-						<div class="icon-wrap icon-me hide" data-idx="3">
-							<div class="user"></div>
-							<div class="shoulder"></div>
-						</div>
-						
-					</div>
-					
-				</div>
-				<div class="tips-box hide">
-					<div class="tips-arrow"></div>
-					<ul class="tips-inner">
-						<li>菜单</li>
-						<li>标签</li>
-						
-						
-						<li>关于我</li>
-						
-					</ul>
-				</div>
-			</div>
-		
 
-		<div class="switch-area">
-			<div class="switch-wrap">
-				<section class="switch-part switch-part1">
-					<nav class="header-menu">
-						<ul>
-						
-							<li><a href="/">主页</a></li>
-				        
-							<li><a href="/archives">所有文章</a></li>
-				        
-							<li><a href="/categories">随笔</a></li>
-				        
-							<li><a href="/tags">标签</a></li>
-				        
-						</ul>
-					</nav>
-					<nav class="header-nav">
-						<div class="social">
-							
-								<a class="github" target="_blank" href="https://github.com/violet-day" title="github">github</a>
-					        
-								<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
-					        
-								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
-					        
-								<a class="mail" target="_blank" href="/violet_day@live.com" title="mail">mail</a>
-					        
-						</div>
-					</nav>
-				</section>
-				
-				
-				<section class="switch-part switch-part2">
-					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/Hibernate/" style="font-size: 10px;">Hibernate</a> <a href="/tags/Navigation/" style="font-size: 10px;">Navigation</a> <a href="/tags/SecureCRT/" style="font-size: 10px;">SecureCRT</a> <a href="/tags/Tabs/" style="font-size: 10px;">Tabs</a> <a href="/tags/aws/" style="font-size: 10px;">aws</a> <a href="/tags/back-off/" style="font-size: 10px;">back-off</a> <a href="/tags/cordova/" style="font-size: 10px;">cordova</a> <a href="/tags/eclipse/" style="font-size: 10px;">eclipse</a> <a href="/tags/git/" style="font-size: 12.5px;">git</a> <a href="/tags/gitflow/" style="font-size: 10px;">gitflow</a> <a href="/tags/gitosis/" style="font-size: 10px;">gitosis</a> <a href="/tags/hubot/" style="font-size: 10px;">hubot</a> <a href="/tags/ionic/" style="font-size: 15px;">ionic</a> <a href="/tags/java/" style="font-size: 12.5px;">java</a> <a href="/tags/linux/" style="font-size: 17.5px;">linux</a> <a href="/tags/nginx/" style="font-size: 17.5px;">nginx</a> <a href="/tags/node/" style="font-size: 20px;">node</a> <a href="/tags/rabbitmq/" style="font-size: 10px;">rabbitmq</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/retry/" style="font-size: 10px;">retry</a> <a href="/tags/side-menus/" style="font-size: 10px;">side menus</a> <a href="/tags/strongloop/" style="font-size: 10px;">strongloop</a> <a href="/tags/主键/" style="font-size: 10px;">主键</a> <a href="/tags/全部变量/" style="font-size: 10px;">全部变量</a> <a href="/tags/守护进程/" style="font-size: 10px;">守护进程</a> <a href="/tags/负载均衡/" style="font-size: 10px;">负载均衡</a> <a href="/tags/集合/" style="font-size: 10px;">集合</a>
-					</div>
-				</section>
-				
-				
-				
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-67357558-7', 'auto');
+  ga('send', 'pageview');
+</script>
 
-				
-				
-				<section class="switch-part switch-part3">
-				
-					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
-				</section>
-				
-			</div>
-		</div>
-	</header>				
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nemo's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Ride The Lightning</p>
 </div>
-    </div>
-    <div class="mid-col">
-      <nav id="mobile-nav">
-  	<div class="overlay">
-  		<div class="slider-trigger"></div>
-  		<h1 class="header-author js-mobile-header hide">violet_day</h1>
-  	</div>
-	<div class="intrude-less">
-		<header id="header" class="inner">
-			<div class="profilepic">
-				<img src="https://avatars2.githubusercontent.com/u/5970246?v=3&amp;s=460">
-				<hgroup>
-				  <h1 class="header-author">violet_day</h1>
-				</hgroup>
-			</div>
-			
-			<p class="header-subtitle">Ride The Lightning</p>
-			
-			<nav class="header-menu">
-				<ul>
-				
-					<li><a href="/">主页</a></li>
-		        
-					<li><a href="/archives">所有文章</a></li>
-		        
-					<li><a href="/categories">随笔</a></li>
-		        
-					<li><a href="/tags">标签</a></li>
-		        
-		        <div class="clearfix"></div>
-				</ul>
-			</nav>
-			<nav class="header-nav">
-				<div class="social">
-					
-						<a class="github" target="_blank" href="https://github.com/violet-day" title="github">github</a>
-			        
-						<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
-			        
-						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
-			        
-						<a class="mail" target="_blank" href="/violet_day@live.com" title="mail">mail</a>
-			        
-				</div>
-			</nav>
-		</header>				
-	</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
 </nav>
-      <div class="body-wrap"><article id="post-Nodejs/hubot-scripting" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/02/14/Nodejs/hubot-scripting/" class="article-date">
-  	<time datetime="2016-02-14T05:24:37.000Z" itemprop="datePublished">Feb 14 2016</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
     
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
+
   
-    <h1 class="article-title" itemprop="name">
-      hubot-scripting
-    </h1>
   
 
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                hubot-scripting
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-02-14T13:24:37+08:00" content="Feb 14 2016">
+              Feb 14 2016
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/02/14/Nodejs/hubot-scripting/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/14/Nodejs/hubot-scripting/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
       </header>
-      
-      <div class="article-info article-info-post">
-        
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hubot/">hubot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
-	</div>
-
-        
-
-        <div class="clearfix"></div>
-      </div>
-      
     
-    <div class="article-entry" itemprop="articleBody">
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
-        <h2 id="Anatomy_of_a_script">Anatomy of a script</h2><p>当你创建了你的hubot之后，生成器同样创建了一个scripts目录。你如果打开看看，会发现一样示例脚本。为了让脚本生效，你需要：</p>
+      
+
+      
+        <h2 id="Anatomy-of-a-script"><a href="#Anatomy-of-a-script" class="headerlink" title="Anatomy of a script"></a>Anatomy of a script</h2><p>当你创建了你的hubot之后，生成器同样创建了一个scripts目录。你如果打开看看，会发现一样示例脚本。为了让脚本生效，你需要：</p>
 <ul>
 <li>脚本需要位于hubot的脚本加载目录中(默认为<code>src/scripts</code>和<code>scripts</code>)</li>
 <li><code>.coffee</code>或<code>.js</code>文件</li>
@@ -244,7 +298,7 @@ export为一个函数，即：
 <p>export为一个函数，即：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">module.exports = (robot) -&gt;</span><br><span class="line">  # your code here</span><br></pre></td></tr></table></figure>
 <p>参数<code>robot</code>是的一个robot的一个实例。现在我们可以干一些碉堡了的事情了。</p>
-<h2 id="Hearing_and_responding">Hearing and responding</h2><p>既然这是一个聊天机器人，那么最常见的互动方式就是基于消息的。Hubot可以<code>hear</code>房间中说的消息，也可以直接<code>respond</code>。这些方法都接受一个正则表达式和一个回调函数作为参数。例如：</p>
+<h2 id="Hearing-and-responding"><a href="#Hearing-and-responding" class="headerlink" title="Hearing and responding"></a>Hearing and responding</h2><p>既然这是一个聊天机器人，那么最常见的互动方式就是基于消息的。Hubot可以<code>hear</code>房间中说的消息，也可以直接<code>respond</code>。这些方法都接受一个正则表达式和一个回调函数作为参数。例如：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">module.exports = (robot) -&gt;</span><br><span class="line">  robot.hear /badger/i, (res) -&gt;</span><br><span class="line">    # your code here</span><br><span class="line"></span><br><span class="line">  robot.respond /open the pod bay doors/i, (res) -&gt;</span><br><span class="line">    # your code here</span><br></pre></td></tr></table></figure>
 <p><code>robot.hear /badger/</code>，回调函数会在任何任何消息文本匹配时之行。比如：</p>
 <ul>
@@ -270,39 +324,39 @@ export为一个函数，即：
 </ul>
 </li>
 </ul>
-<h2 id="Send_&amp;_reply">Send &amp; reply</h2><p><code>res</code>参数是<code>Response</code>的一个实例(historically, this parameter was msg and you may see other scripts use it this way)。你可以通过它<code>send</code>消息回去，<code>emote</code>消息（如果你的adapter支持的话），或者<code>reply</code>那个发送消息的用户。例如：</p>
+<h2 id="Send-amp-reply"><a href="#Send-amp-reply" class="headerlink" title="Send &amp; reply"></a>Send &amp; reply</h2><p><code>res</code>参数是<code>Response</code>的一个实例(historically, this parameter was msg and you may see other scripts use it this way)。你可以通过它<code>send</code>消息回去，<code>emote</code>消息（如果你的adapter支持的话），或者<code>reply</code>那个发送消息的用户。例如：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = (robot) -&gt;</span><br><span class="line">  robot.hear /badger/i, (res) -&gt;</span><br><span class="line">    res.send <span class="string">"Badgers? BADGERS? WE DON'T NEED NO STINKIN BADGERS"</span></span><br><span class="line"></span><br><span class="line">  robot.respond /open the pod bay doors/i, (res) -&gt;</span><br><span class="line">    res.reply <span class="string">"I'm afraid I can't let you do that."</span></span><br><span class="line"></span><br><span class="line">  robot.hear /I like pie/i, (res) -&gt;</span><br><span class="line">    res.emote <span class="string">"makes a freshly baked pie"</span></span><br></pre></td></tr></table></figure>
 <p><code>robot.hear /badgers/</code>的回调不管谁发送的消息直接回复，”Badgers? BADGERS? WE DON’T NEED NO STINKIN BADGERS”。</p>
 <p>如果一个用户Dave说 “HAL: open the pod bay doors”, <code>robot.respond /open the pod bay doors/i</code>的回调函数就会发送消息”Dave: I’m afraid I can’t let you do that.”</p>
-<h2 id="Capturing_data">Capturing data</h2><p>至今，我们的脚本都是静态的回复，相对比较无趣一点。<code>res.match</code>包含了消息中正则匹配的部分。这是JavaScript的特性，返回一个数组，索引为0的是匹配正则表达式的全文本。比如：</p>
+<h2 id="Capturing-data"><a href="#Capturing-data" class="headerlink" title="Capturing data"></a>Capturing data</h2><p>至今，我们的脚本都是静态的回复，相对比较无趣一点。<code>res.match</code>包含了消息中正则匹配的部分。这是JavaScript的特性，返回一个数组，索引为0的是匹配正则表达式的全文本。比如：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">robot.respond /open the (.*) doors/i, (res) -&gt;</span><br><span class="line">  # your code here</span><br></pre></td></tr></table></figure>
 <p>如果Dave说”HAL: open the pod bay doors”, <code>res.match[0]</code>是”open the pod bay doors”, <code>res.match[1]</code>就是”pod bay”。现在，我们可以做一些更动态的事情了：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">robot.respond /open the (.*) doors/i, (res) -&gt;</span><br><span class="line">  doorType = res.match[<span class="number">1</span>]</span><br><span class="line">  <span class="keyword">if</span> doorType is <span class="string">"pod bay"</span></span><br><span class="line">    res.reply <span class="string">"I'm afraid I can't let you do that."</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    res.reply <span class="string">"Opening #&#123;doorType&#125; doors"</span></span><br></pre></td></tr></table></figure>
-<h2 id="Making_HTTP_calls_Unmaintained">Making HTTP calls <em>Unmaintained</em></h2><h2 id="JSON">JSON</h2><h2 id="XML">XML</h2><h2 id="Screen_scraping">Screen scraping</h2><h2 id="Random">Random</h2><p>一个常见的场景就是听到或者相应一个命令，从数组中随即发送图片或者文本。JavaScript和CoffeeScript并没有提供什么方法，所以Hubot提供了一个方便的方法:</p>
+<h2 id="Making-HTTP-calls-Unmaintained"><a href="#Making-HTTP-calls-Unmaintained" class="headerlink" title="Making HTTP calls Unmaintained"></a>Making HTTP calls <em>Unmaintained</em></h2><h2 id="JSON"><a href="#JSON" class="headerlink" title="JSON"></a>JSON</h2><h2 id="XML"><a href="#XML" class="headerlink" title="XML"></a>XML</h2><h2 id="Screen-scraping"><a href="#Screen-scraping" class="headerlink" title="Screen scraping"></a>Screen scraping</h2><h2 id="Random"><a href="#Random" class="headerlink" title="Random"></a>Random</h2><p>一个常见的场景就是听到或者相应一个命令，从数组中随即发送图片或者文本。JavaScript和CoffeeScript并没有提供什么方法，所以Hubot提供了一个方便的方法:</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lulz = [<span class="string">'lol'</span>, <span class="string">'rofl'</span>, <span class="string">'lmao'</span>]</span><br><span class="line"></span><br><span class="line">res.send res.random lulz</span><br></pre></td></tr></table></figure>
-<h2 id="Topic">Topic</h2><p>如果adapter支持的话，Hubot可以对房间的主题变更作出相应的反应。</p>
+<h2 id="Topic"><a href="#Topic" class="headerlink" title="Topic"></a>Topic</h2><p>如果adapter支持的话，Hubot可以对房间的主题变更作出相应的反应。</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = (robot) -&gt;</span><br><span class="line">  robot.topic (res) -&gt;</span><br><span class="line">    res.send <span class="string">"#&#123;res.message.text&#125;? That's a Paddlin'"</span></span><br></pre></td></tr></table></figure>
-<h2 id="Entering_and_leaving">Entering and leaving</h2><p>如果adapter支持，Hubot可以看到用户进入和离开。</p>
+<h2 id="Entering-and-leaving"><a href="#Entering-and-leaving" class="headerlink" title="Entering and leaving"></a>Entering and leaving</h2><p>如果adapter支持，Hubot可以看到用户进入和离开。</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">enterReplies = [<span class="string">'Hi'</span>, <span class="string">'Target Acquired'</span>, <span class="string">'Firing'</span>, <span class="string">'Hello friend.'</span>, <span class="string">'Gotcha'</span>, <span class="string">'I see you'</span>]</span><br><span class="line">leaveReplies = [<span class="string">'Are you still there?'</span>, <span class="string">'Target lost'</span>, <span class="string">'Searching'</span>]</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = (robot) -&gt;</span><br><span class="line">  robot.enter (res) -&gt;</span><br><span class="line">    res.send res.random enterReplies</span><br><span class="line">  robot.leave (res) -&gt;</span><br><span class="line">    res.send res.random leaveReplies</span><br></pre></td></tr></table></figure>
-<h2 id="Custom_Listeners">Custom Listeners</h2><p>上面涵盖了普通用户的大部分功能需求 (hear, respond, enter, leave, topic)，有时候，我们需要特别的匹配逻辑。如果这样，你可以使用<code>listen</code>来制定自定义的函数，而不是正则表达式。</p>
+<h2 id="Custom-Listeners"><a href="#Custom-Listeners" class="headerlink" title="Custom Listeners"></a>Custom Listeners</h2><p>上面涵盖了普通用户的大部分功能需求 (hear, respond, enter, leave, topic)，有时候，我们需要特别的匹配逻辑。如果这样，你可以使用<code>listen</code>来制定自定义的函数，而不是正则表达式。</p>
 <p>如果想回调函数执行，match函数必须返回可以转化为true的值，返回值会传递给<code>response.match</code></p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">module.exports = (robot) -&gt;</span><br><span class="line">  robot.listen(</span><br><span class="line">    (message) -&gt; # Match function</span><br><span class="line">      # Occassionally respond to things that Steve says</span><br><span class="line">      message.user.name is "Steve" and Math.random() &gt; 0.8</span><br><span class="line">    (response) -&gt; # Standard listener callback</span><br><span class="line">      # Let Steve know how happy you are that he exists</span><br><span class="line">      response.reply "HI STEVE! YOU'RE MY BEST FRIEND! (but only like #&#123;response.match * 100&#125;% of the time)"</span><br><span class="line">  )</span><br></pre></td></tr></table></figure>
-<h2 id="Events">Events</h2><p>Hubot还可以对事件作出相应，这可以用来script之间传递数据。<code>robot.emit</code>和<code>robot.on</code>通过Nodej.js的<code>EventEmitter</code>封装。</p>
+<h2 id="Events"><a href="#Events" class="headerlink" title="Events"></a>Events</h2><p>Hubot还可以对事件作出相应，这可以用来script之间传递数据。<code>robot.emit</code>和<code>robot.on</code>通过Nodej.js的<code>EventEmitter</code>封装。</p>
 <p>一个例子就是有一个脚本和服务互动，当请求来的时候触发事件。比如，我们可以有一个脚本从Github的post-commit钩子接受数据，触发commit事件，另一个脚本处理这些commits。</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># src/scripts/github-commits.coffee</span><br><span class="line">module.exports = (robot) -&gt;</span><br><span class="line">  robot.router.post "/hubot/gh-commits", (req, res) -&gt;</span><br><span class="line">    robot.emit "commit", &#123;</span><br><span class="line">        user    : &#123;&#125;, #hubot user object</span><br><span class="line">        repo    : 'https://github.com/github/hubot',</span><br><span class="line">        hash  : '2e1951c089bd865839328592ff673d2f08153643'</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># src/scripts/heroku.coffee</span><br><span class="line">module.exports = (robot) -&gt;</span><br><span class="line">  robot.on "commit", (commit) -&gt;</span><br><span class="line">    robot.send commit.user, "Will now deploy #&#123;commit.hash&#125; from #&#123;commit.repo&#125;!"</span><br><span class="line">    #deploy code goes here</span><br></pre></td></tr></table></figure>
 <p>如果提供事件，非常建议包含一个在数据中包含一个hubot用户或者房间，这样允许hubot来在聊天中通知用户或房间。</p>
-<h2 id="Error_Handling">Error Handling</h2><p>没有代码是完美的，错误和异常都是可以接受的。先前，未捕获的异常会导致hubot实例crash。Hubot现在包含了<code>uncaughtException</code>处理，他来提供脚本来做一些异常处理。</p>
+<h2 id="Error-Handling"><a href="#Error-Handling" class="headerlink" title="Error Handling"></a>Error Handling</h2><p>没有代码是完美的，错误和异常都是可以接受的。先前，未捕获的异常会导致hubot实例crash。Hubot现在包含了<code>uncaughtException</code>处理，他来提供脚本来做一些异常处理。</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># src/scripts/does-not-compute.coffee</span><br><span class="line">module.exports = (robot) -&gt;</span><br><span class="line">  robot.error (err, res) -&gt;</span><br><span class="line">    robot.logger.error "DOES NOT COMPUTE"</span><br><span class="line"></span><br><span class="line">    if res?</span><br><span class="line">      res.reply "DOES NOT COMPUTE"</span><br></pre></td></tr></table></figure>
 <p>这里你可以做任何处理处理，但是如果你想做一些额外的补救措施、记录日志的话，最好是异步的代码。否则，你可能会遇到递归错误而且还不知道。</p>
 <p>会有一个<code>error</code>事件触发，用错误处理函数来消费这个事件。因此，不管会不会发生，你都要处理好自己的异常，并且自己触发他们。第一个参数是触发的错误对象，第二个是可选参数来描述错误。用上面一个例子：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">robot.router.post '/hubot/chatsecrets/:room', (req, res) -&gt;</span><br><span class="line">  room = req.params.room</span><br><span class="line">  data = null</span><br><span class="line">  try</span><br><span class="line">    data = JSON.parse req.body.payload</span><br><span class="line">  catch err</span><br><span class="line">    robot.emit 'error', err</span><br><span class="line"></span><br><span class="line">  # rest of the code here</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">robot.hear /midnight train/i, (res)</span><br><span class="line">  robot.http("https://midnight-train")</span><br><span class="line">    .get() (err, res, body) -&gt;</span><br><span class="line">      if err</span><br><span class="line">        res.reply "Had problems taking the midnight train"</span><br><span class="line">        robot.emit 'error', err, res</span><br><span class="line">        return</span><br><span class="line">      # rest of code here</span><br></pre></td></tr></table></figure>
 <p>第二个例子中，很值得思考下用户会看到什么样子的信息。如果你有一个错误处理函数来回复用户，你可能不需要添加一个自定义的错误提示给用户，但是这个也取决于你对异常提示有多公开。</p>
-<h2 id="Persistence">Persistence</h2><p>Hubot有一个基于内存的key-value存储，通过<code>robot.brain</code>来存储、设置数据。</p>
+<h2 id="Persistence"><a href="#Persistence" class="headerlink" title="Persistence"></a>Persistence</h2><p>Hubot有一个基于内存的key-value存储，通过<code>robot.brain</code>来存储、设置数据。</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">robot.respond /have a soda/i, (res) -&gt;</span><br><span class="line">  # Get number of sodas had (coerced to a number).</span><br><span class="line">  sodasHad = robot.brain.get('totalSodas') * 1 or 0</span><br><span class="line"></span><br><span class="line">  if sodasHad &gt; 4</span><br><span class="line">    res.reply "I'm too fizzy.."</span><br><span class="line"></span><br><span class="line">  else</span><br><span class="line">    res.reply 'Sure!'</span><br><span class="line"></span><br><span class="line">    robot.brain.set 'totalSodas', sodasHad+1</span><br><span class="line">robot.respond /sleep it off/i, (res) -&gt;</span><br><span class="line">  robot.brain.set 'totalSodas', 0</span><br><span class="line">  msg.reply 'zzzzz'</span><br></pre></td></tr></table></figure>
 <p>如果脚本需要寻找用户信息，有一些方法在<code>robot.brain</code>中可以用来通过id、name或者模糊匹配来查找一个或多个用户:<code>userForName</code>, <code>userForId</code>, <code>userForFuzzyName</code>, <code>usersForFuzzyName</code>。</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">module.exports = (robot) -&gt;</span><br><span class="line"></span><br><span class="line">  robot.respond /who is @?([\w .\-]+)\?*$/i, (res) -&gt;</span><br><span class="line">    name = res.match[1].trim()</span><br><span class="line"></span><br><span class="line">    users = robot.brain.usersForFuzzyName(name)</span><br><span class="line">    if users.length is 1</span><br><span class="line">      user = users[0]</span><br><span class="line">      # Do something interesting here..</span><br><span class="line"></span><br><span class="line">      res.send "#&#123;name&#125; is user - #&#123;user&#125;"</span><br></pre></td></tr></table></figure>
-<h2 id="LISTENER_METADATA">LISTENER METADATA</h2><p>出了正则表达式和回调函数，<code>hear</code>和<code>respond</code>接受一个可选的Object参数，可以很容易的对即将创建的Listener对象添加metadata信息。metadata可以很容易的扩展脚本信息而不需要修改脚本本身。</p>
+<h2 id="LISTENER-METADATA"><a href="#LISTENER-METADATA" class="headerlink" title="LISTENER METADATA"></a>LISTENER METADATA</h2><p>出了正则表达式和回调函数，<code>hear</code>和<code>respond</code>接受一个可选的Object参数，可以很容易的对即将创建的Listener对象添加metadata信息。metadata可以很容易的扩展脚本信息而不需要修改脚本本身。</p>
 <p>最重要而且最常见的metadata的key是<code>id</code>，每个Listener都应有被给予一个唯一的id(option.id，默认为null)。通过模块名来划分命名空间(‘my-module.my-listener’)。这些名称允许其他脚本很轻松的定位listeners，扩展像authorization和rate limiting的功能也不需要额外的函数。</p>
 <p>额外的扩展可能需要定义额外的metadata key。</p>
 <p>提前看个例子：</p>
@@ -312,9 +366,9 @@ export为一个函数，即：
 <li>authorization策略，允许annoyers组的每个人执行<code>annoyers.*</code>命令</li>
 <li>rate limiting:30分钟内只能调用<code>annoyance.start</code>一次</li>
 </ul>
-<h2 id="MIDDLEWARE">MIDDLEWARE</h2><p>有三种类型的中间件: Receive, Listener and Response.</p>
+<h2 id="MIDDLEWARE"><a href="#MIDDLEWARE" class="headerlink" title="MIDDLEWARE"></a>MIDDLEWARE</h2><p>有三种类型的中间件: Receive, Listener and Response.</p>
 <p>Receive 中间件在 listeners 检查之前运行<br>Listener 中间件运行在每个listener匹配消息之后<br>Response 中间件在每个消息发送出去时运行</p>
-<h3 id="Execution_Process_and_API">Execution Process and API</h3><p>和<a href="http://expressjs.com/api.html#middleware" target="_blank" rel="external">Express middleware</a>相似,<br>Hubot按定义顺序执行中间件。每个中间件通过<code>next</code>继续中间件，通过<code>done</code>打断中间件。</p>
+<h3 id="Execution-Process-and-API"><a href="#Execution-Process-and-API" class="headerlink" title="Execution Process and API"></a>Execution Process and API</h3><p>和<a href="http://expressjs.com/api.html#middleware" target="_blank" rel="external">Express middleware</a>相似,<br>Hubot按定义顺序执行中间件。每个中间件通过<code>next</code>继续中间件，通过<code>done</code>打断中间件。</p>
 <p>Middleware调用的时候有以下参数：</p>
 <ul>
 <li><code>context</code><ul>
@@ -333,15 +387,15 @@ export为一个函数，即：
 </li>
 </ul>
 <p>每个中间键都接受相同的API签名，<code>context</code>、<code>next</code>和<code>done</code>。不同类型的中间件在context中接受不同的信息。</p>
-<h3 id="Error_Handling-1">Error Handling</h3><p>对于同步的中间件（不会产生事件循环），hubot会自动捕获错误并且触发<code>error</code>事件。Hubot还会调用最近的<code>done</code>回调来结束中间件调用。异步中间件应该自己捕获异常，触发error事件，调用done函数。任何未捕获的异常都会打断中间件的所有回调。</p>
-<h2 id="LISTENER_MIDDLEWARE">LISTENER MIDDLEWARE</h2><p>Listener中间件在匹配消息和执行listener之间插入逻辑。这允许你为每个匹配的脚本创建扩展。比如，集中的认证策略、调用限制、日志、指标。Middleware的实现和其他脚本一样，但是并不是使用<code>hear</code>和<code>respond</code>，中间件使用<code>listenerMiddleware</code></p>
-<h3 id="Listener_Middleware_Examples">Listener Middleware Examples</h3><p>完整的例子可以参见<a href="hubot-rate-limit">hubot-rate-limit</a>。</p>
+<h3 id="Error-Handling-1"><a href="#Error-Handling-1" class="headerlink" title="Error Handling"></a>Error Handling</h3><p>对于同步的中间件（不会产生事件循环），hubot会自动捕获错误并且触发<code>error</code>事件。Hubot还会调用最近的<code>done</code>回调来结束中间件调用。异步中间件应该自己捕获异常，触发error事件，调用done函数。任何未捕获的异常都会打断中间件的所有回调。</p>
+<h2 id="LISTENER-MIDDLEWARE"><a href="#LISTENER-MIDDLEWARE" class="headerlink" title="LISTENER MIDDLEWARE"></a>LISTENER MIDDLEWARE</h2><p>Listener中间件在匹配消息和执行listener之间插入逻辑。这允许你为每个匹配的脚本创建扩展。比如，集中的认证策略、调用限制、日志、指标。Middleware的实现和其他脚本一样，但是并不是使用<code>hear</code>和<code>respond</code>，中间件使用<code>listenerMiddleware</code></p>
+<h3 id="Listener-Middleware-Examples"><a href="#Listener-Middleware-Examples" class="headerlink" title="Listener Middleware Examples"></a>Listener Middleware Examples</h3><p>完整的例子可以参见<a href="hubot-rate-limit">hubot-rate-limit</a>。</p>
 <p>一个记录执行命令的中间件：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">module.exports = (robot) -&gt;</span><br><span class="line">  robot.listenerMiddleware (context, next, done) -&gt;</span><br><span class="line">    # Log commands</span><br><span class="line">    robot.logger.info "#&#123;context.response.message.user.name&#125; asked me to #&#123;context.response.message.text&#125;"</span><br><span class="line">    # Continue executing middleware</span><br><span class="line">    next()</span><br><span class="line">```    </span><br><span class="line">   </span><br><span class="line">这个例子中，每个匹配的消息都会写下日志信息。</span><br><span class="line"></span><br><span class="line">更加复杂的调用限制的例子：</span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">module.exports = (robot) -&gt;</span><br><span class="line">  # Map of listener ID to last time it was executed</span><br><span class="line">  lastExecutedTime = &#123;&#125;</span><br><span class="line"></span><br><span class="line">  robot.listenerMiddleware (context, next, done) -&gt;</span><br><span class="line">    try</span><br><span class="line">      # Default to 1s unless listener provides a different minimum period</span><br><span class="line">      minPeriodMs = context.listener.options?.rateLimits?.minPeriodMs? or 1000</span><br><span class="line"></span><br><span class="line">      # See if command has been executed recently</span><br><span class="line">      if lastExecutedTime.hasOwnProperty(context.listener.options.id) and</span><br><span class="line">         lastExecutedTime[context.listener.options.id] &gt; Date.now() - minPeriodMs</span><br><span class="line">        # Command is being executed too quickly!</span><br><span class="line">        done()</span><br><span class="line">      else</span><br><span class="line">        next -&gt;</span><br><span class="line">          lastExecutedTime[context.listener.options.id] = Date.now()</span><br><span class="line">          done()</span><br><span class="line">    catch err</span><br><span class="line">      robot.emit('error', err, context.response)</span><br></pre></td></tr></table></figure>
 <p>这个例子中，中间件检查listener是否在最近的1s中被调用。如果有，中间件里面调用<code>done</code>，阻止listenr的回调调用。如果listenr允许执行，中间件在next中添加<code>done</code>，这样就能调用记录结束时间。</p>
 <p>这个例子同样展示了通过特定的metadata可以创建出很有用的扩展：使用限制中间件，脚本开发人员可以通过设置listener option参数创建调用限制的命令。</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">module.exports = (robot) -&gt;</span><br><span class="line">  robot.hear /hello/, id: 'my-hello', rateLimits: &#123;minPeriodMs: 10000&#125;, (msg) -&gt;</span><br><span class="line">    # This will execute no faster than once every ten seconds</span><br><span class="line">    msg.reply 'Why, hello there!'</span><br></pre></td></tr></table></figure>
-<h3 id="Listener_Middleware_API">Listener Middleware API</h3><p>Listener中间件的回调函数接受3个参数:<code>context</code>、<code>next</code>和<code>done</code>。</p>
+<h3 id="Listener-Middleware-API"><a href="#Listener-Middleware-API" class="headerlink" title="Listener Middleware API"></a>Listener Middleware API</h3><p>Listener中间件的回调函数接受3个参数:<code>context</code>、<code>next</code>和<code>done</code>。</p>
 <p><code>context</code>包含这些字段：</p>
 <ul>
 <li><code>listener</code><ul>
@@ -355,10 +409,10 @@ export为一个函数，即：
 </ul>
 </li>
 </ul>
-<h2 id="RECEIVE_MIDDLEWARE">RECEIVE MIDDLEWARE</h2><p>Receive中间件在所有的listeners执行之前。很适合用来实现黑名单功能而不用考虑ID，metrics等。</p>
-<h3 id="Receive_Middleware_Example">Receive Middleware Example</h3><p>示例中间件禁止特定的用户使用包括<code>hear</code>在内的功能。如果一个用户想使用一个命令，会返回一条错误信息。</p>
+<h2 id="RECEIVE-MIDDLEWARE"><a href="#RECEIVE-MIDDLEWARE" class="headerlink" title="RECEIVE MIDDLEWARE"></a>RECEIVE MIDDLEWARE</h2><p>Receive中间件在所有的listeners执行之前。很适合用来实现黑名单功能而不用考虑ID，metrics等。</p>
+<h3 id="Receive-Middleware-Example"><a href="#Receive-Middleware-Example" class="headerlink" title="Receive Middleware Example"></a>Receive Middleware Example</h3><p>示例中间件禁止特定的用户使用包括<code>hear</code>在内的功能。如果一个用户想使用一个命令，会返回一条错误信息。</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">BLACKLISTED_USERS = [</span><br><span class="line">  '12345' # Restrict access for a user ID for a contractor</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">robot.receiveMiddleware (context, next, done) -&gt;</span><br><span class="line">  if context.response.message.user.id in BLACKLISTED_USERS</span><br><span class="line">    # Don't process this message further.</span><br><span class="line">    context.response.message.finish()</span><br><span class="line"></span><br><span class="line">    # If the message starts with 'hubot' or the alias pattern, this user was</span><br><span class="line">    # explicitly trying to run a command, so respond with an error message.</span><br><span class="line">    if context.response.message.text?.match(robot.respondPattern(''))</span><br><span class="line">      context.response.reply "I'm sorry @#&#123;context.response.message.user.name&#125;, but I'm configured to ignore your commands."</span><br><span class="line"></span><br><span class="line">    # Don't process further middleware.</span><br><span class="line">    done()</span><br><span class="line">  else</span><br><span class="line">    next(done)</span><br></pre></td></tr></table></figure>
-<h2 id="Receive_Middleware_API">Receive Middleware API</h2><p>Receive中间件的回调函数接受3个参数:<code>context</code>、<code>next</code>和<code>done</code>。</p>
+<h2 id="Receive-Middleware-API"><a href="#Receive-Middleware-API" class="headerlink" title="Receive Middleware API"></a>Receive Middleware API</h2><p>Receive中间件的回调函数接受3个参数:<code>context</code>、<code>next</code>和<code>done</code>。</p>
 <p><code>context</code>包含这些字段：</p>
 <ul>
 <li>response<ul>
@@ -368,10 +422,10 @@ export为一个函数，即：
 </ul>
 </li>
 </ul>
-<h2 id="RESPONSE_MIDDLEWARE">RESPONSE MIDDLEWARE</h2><p>Response中间件在hubot发送消息给聊天室的时候执行。对消息格式化，防止密码泄漏，指标等很有用。</p>
-<h3 id="Response_Middleware_Example">Response Middleware Example</h3><p>示例修改了发送至聊天室的链接。</p>
+<h2 id="RESPONSE-MIDDLEWARE"><a href="#RESPONSE-MIDDLEWARE" class="headerlink" title="RESPONSE MIDDLEWARE"></a>RESPONSE MIDDLEWARE</h2><p>Response中间件在hubot发送消息给聊天室的时候执行。对消息格式化，防止密码泄漏，指标等很有用。</p>
+<h3 id="Response-Middleware-Example"><a href="#Response-Middleware-Example" class="headerlink" title="Response Middleware Example"></a>Response Middleware Example</h3><p>示例修改了发送至聊天室的链接。</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = (robot) -&gt;</span><br><span class="line">  robot.responseMiddleware (context, next, done) -&gt;</span><br><span class="line">    <span class="keyword">return</span> unless context.plaintext?</span><br><span class="line">    context.strings = (string.replace(<span class="regexp">/\[([^\[\]]*?)\]\((https?:\/\/.*?)\)/</span>, <span class="string">"&lt;$2|$1&gt;"</span>) <span class="keyword">for</span> string <span class="keyword">in</span> context.strings)</span><br><span class="line">    next()</span><br></pre></td></tr></table></figure>
-<h3 id="Response_Middleware_API">Response Middleware API</h3><p>Response中间件的回调函数接受3个参数:<code>context</code>、<code>next</code>和<code>done</code>。</p>
+<h3 id="Response-Middleware-API"><a href="#Response-Middleware-API" class="headerlink" title="Response Middleware API"></a>Response Middleware API</h3><p>Response中间件的回调函数接受3个参数:<code>context</code>、<code>next</code>和<code>done</code>。</p>
 <p><code>context</code>包含这些字段：</p>
 <ul>
 <li><code>response</code><ul>
@@ -391,7 +445,7 @@ export为一个函数，即：
 </ul>
 </li>
 </ul>
-<h2 id="TESTING_HUBOT_SCRIPTS">TESTING HUBOT SCRIPTS</h2><p><a href="https://github.com/mtsmfm/hubot-test-helper" target="_blank" rel="external">hubot-test-helper</a>是用来测试Hubot脚本的很好的测试框架。</p>
+<h2 id="TESTING-HUBOT-SCRIPTS"><a href="#TESTING-HUBOT-SCRIPTS" class="headerlink" title="TESTING HUBOT SCRIPTS"></a>TESTING HUBOT SCRIPTS</h2><p><a href="https://github.com/mtsmfm/hubot-test-helper" target="_blank" rel="external">hubot-test-helper</a>是用来测试Hubot脚本的很好的测试框架。</p>
 <p>安装包：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">% npm install hubot-test-helper --save-dev</span><br></pre></td></tr></table></figure></p>
 <p>同时还需要安装:</p>
 <ul>
@@ -411,112 +465,462 @@ export为一个函数，即：
 
       
     </div>
-    
-  </div>
-  
-    
-<nav id="article-nav">
-  
-  
-    <a href="/2016/02/12/Nodejs/RabbitMQ中的Back-off和retry/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">RabbitMQ中的Back-off和retry</div>
-      <strong class="article-nav-caption">></strong>
-    </a>
-  
-</nav>
 
-  
-</article>
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/hubot/" rel="tag">#hubot</a>
+          
+            <a href="/tags/node/" rel="tag">#node</a>
+          
+        </div>
+      
 
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/02/12/Nodejs/RabbitMQ中的Back-off和retry/" rel="next" title="RabbitMQ中的Back-off和retry">
+                <i class="fa fa-chevron-left"></i> RabbitMQ中的Back-off和retry
+              </a>
+            
+          </div>
 
-<div class="share">
-	<!-- JiaThis Button BEGIN -->
-	<div class="jiathis_style">
-		<span class="jiathis_txt">分享到：</span>
-		<a class="jiathis_button_tsina"></a>
-		<a class="jiathis_button_cqq"></a>
-		<a class="jiathis_button_douban"></a>
-		<a class="jiathis_button_weixin"></a>
-		<a class="jiathis_button_tumblr"></a>
-		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
-	</div>
-	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
-	<!-- JiaThis Button END -->
-</div>
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
 
-
-
-<div class="duoshuo">
-	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="Nodejs/hubot-scripting" data-title="hubot-scripting" data-url="http://violet-day.github.io/2016/02/14/Nodejs/hubot-scripting/"></div>
-	<!-- 多说评论框 end -->
-	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-	<script type="text/javascript">
-	var duoshuoQuery = {short_name:"true"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		 || document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-	<!-- 多说公共JS代码 end -->
-</div>
+      
+      
+    </footer>
+  </article>
 
 
 
-</div>
-      <footer id="footer">
-  <div class="outer">
-    <div id="footer-info">
-    	<div class="footer-left">
-    		&copy; 2016 violet_day
-    	</div>
-      	<div class="footer-right">
-      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
-      	</div>
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/02/14/Nodejs/hubot-scripting/"
+     data-title="hubot-scripting"
+     data-content=""
+     data-url="http://violet-day.github.io/2016/02/14/Nodejs/hubot-scripting/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
     </div>
   </div>
-</footer>
+</div>
+      
     </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
     
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
-  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+      <div class="ds-thread" data-thread-key="2016/02/14/Nodejs/hubot-scripting/"
+           data-title="hubot-scripting" data-url="http://violet-day.github.io/2016/02/14/Nodejs/hubot-scripting/">
+      </div>
+    
+  </div>
 
 
-<script src="/js/mobile.js" type="text/javascript"></script>
-<script src="/js/main.js" type="text/javascript"></script>
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars2.githubusercontent.com/u/5970246?v=3&s=460"
+               alt="violet_day" />
+          <p class="site-author-name" itemprop="name">violet_day</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/violet-day" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Anatomy-of-a-script"><span class="nav-number">1.</span> <span class="nav-text">Anatomy of a script</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hearing-and-responding"><span class="nav-number">2.</span> <span class="nav-text">Hearing and responding</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Send-amp-reply"><span class="nav-number">3.</span> <span class="nav-text">Send & reply</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Capturing-data"><span class="nav-number">4.</span> <span class="nav-text">Capturing data</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Making-HTTP-calls-Unmaintained"><span class="nav-number">5.</span> <span class="nav-text">Making HTTP calls Unmaintained</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JSON"><span class="nav-number">6.</span> <span class="nav-text">JSON</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XML"><span class="nav-number">7.</span> <span class="nav-text">XML</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Screen-scraping"><span class="nav-number">8.</span> <span class="nav-text">Screen scraping</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Random"><span class="nav-number">9.</span> <span class="nav-text">Random</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Topic"><span class="nav-number">10.</span> <span class="nav-text">Topic</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Entering-and-leaving"><span class="nav-number">11.</span> <span class="nav-text">Entering and leaving</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Custom-Listeners"><span class="nav-number">12.</span> <span class="nav-text">Custom Listeners</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Events"><span class="nav-number">13.</span> <span class="nav-text">Events</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Error-Handling"><span class="nav-number">14.</span> <span class="nav-text">Error Handling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Persistence"><span class="nav-number">15.</span> <span class="nav-text">Persistence</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LISTENER-METADATA"><span class="nav-number">16.</span> <span class="nav-text">LISTENER METADATA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MIDDLEWARE"><span class="nav-number">17.</span> <span class="nav-text">MIDDLEWARE</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Execution-Process-and-API"><span class="nav-number">17.1.</span> <span class="nav-text">Execution Process and API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Error-Handling-1"><span class="nav-number">17.2.</span> <span class="nav-text">Error Handling</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LISTENER-MIDDLEWARE"><span class="nav-number">18.</span> <span class="nav-text">LISTENER MIDDLEWARE</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Listener-Middleware-Examples"><span class="nav-number">18.1.</span> <span class="nav-text">Listener Middleware Examples</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Listener-Middleware-API"><span class="nav-number">18.2.</span> <span class="nav-text">Listener Middleware API</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RECEIVE-MIDDLEWARE"><span class="nav-number">19.</span> <span class="nav-text">RECEIVE MIDDLEWARE</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Receive-Middleware-Example"><span class="nav-number">19.1.</span> <span class="nav-text">Receive Middleware Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Receive-Middleware-API"><span class="nav-number">20.</span> <span class="nav-text">Receive Middleware API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RESPONSE-MIDDLEWARE"><span class="nav-number">21.</span> <span class="nav-text">RESPONSE MIDDLEWARE</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Response-Middleware-Example"><span class="nav-number">21.1.</span> <span class="nav-text">Response Middleware Example</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Response-Middleware-API"><span class="nav-number">21.2.</span> <span class="nav-text">Response Middleware API</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TESTING-HUBOT-SCRIPTS"><span class="nav-number">22.</span> <span class="nav-text">TESTING HUBOT SCRIPTS</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">violet_day</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
 
 
 
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
 
 
-<! -- mathjax config similar to math.stackexchange -->
+  
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-    tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-        processEscapes: true,
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
     }
-});
 
-MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-        all[i].SourceElement().parentNode.className += ' has-jax';                 
-    }       
-});
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
 </script>
 
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
 </script>
 
 
 
-  </div>
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"Nemo"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+
+  
+  
+
+
 </body>
 </html>

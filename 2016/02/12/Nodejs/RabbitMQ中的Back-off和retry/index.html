@@ -1,11 +1,63 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
+<!doctype html>
+
+
+
   
-  <title>RabbitMQ中的Back-off和retry | Nemo&#39;s Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="使用第三方API的一个常见问题是峰值期间可用性问题。即便是非峰值期间，API请求仍可能被拒绝、超时或者失败。这篇文章中，我将讲解对于RabbitMQ消费者轻量级的指数退避和重试机制。
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="back-off,node,rabbitmq,retry," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="使用第三方API的一个常见问题是峰值期间可用性问题。即便是非峰值期间，API请求仍可能被拒绝、超时或者失败。这篇文章中，我将讲解对于RabbitMQ消费者轻量级的指数退避和重试机制。
 New API, new service当用户从我们的一个网站删除了一张照片之后，我们会将它从我们的CDN服务中删除。我们的后端是面向服务的架构，这里使用了CDN purge服务。这个服务对核心web应用发生的事情做">
 <meta property="og:type" content="article">
 <meta property="og:title" content="RabbitMQ中的Back-off和retry">
@@ -21,217 +73,219 @@ New API, new service当用户从我们的一个网站删除了一张照片之后
 <meta name="twitter:title" content="RabbitMQ中的Back-off和retry">
 <meta name="twitter:description" content="使用第三方API的一个常见问题是峰值期间可用性问题。即便是非峰值期间，API请求仍可能被拒绝、超时或者失败。这篇文章中，我将讲解对于RabbitMQ消费者轻量级的指数退避和重试机制。
 New API, new service当用户从我们的一个网站删除了一张照片之后，我们会将它从我们的CDN服务中删除。我们的后端是面向服务的架构，这里使用了CDN purge服务。这个服务对核心web应用发生的事情做">
-  
-    <link rel="alternative" href="/atom.xml" title="Nemo&#39;s Blog" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  <link rel="stylesheet" href="/css/style.css" type="text/css">
-  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 6218687468384814000,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> RabbitMQ中的Back-off和retry | Nemo's Blog </title>
 </head>
-<body>
-  <div id="container">
-    <div class="left-col">
-    <div class="overlay"></div>
-<div class="intrude-less">
-	<header id="header" class="inner">
-		<a href="/" class="profilepic">
-			<img src="https://avatars2.githubusercontent.com/u/5970246?v=3&amp;s=460">
-		</a>
 
-		<hgroup>
-		  <h1 class="header-author"><a href="/">violet_day</a></h1>
-		</hgroup>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
-		
-		<p class="header-subtitle">Ride The Lightning</p>
-		
+  
 
-		
-			<div class="switch-btn">
-				<div class="icon">
-					<div class="icon-ctn">
-						<div class="icon-wrap icon-house" data-idx="0">
-							<div class="birdhouse"></div>
-							<div class="birdhouse_holes"></div>
-						</div>
-						<div class="icon-wrap icon-ribbon hide" data-idx="1">
-							<div class="ribbon"></div>
-						</div>
-						
-						
-						<div class="icon-wrap icon-me hide" data-idx="3">
-							<div class="user"></div>
-							<div class="shoulder"></div>
-						</div>
-						
-					</div>
-					
-				</div>
-				<div class="tips-box hide">
-					<div class="tips-arrow"></div>
-					<ul class="tips-inner">
-						<li>菜单</li>
-						<li>标签</li>
-						
-						
-						<li>关于我</li>
-						
-					</ul>
-				</div>
-			</div>
-		
 
-		<div class="switch-area">
-			<div class="switch-wrap">
-				<section class="switch-part switch-part1">
-					<nav class="header-menu">
-						<ul>
-						
-							<li><a href="/">主页</a></li>
-				        
-							<li><a href="/archives">所有文章</a></li>
-				        
-							<li><a href="/categories">随笔</a></li>
-				        
-							<li><a href="/tags">标签</a></li>
-				        
-						</ul>
-					</nav>
-					<nav class="header-nav">
-						<div class="social">
-							
-								<a class="github" target="_blank" href="https://github.com/violet-day" title="github">github</a>
-					        
-								<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
-					        
-								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
-					        
-								<a class="mail" target="_blank" href="/violet_day@live.com" title="mail">mail</a>
-					        
-						</div>
-					</nav>
-				</section>
-				
-				
-				<section class="switch-part switch-part2">
-					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/Hibernate/" style="font-size: 10px;">Hibernate</a> <a href="/tags/Navigation/" style="font-size: 10px;">Navigation</a> <a href="/tags/SecureCRT/" style="font-size: 10px;">SecureCRT</a> <a href="/tags/Tabs/" style="font-size: 10px;">Tabs</a> <a href="/tags/aws/" style="font-size: 10px;">aws</a> <a href="/tags/back-off/" style="font-size: 10px;">back-off</a> <a href="/tags/cordova/" style="font-size: 10px;">cordova</a> <a href="/tags/eclipse/" style="font-size: 10px;">eclipse</a> <a href="/tags/git/" style="font-size: 12.5px;">git</a> <a href="/tags/gitflow/" style="font-size: 10px;">gitflow</a> <a href="/tags/gitosis/" style="font-size: 10px;">gitosis</a> <a href="/tags/hubot/" style="font-size: 10px;">hubot</a> <a href="/tags/ionic/" style="font-size: 15px;">ionic</a> <a href="/tags/java/" style="font-size: 12.5px;">java</a> <a href="/tags/linux/" style="font-size: 17.5px;">linux</a> <a href="/tags/nginx/" style="font-size: 17.5px;">nginx</a> <a href="/tags/node/" style="font-size: 20px;">node</a> <a href="/tags/rabbitmq/" style="font-size: 10px;">rabbitmq</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/retry/" style="font-size: 10px;">retry</a> <a href="/tags/side-menus/" style="font-size: 10px;">side menus</a> <a href="/tags/strongloop/" style="font-size: 10px;">strongloop</a> <a href="/tags/主键/" style="font-size: 10px;">主键</a> <a href="/tags/全部变量/" style="font-size: 10px;">全部变量</a> <a href="/tags/守护进程/" style="font-size: 10px;">守护进程</a> <a href="/tags/负载均衡/" style="font-size: 10px;">负载均衡</a> <a href="/tags/集合/" style="font-size: 10px;">集合</a>
-					</div>
-				</section>
-				
-				
-				
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-67357558-7', 'auto');
+  ga('send', 'pageview');
+</script>
 
-				
-				
-				<section class="switch-part switch-part3">
-				
-					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
-				</section>
-				
-			</div>
-		</div>
-	</header>				
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nemo's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Ride The Lightning</p>
 </div>
-    </div>
-    <div class="mid-col">
-      <nav id="mobile-nav">
-  	<div class="overlay">
-  		<div class="slider-trigger"></div>
-  		<h1 class="header-author js-mobile-header hide">violet_day</h1>
-  	</div>
-	<div class="intrude-less">
-		<header id="header" class="inner">
-			<div class="profilepic">
-				<img src="https://avatars2.githubusercontent.com/u/5970246?v=3&amp;s=460">
-				<hgroup>
-				  <h1 class="header-author">violet_day</h1>
-				</hgroup>
-			</div>
-			
-			<p class="header-subtitle">Ride The Lightning</p>
-			
-			<nav class="header-menu">
-				<ul>
-				
-					<li><a href="/">主页</a></li>
-		        
-					<li><a href="/archives">所有文章</a></li>
-		        
-					<li><a href="/categories">随笔</a></li>
-		        
-					<li><a href="/tags">标签</a></li>
-		        
-		        <div class="clearfix"></div>
-				</ul>
-			</nav>
-			<nav class="header-nav">
-				<div class="social">
-					
-						<a class="github" target="_blank" href="https://github.com/violet-day" title="github">github</a>
-			        
-						<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
-			        
-						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
-			        
-						<a class="mail" target="_blank" href="/violet_day@live.com" title="mail">mail</a>
-			        
-				</div>
-			</nav>
-		</header>				
-	</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
 </nav>
-      <div class="body-wrap"><article id="post-Nodejs/RabbitMQ中的Back-off和retry" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/02/12/Nodejs/RabbitMQ中的Back-off和retry/" class="article-date">
-  	<time datetime="2016-02-12T04:52:37.000Z" itemprop="datePublished">Feb 12 2016</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
     
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
+
   
-    <h1 class="article-title" itemprop="name">
-      RabbitMQ中的Back-off和retry
-    </h1>
   
 
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                RabbitMQ中的Back-off和retry
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-02-12T12:52:37+08:00" content="Feb 12 2016">
+              Feb 12 2016
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/02/12/Nodejs/RabbitMQ中的Back-off和retry/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/12/Nodejs/RabbitMQ中的Back-off和retry/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
       </header>
-      
-      <div class="article-info article-info-post">
-        
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/back-off/">back-off</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rabbitmq/">rabbitmq</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/retry/">retry</a></li></ul>
-	</div>
-
-        
-
-        <div class="clearfix"></div>
-      </div>
-      
     
-    <div class="article-entry" itemprop="articleBody">
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
       
         <p>使用第三方API的一个常见问题是峰值期间可用性问题。即便是非峰值期间，API请求仍可能被拒绝、超时或者失败。这篇文章中，我将讲解对于RabbitMQ消费者轻量级的<a href="http://en.wikipedia.org/wiki/Exponential_backoff" target="_blank" rel="external">指数退避</a>和重试机制。</p>
-<h2 id="New_API,_new_service">New API, new service</h2><p>当用户从我们的一个网站删除了一张照片之后，我们会将它从我们的CDN服务中删除。我们的后端是面向服务的架构，这里使用了CDN purge服务。这个服务对核心web应用发生的事情做出反应，发送消息队列，并且调用CDN的API清除资源。最近我更新了这个服务来使用<a href="https://api.ccu.akamai.com/ccu/v2/docs/index.html" target="_blank" rel="external">Akamai CCU REST API</a>。</p>
+<h2 id="New-API-new-service"><a href="#New-API-new-service" class="headerlink" title="New API, new service"></a>New API, new service</h2><p>当用户从我们的一个网站删除了一张照片之后，我们会将它从我们的CDN服务中删除。我们的后端是面向服务的架构，这里使用了CDN purge服务。这个服务对核心web应用发生的事情做出反应，发送消息队列，并且调用CDN的API清除资源。最近我更新了这个服务来使用<a href="https://api.ccu.akamai.com/ccu/v2/docs/index.html" target="_blank" rel="external">Akamai CCU REST API</a>。</p>
 <p>由于现有的服务已经存在很久了，我们决定重写它。对于一个初级开发者来说，这是一个很好的机会使用<a href="http://www.rabbitmq.com/" target="_blank" rel="external">RabbitMQ</a>和<a href="http://nodejs.org/" target="_blank" rel="external">Node.js</a>来实现后台任务。</p>
 <p>正如Paul在他最近的blog中所说<a href="http://dev.venntro.com/2014/04/rabbitmq-from-the-front-line/" target="_blank" rel="external">RabbitMQ: Front the Front Line</a>，我们是RabbitMQ的重度使用者。尽管我们很多消费者都是实用Ruby来实现的，但是我们发现Node.js在很少的业务逻辑下也是非常实用。事件驱动和消息流很契合，并且适用于快速编码。我们实用<a href="https://github.com/postwait/node-amqp" target="_blank" rel="external">node-amqp</a>作为我们的RabbitMQ客户端。</p>
 <p>一旦新的服务运行起来，很显然负载会很高，尤其是高峰8pm-2am。我们很快发现，我们的API被集中在晚上调用。这个API有一个内部队列用来处理purge请求，当队列满了的时候它会返回<code>507 queue is full</code>。</p>
 <p><img src="http://dev.venntro.com/images/uploads/2014/07/week-of-api-responses.png" alt="CDN response pattern over one week
 "></p>
 <p>观察调用成功和失败的API，很显然我们在高峰时期需要强大的退避和重试机制。</p>
-<h2 id="Starting_point">Starting point</h2><p>我们的平台发送多个不同的消息路由至CDN purge队列。CDN purge服务消费这些消息并且发送对应的请求给CDN API。下图描述了从平台到API的信息流。</p>
+<h2 id="Starting-point"><a href="#Starting-point" class="headerlink" title="Starting point"></a>Starting point</h2><p>我们的平台发送多个不同的消息路由至CDN purge队列。CDN purge服务消费这些消息并且发送对应的请求给CDN API。下图描述了从平台到API的信息流。</p>
 <p><img src="http://dev.venntro.com/images/uploads/2014/07/cdn-purge-messages.png" alt="Diagram of our CDN purge process"></p>
 <p>当API请求被拒绝的时候，我们想过一段时间再重试。与此同时，我们该如何处理消息？</p>
-<h2 id="Let_RabbitMQ_do_the_work">Let RabbitMQ do the work</h2><p>实现退避和重试机制，我的第一直觉是创建一个新的<code>wait queue</code>，把失败的请求放在里面，过一段时间继续重试。由于我刚刚使用RabbitMQ，有这么几个问题需要考虑：</p>
+<h2 id="Let-RabbitMQ-do-the-work"><a href="#Let-RabbitMQ-do-the-work" class="headerlink" title="Let RabbitMQ do the work"></a>Let RabbitMQ do the work</h2><p>实现退避和重试机制，我的第一直觉是创建一个新的<code>wait queue</code>，把失败的请求放在里面，过一段时间继续重试。由于我刚刚使用RabbitMQ，有这么几个问题需要考虑：</p>
 <ul>
 <li>是否我需要消费者处理<code>wait queue</code>中的消息</li>
 <li>是否我能控制每个消息的重试等待时间</li>
@@ -239,7 +293,7 @@ New API, new service当用户从我们的一个网站删除了一张照片之后
 <li>是否能在一个<code>wait queue</code>中处理多个平台的事情</li>
 </ul>
 <p>感谢的是，RabbitMQ有很多<a href="https://www.rabbitmq.com/extensions.html" target="_blank" rel="external">protocol extensions</a>扩展了<a href="http://www.amqp.org/" target="_blank" rel="external">AMQP</a>规范。<br><code>dead letter exchanges</code>和<code>per-message TTL</code>正是<code>wait queue</code>需要的功能。</p>
-<h2 id="Dead_letter_exchanges_(DLX)">Dead letter exchanges (DLX)</h2><p>术语<a href="http://en.wikipedia.org/wiki/Dead_letter_mail" target="_blank" rel="external">dead letter mail 死信邮件</a>在邮政行业仍在使用，用来描述信件没有办法被送达。在RabbitMQ中，消息有以下几种情况的时候会被认为dead-lettered</p>
+<h2 id="Dead-letter-exchanges-DLX"><a href="#Dead-letter-exchanges-DLX" class="headerlink" title="Dead letter exchanges (DLX)"></a>Dead letter exchanges (DLX)</h2><p>术语<a href="http://en.wikipedia.org/wiki/Dead_letter_mail" target="_blank" rel="external">dead letter mail 死信邮件</a>在邮政行业仍在使用，用来描述信件没有办法被送达。在RabbitMQ中，消息有以下几种情况的时候会被认为dead-lettered</p>
 <ul>
 <li>消息被拒绝</li>
 <li>消息已经过期</li>
@@ -251,149 +305,498 @@ New API, new service当用户从我们的一个网站删除了一张照片之后
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> queueOptions = &#123; <span class="built_in">arguments</span>: &#123; <span class="string">"x-dead-letter-exchange"</span>: <span class="string">"exchange"</span> &#125; &#125;;</span><br><span class="line"></span><br><span class="line">connection.queue(<span class="string">"wait-queue"</span>, queueOptions, <span class="function"><span class="keyword">function</span>(<span class="params">waitQueue</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Bind to exchange</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <p>尽管<code>dead letter exchanges</code>没有做什么特别的配置，我们仍是有了<code>wait queue</code>。下一步我们将设置消息过期，这样RabbitMQ就能为我们重新分配。</p>
 <p>更多信息: <a href="https://www.rabbitmq.com/dlx.html" target="_blank" rel="external">RabbitMQ docs on DLX</a></p>
-<h2 id="Per-message_TTL">Per-message TTL</h2><p>消息可以使用默认的<code>expiry</code>或者<code>TTL</code>来声明。然而为了实现指数退避，我们需要对每个消息逐个设置过期时间。</p>
+<h2 id="Per-message-TTL"><a href="#Per-message-TTL" class="headerlink" title="Per-message TTL"></a>Per-message TTL</h2><p>消息可以使用默认的<code>expiry</code>或者<code>TTL</code>来声明。然而为了实现指数退避，我们需要对每个消息逐个设置过期时间。</p>
 <p>当你发布消息的时候，你可以设置expiration字段的毫秒值：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> messageOptions = &#123; expiration: <span class="number">10000</span> &#125;;</span><br><span class="line"></span><br><span class="line">exchange.publish(<span class="string">"routing-key"</span>, <span class="string">"body"</span>, messageOptions);</span><br></pre></td></tr></table></figure>
 <p>看起很简单，但是这也意味着，当一个purge请求失败的时候，因为需要<code>expiration</code>字段，我们的消费者需要复制消息。注意：如果你声明了你的队列使用消息确认机制，不要忘记确认原来的消息。</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> subscribeOptions = &#123; ack: <span class="literal">true</span> &#125;;</span><br><span class="line"></span><br><span class="line">queue.subscribe(subscribeOptions, <span class="function"><span class="keyword">function</span>(<span class="params">message, headers, deliveryInfo, messageObject</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Post request to API</span></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// If the API request fails</span></span><br><span class="line">  <span class="keyword">var</span> messageOptions = &#123;</span><br><span class="line">    appId: messageObject.appId,</span><br><span class="line">    timestamp: messageObject.timestamp,</span><br><span class="line">    contentType: messageObject.contentType,</span><br><span class="line">    deliveryMode: messageObject.deliveryMode,</span><br><span class="line">    headers: headers,</span><br><span class="line">    expiration: <span class="number">10000</span></span><br><span class="line">  &#125;;</span><br><span class="line">  exchange.publish(deliveryInfo.routingKey, message, messageOptions);</span><br><span class="line">  messageObject.acknowledge(<span class="literal">false</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <p>你需要确保你复制你自己的消息的详细信息。下面让我们增加每次API调用失败时的的超时时间。</p>
 <p>更多信息: <a href="https://www.rabbitmq.com/ttl.html" target="_blank" rel="external">RabbitMQ docs on per-message TTL</a></p>
-<h2 id="Handling_dead-lettered_messages">Handling dead-lettered messages</h2><p>当消息<code>dead-lettered</code>之后，RabbitMQ对它做了一些很有用的变化，在header中记录了这些变化。对于我们的<code>wait queue</code>，我们仅仅关心对<code>expiration</code>字段发生了什么。</p>
+<h2 id="Handling-dead-lettered-messages"><a href="#Handling-dead-lettered-messages" class="headerlink" title="Handling dead-lettered messages"></a>Handling dead-lettered messages</h2><p>当消息<code>dead-lettered</code>之后，RabbitMQ对它做了一些很有用的变化，在header中记录了这些变化。对于我们的<code>wait queue</code>，我们仅仅关心对<code>expiration</code>字段发生了什么。</p>
 <p><code>expiration</code>字段被移除了，并且重新在headers中的<code>x-death</code>中作为<code>original-expiration</code>值记录着。这允许我们找到上次的过期时间并且防止消息再次过期。重要的是，<code>x-death</code>header是有序数组，第一个是最近的值。</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> expiration;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (headers[<span class="string">"x-death"</span>]) &#123;</span><br><span class="line">  expiration = (headers[<span class="string">"x-death"</span>][<span class="number">0</span>][<span class="string">"original-expiration"</span>] * <span class="number">3</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  expiration = <span class="number">10000</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Apply some randomness to the expiration</span></span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
 <p>这个例子中，第一个个过期时间是10000毫秒，每次重试的时候它都会乘以3。这是指数退避算法中比较常见的实践。我们的例子中，我们增加了一点随即值来提高API调用的成功可能性。</p>
 <p>下面我们来组织我们的队列，这样他能管理多个平台的事件。</p>
-<h2 id="Routing_dead-lettered_messages">Routing dead-lettered messages</h2><p>我们的CDN purge服务对于多个平台发生的事情做出反应，每个都有它自己的routing key。最简单的方式路由多个routing key的是声明单独的<code>wait exchange</code>。</p>
+<h2 id="Routing-dead-lettered-messages"><a href="#Routing-dead-lettered-messages" class="headerlink" title="Routing dead-lettered messages"></a>Routing dead-lettered messages</h2><p>我们的CDN purge服务对于多个平台发生的事情做出反应，每个都有它自己的routing key。最简单的方式路由多个routing key的是声明单独的<code>wait exchange</code>。</p>
 <p>使用单独的<code>wait exchange</code>之后，你可以不用理会<code>routing keys</code>。当失败的消息发送到<code>wait exchange</code>时，你不需要改变<code>routing key</code>。仅仅需要将<code>wait queue</code>和<code>primary queue</code>绑定同样的<code>routing key</code>。</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> routingKeys = [<span class="string">"routing-key-a"</span>, <span class="string">"routing-key-b"</span>];</span><br><span class="line"></span><br><span class="line">connection.exchange(<span class="string">"wait-exchange"</span>, waitExchangeOptions, <span class="function"><span class="keyword">function</span>(<span class="params">waitExchange</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> waitQueueOptions = &#123; <span class="built_in">arguments</span>: &#123; <span class="string">"x-dead-letter-exchange"</span>: <span class="string">"exchange"</span> &#125; &#125;;</span><br><span class="line"></span><br><span class="line">  connection.queue(<span class="string">"wait-queue"</span>, waitQueueOptions, <span class="function"><span class="keyword">function</span>(<span class="params">waitQueue</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Bind wait queue to all routing keys on wait exchange</span></span><br><span class="line">    routingKeys.map(<span class="function"><span class="keyword">function</span>(<span class="params">routingKey</span>) </span>&#123;</span><br><span class="line">      waitQueue.bind(<span class="string">"wait-exchange"</span>, routingKey);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">connection.exchange(<span class="string">"primary-exchange"</span>, primaryExchangeOptions, <span class="function"><span class="keyword">function</span>(<span class="params">primaryExchange</span>) </span>&#123;</span><br><span class="line">  connection.queue(<span class="string">"primary-queue"</span>, primaryQueueOptions, <span class="function"><span class="keyword">function</span>(<span class="params">primaryQueue</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Bind primary queue to all routing keys on primary exchange</span></span><br><span class="line">    routingKeys.map(<span class="function"><span class="keyword">function</span>(<span class="params">routingKey</span>) </span>&#123;</span><br><span class="line">      primaryQueue.bind(<span class="string">"primary-exchange"</span>, routingKey);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">// Subscribe to messages</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <p>这样配置之后，当消息被<code>wait queue</code> <code>dead-lettered</code>之后，会重新发布至<code>primary exchange</code>，<code>routing key</code>会保持不变。这样以后添加和移除<code>routing key</code>会很简单。</p>
-<h2 id="All_together_now">All together now</h2><p>现在把所有的代码合并在一起。</p>
+<h2 id="All-together-now"><a href="#All-together-now" class="headerlink" title="All together now"></a>All together now</h2><p>现在把所有的代码合并在一起。</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> amqp = <span class="built_in">require</span>(<span class="string">"amqp"</span>);</span><br><span class="line"></span><br><span class="line">connection = amqp.createConnection(&#123; host: <span class="string">"localhost"</span> &#125;);</span><br><span class="line"></span><br><span class="line">connection.on(<span class="string">"ready"</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> waitExchange,</span><br><span class="line">      routingKeys = [<span class="string">"routing-key-a"</span>, <span class="string">"routing-key-b"</span>];</span><br><span class="line"></span><br><span class="line">  waitExchange = connection.exchange(<span class="string">"wait-exchange"</span>, waitExchangeOptions, <span class="function"><span class="keyword">function</span>(<span class="params">waitExchange</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> waitQueueOptions = &#123; <span class="built_in">arguments</span>: &#123; <span class="string">"x-dead-letter-exchange"</span>: <span class="string">"primary-exchange"</span> &#125; &#125;;</span><br><span class="line"></span><br><span class="line">    connection.queue(<span class="string">"wait-queue"</span>, waitQueueOptions, <span class="function"><span class="keyword">function</span>(<span class="params">waitQueue</span>) </span>&#123;</span><br><span class="line">      routingKeys.map(<span class="function"><span class="keyword">function</span>(<span class="params">routingKey</span>) </span>&#123;</span><br><span class="line">        waitQueue.bind(<span class="string">"wait-exchange"</span>, routingKey);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  connection.exchange(<span class="string">"primary-exchange"</span>, primaryExchangeOptions, <span class="function"><span class="keyword">function</span>(<span class="params">primaryExchange</span>) </span>&#123;</span><br><span class="line">    connection.queue(<span class="string">"primary-queue"</span>, primaryQueueOptions, <span class="function"><span class="keyword">function</span>(<span class="params">primaryQueue</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> subscribeOptions = &#123; ack: <span class="literal">true</span> &#125;;</span><br><span class="line"></span><br><span class="line">      routingKeys.map(<span class="function"><span class="keyword">function</span>(<span class="params">routingKey</span>) </span>&#123;</span><br><span class="line">        primaryQueue.bind(<span class="string">"primary-exchange"</span>, routingKey);</span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">      primaryQueue.subscribe(subscribeOptions, <span class="function"><span class="keyword">function</span>(<span class="params">message, headers, deliveryInfo, messageObject</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> expiration, messageOptions;</span><br><span class="line">        <span class="comment">// Post request to API</span></span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// If the API request fails</span></span><br><span class="line">        <span class="keyword">if</span> (headers[<span class="string">"x-death"</span>]) &#123;</span><br><span class="line">          expiration = (headers[<span class="string">"x-death"</span>][<span class="number">0</span>][<span class="string">"original-expiration"</span>] * <span class="number">3</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          expiration = <span class="number">10000</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        messageOptions = &#123;</span><br><span class="line">          appId: messageObject.appId,</span><br><span class="line">          timestamp: messageObject.timestamp,</span><br><span class="line">          contentType: messageObject.contentType,</span><br><span class="line">          deliveryMode: messageObject.deliveryMode,</span><br><span class="line">          headers: headers,</span><br><span class="line">          expiration: expiration</span><br><span class="line">        &#125;;</span><br><span class="line">        waitExchange.publish(deliveryInfo.routingKey, message, messageOptions);</span><br><span class="line">        messageObject.acknowledge(<span class="literal">false</span>);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<h2 id="Summary">Summary</h2><p>我已经介绍了如何使用<code>dead letter exchanges</code>和<code>per-message TTL</code>来实现轻量级别的指数退避和重试机制。上面的示例代码展示了在Node.js中使用node-amqp如何实现。下图表述了这个机制原理：</p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>我已经介绍了如何使用<code>dead letter exchanges</code>和<code>per-message TTL</code>来实现轻量级别的指数退避和重试机制。上面的示例代码展示了在Node.js中使用node-amqp如何实现。下图表述了这个机制原理：</p>
 <p><img src="http://dev.venntro.com/images/uploads/2014/07/rabbitmq-back-off-and-retry.png" alt="Diagram of back-off and retry mechanism"></p>
 <p>如果你和第一个图比较，我希望可以清楚的解释其中原理。最后，下面对开始的问题做一些简要的回答：</p>
-<h3 id="是否我需要消费者处理wait_queue中的消息?">是否我需要消费者处理<code>wait queue</code>中的消息?</h3><p>否。RabbitMQ可以做这个工作，声明一个带<code>x-dead-letter-exchange</code>参数的<code>wait queue</code>，RabbitMQ会在他们过期的时候重新发布。</p>
-<h3 id="是否我能控制每个消息的重试等待时间?">是否我能控制每个消息的重试等待时间?</h3><p>可以。但是<code>per-message TTL</code>仅能在你发送消息的时候设置。所以的你的消费者需要复制消息体并且发送的时候需要携带<code>expiration</code>字段。注意：如果使用了消息确认机制，不要忘了确认原来的消息。</p>
-<h3 id="是否我能追踪每个API请求我重试的次数?">是否我能追踪每个API请求我重试的次数?</h3><p>是。每次消息变为dead-lettered时，RabbitMQ都会记录有用的信息在它的<code>x-death</code>header。第一条记录的是最新的，并且会包含<code>original-expiration</code></p>
-<h3 id="是否能在一个wait_queue中处理多个平台的事情">是否能在一个<code>wait queue</code>中处理多个平台的事情</h3><p>是。最简单的管理多个<code>routing key</code>的做法是为你的<code>wait queue</code>声明一个单独的exchange，然后和<code>primary exchange</code>绑定同样的<code>routing key</code>。</p>
-<h2 id="原文_Back-off_and_retry_with_RabbitMQ">原文 <a href="http://dev.venntro.com/2014/07/back-off-and-retry-with-rabbitmq/" target="_blank" rel="external">Back-off and retry with RabbitMQ</a></h2>
+<h3 id="是否我需要消费者处理wait-queue中的消息"><a href="#是否我需要消费者处理wait-queue中的消息" class="headerlink" title="是否我需要消费者处理wait queue中的消息?"></a>是否我需要消费者处理<code>wait queue</code>中的消息?</h3><p>否。RabbitMQ可以做这个工作，声明一个带<code>x-dead-letter-exchange</code>参数的<code>wait queue</code>，RabbitMQ会在他们过期的时候重新发布。</p>
+<h3 id="是否我能控制每个消息的重试等待时间"><a href="#是否我能控制每个消息的重试等待时间" class="headerlink" title="是否我能控制每个消息的重试等待时间?"></a>是否我能控制每个消息的重试等待时间?</h3><p>可以。但是<code>per-message TTL</code>仅能在你发送消息的时候设置。所以的你的消费者需要复制消息体并且发送的时候需要携带<code>expiration</code>字段。注意：如果使用了消息确认机制，不要忘了确认原来的消息。</p>
+<h3 id="是否我能追踪每个API请求我重试的次数"><a href="#是否我能追踪每个API请求我重试的次数" class="headerlink" title="是否我能追踪每个API请求我重试的次数?"></a>是否我能追踪每个API请求我重试的次数?</h3><p>是。每次消息变为dead-lettered时，RabbitMQ都会记录有用的信息在它的<code>x-death</code>header。第一条记录的是最新的，并且会包含<code>original-expiration</code></p>
+<h3 id="是否能在一个wait-queue中处理多个平台的事情"><a href="#是否能在一个wait-queue中处理多个平台的事情" class="headerlink" title="是否能在一个wait queue中处理多个平台的事情"></a>是否能在一个<code>wait queue</code>中处理多个平台的事情</h3><p>是。最简单的管理多个<code>routing key</code>的做法是为你的<code>wait queue</code>声明一个单独的exchange，然后和<code>primary exchange</code>绑定同样的<code>routing key</code>。</p>
+<h2 id="原文-Back-off-and-retry-with-RabbitMQ"><a href="#原文-Back-off-and-retry-with-RabbitMQ" class="headerlink" title="原文 Back-off and retry with RabbitMQ"></a>原文 <a href="http://dev.venntro.com/2014/07/back-off-and-retry-with-rabbitmq/" target="_blank" rel="external">Back-off and retry with RabbitMQ</a></h2>
       
     </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/back-off/" rel="tag">#back-off</a>
+          
+            <a href="/tags/node/" rel="tag">#node</a>
+          
+            <a href="/tags/rabbitmq/" rel="tag">#rabbitmq</a>
+          
+            <a href="/tags/retry/" rel="tag">#retry</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/01/15/Nodejs/Preserving-Data-Across-Async-Callbacks/" rel="next" title="Node.js – Preserving Data Across Async Callbacks">
+                <i class="fa fa-chevron-left"></i> Node.js – Preserving Data Across Async Callbacks
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/02/14/Nodejs/hubot-scripting/" rel="prev" title="hubot-scripting">
+                hubot-scripting <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/02/12/Nodejs/RabbitMQ中的Back-off和retry/"
+     data-title="RabbitMQ中的Back-off和retry"
+     data-content=""
+     data-url="http://violet-day.github.io/2016/02/12/Nodejs/RabbitMQ中的Back-off和retry/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/02/12/Nodejs/RabbitMQ中的Back-off和retry/"
+           data-title="RabbitMQ中的Back-off和retry" data-url="http://violet-day.github.io/2016/02/12/Nodejs/RabbitMQ中的Back-off和retry/">
+      </div>
     
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2016/02/14/Nodejs/hubot-scripting/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
+
+
+        </div>
         
-          hubot-scripting
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars2.githubusercontent.com/u/5970246?v=3&s=460"
+               alt="violet_day" />
+          <p class="site-author-name" itemprop="name">violet_day</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/violet-day" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#New-API-new-service"><span class="nav-number">1.</span> <span class="nav-text">New API, new service</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Starting-point"><span class="nav-number">2.</span> <span class="nav-text">Starting point</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Let-RabbitMQ-do-the-work"><span class="nav-number">3.</span> <span class="nav-text">Let RabbitMQ do the work</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dead-letter-exchanges-DLX"><span class="nav-number">4.</span> <span class="nav-text">Dead letter exchanges (DLX)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Per-message-TTL"><span class="nav-number">5.</span> <span class="nav-text">Per-message TTL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Handling-dead-lettered-messages"><span class="nav-number">6.</span> <span class="nav-text">Handling dead-lettered messages</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Routing-dead-lettered-messages"><span class="nav-number">7.</span> <span class="nav-text">Routing dead-lettered messages</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#All-together-now"><span class="nav-number">8.</span> <span class="nav-text">All together now</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Summary"><span class="nav-number">9.</span> <span class="nav-text">Summary</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#是否我需要消费者处理wait-queue中的消息"><span class="nav-number">9.1.</span> <span class="nav-text">是否我需要消费者处理wait queue中的消息?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#是否我能控制每个消息的重试等待时间"><span class="nav-number">9.2.</span> <span class="nav-text">是否我能控制每个消息的重试等待时间?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#是否我能追踪每个API请求我重试的次数"><span class="nav-number">9.3.</span> <span class="nav-text">是否我能追踪每个API请求我重试的次数?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#是否能在一个wait-queue中处理多个平台的事情"><span class="nav-number">9.4.</span> <span class="nav-text">是否能在一个wait queue中处理多个平台的事情</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原文-Back-off-and-retry-with-RabbitMQ"><span class="nav-number">10.</span> <span class="nav-text">原文 Back-off and retry with RabbitMQ</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
         
       </div>
-    </a>
-  
-  
-    <a href="/2016/01/15/Nodejs/Preserving-Data-Across-Async-Callbacks/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Node.js – Preserving Data Across Async Callbacks</div>
-      <strong class="article-nav-caption">></strong>
-    </a>
-  
-</nav>
+    </main>
 
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
   
-</article>
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">violet_day</span>
+</div>
 
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
 
-<div class="share">
-	<!-- JiaThis Button BEGIN -->
-	<div class="jiathis_style">
-		<span class="jiathis_txt">分享到：</span>
-		<a class="jiathis_button_tsina"></a>
-		<a class="jiathis_button_cqq"></a>
-		<a class="jiathis_button_douban"></a>
-		<a class="jiathis_button_weixin"></a>
-		<a class="jiathis_button_tumblr"></a>
-		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
-	</div>
-	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
-	<!-- JiaThis Button END -->
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
 </div>
 
 
 
-<div class="duoshuo">
-	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="Nodejs/RabbitMQ中的Back-off和retry" data-title="RabbitMQ中的Back-off和retry" data-url="http://violet-day.github.io/2016/02/12/Nodejs/RabbitMQ中的Back-off和retry/"></div>
-	<!-- 多说评论框 end -->
-	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-	<script type="text/javascript">
-	var duoshuoQuery = {short_name:"true"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		 || document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-	<!-- 多说公共JS代码 end -->
-</div>
+      </div>
+    </footer>
 
-
-
-</div>
-      <footer id="footer">
-  <div class="outer">
-    <div id="footer-info">
-    	<div class="footer-left">
-    		&copy; 2016 violet_day
-    	</div>
-      	<div class="footer-right">
-      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
-      	</div>
-    </div>
+    <div class="back-to-top"></div>
   </div>
-</footer>
-    </div>
-    
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
-  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+  
 
 
-<script src="/js/mobile.js" type="text/javascript"></script>
-<script src="/js/main.js" type="text/javascript"></script>
+  
 
 
 
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
 
 
-<! -- mathjax config similar to math.stackexchange -->
+  
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-    tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-        processEscapes: true,
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
     }
-});
 
-MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-        all[i].SourceElement().parentNode.className += ' has-jax';                 
-    }       
-});
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
 </script>
 
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
 </script>
 
 
 
-  </div>
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"Nemo"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+
+  
+  
+
+
 </body>
 </html>

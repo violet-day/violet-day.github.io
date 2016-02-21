@@ -1,11 +1,63 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
+<!doctype html>
+
+
+
   
-  <title>[翻译]statejs | Nemo&#39;s Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="States State 的实例封装了owner在指定时刻下的条件和行为。 一个State是由methods, arbitrary data, events, guards, substates和 transition expressions的集合组成。一个owner通常拥有多个States, 并且指向其中一个作为 current state, 在current state中owner会表现出相应">
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Ride The Lightning" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="States State 的实例封装了owner在指定时刻下的条件和行为。 一个State是由methods, arbitrary data, events, guards, substates和 transition expressions的集合组成。一个owner通常拥有多个States, 并且指向其中一个作为 current state, 在current state中owner会表现出相应">
 <meta property="og:type" content="article">
 <meta property="og:title" content="[翻译]statejs">
 <meta property="og:url" content="http://violet-day.github.io/2014/07/24/Nodejs/[翻译]statejs/index.html">
@@ -15,334 +67,677 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="[翻译]statejs">
 <meta name="twitter:description" content="States State 的实例封装了owner在指定时刻下的条件和行为。 一个State是由methods, arbitrary data, events, guards, substates和 transition expressions的集合组成。一个owner通常拥有多个States, 并且指向其中一个作为 current state, 在current state中owner会表现出相应">
-  
-    <link rel="alternative" href="/atom.xml" title="Nemo&#39;s Blog" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  <link rel="stylesheet" href="/css/style.css" type="text/css">
-  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 6218687468384814000,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> [翻译]statejs | Nemo's Blog </title>
 </head>
-<body>
-  <div id="container">
-    <div class="left-col">
-    <div class="overlay"></div>
-<div class="intrude-less">
-	<header id="header" class="inner">
-		<a href="/" class="profilepic">
-			<img src="https://avatars2.githubusercontent.com/u/5970246?v=3&amp;s=460">
-		</a>
 
-		<hgroup>
-		  <h1 class="header-author"><a href="/">violet_day</a></h1>
-		</hgroup>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
-		
-		<p class="header-subtitle">Ride The Lightning</p>
-		
+  
 
-		
-			<div class="switch-btn">
-				<div class="icon">
-					<div class="icon-ctn">
-						<div class="icon-wrap icon-house" data-idx="0">
-							<div class="birdhouse"></div>
-							<div class="birdhouse_holes"></div>
-						</div>
-						<div class="icon-wrap icon-ribbon hide" data-idx="1">
-							<div class="ribbon"></div>
-						</div>
-						
-						
-						<div class="icon-wrap icon-me hide" data-idx="3">
-							<div class="user"></div>
-							<div class="shoulder"></div>
-						</div>
-						
-					</div>
-					
-				</div>
-				<div class="tips-box hide">
-					<div class="tips-arrow"></div>
-					<ul class="tips-inner">
-						<li>菜单</li>
-						<li>标签</li>
-						
-						
-						<li>关于我</li>
-						
-					</ul>
-				</div>
-			</div>
-		
 
-		<div class="switch-area">
-			<div class="switch-wrap">
-				<section class="switch-part switch-part1">
-					<nav class="header-menu">
-						<ul>
-						
-							<li><a href="/">主页</a></li>
-				        
-							<li><a href="/archives">所有文章</a></li>
-				        
-							<li><a href="/categories">随笔</a></li>
-				        
-							<li><a href="/tags">标签</a></li>
-				        
-						</ul>
-					</nav>
-					<nav class="header-nav">
-						<div class="social">
-							
-								<a class="github" target="_blank" href="https://github.com/violet-day" title="github">github</a>
-					        
-								<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
-					        
-								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
-					        
-								<a class="mail" target="_blank" href="/violet_day@live.com" title="mail">mail</a>
-					        
-						</div>
-					</nav>
-				</section>
-				
-				
-				<section class="switch-part switch-part2">
-					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/Hibernate/" style="font-size: 10px;">Hibernate</a> <a href="/tags/Navigation/" style="font-size: 10px;">Navigation</a> <a href="/tags/SecureCRT/" style="font-size: 10px;">SecureCRT</a> <a href="/tags/Tabs/" style="font-size: 10px;">Tabs</a> <a href="/tags/aws/" style="font-size: 10px;">aws</a> <a href="/tags/back-off/" style="font-size: 10px;">back-off</a> <a href="/tags/cordova/" style="font-size: 10px;">cordova</a> <a href="/tags/eclipse/" style="font-size: 10px;">eclipse</a> <a href="/tags/git/" style="font-size: 12.5px;">git</a> <a href="/tags/gitflow/" style="font-size: 10px;">gitflow</a> <a href="/tags/gitosis/" style="font-size: 10px;">gitosis</a> <a href="/tags/hubot/" style="font-size: 10px;">hubot</a> <a href="/tags/ionic/" style="font-size: 15px;">ionic</a> <a href="/tags/java/" style="font-size: 12.5px;">java</a> <a href="/tags/linux/" style="font-size: 17.5px;">linux</a> <a href="/tags/nginx/" style="font-size: 17.5px;">nginx</a> <a href="/tags/node/" style="font-size: 20px;">node</a> <a href="/tags/rabbitmq/" style="font-size: 10px;">rabbitmq</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/retry/" style="font-size: 10px;">retry</a> <a href="/tags/side-menus/" style="font-size: 10px;">side menus</a> <a href="/tags/strongloop/" style="font-size: 10px;">strongloop</a> <a href="/tags/主键/" style="font-size: 10px;">主键</a> <a href="/tags/全部变量/" style="font-size: 10px;">全部变量</a> <a href="/tags/守护进程/" style="font-size: 10px;">守护进程</a> <a href="/tags/负载均衡/" style="font-size: 10px;">负载均衡</a> <a href="/tags/集合/" style="font-size: 10px;">集合</a>
-					</div>
-				</section>
-				
-				
-				
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-67357558-7', 'auto');
+  ga('send', 'pageview');
+</script>
 
-				
-				
-				<section class="switch-part switch-part3">
-				
-					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
-				</section>
-				
-			</div>
-		</div>
-	</header>				
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nemo's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Ride The Lightning</p>
 </div>
-    </div>
-    <div class="mid-col">
-      <nav id="mobile-nav">
-  	<div class="overlay">
-  		<div class="slider-trigger"></div>
-  		<h1 class="header-author js-mobile-header hide">violet_day</h1>
-  	</div>
-	<div class="intrude-less">
-		<header id="header" class="inner">
-			<div class="profilepic">
-				<img src="https://avatars2.githubusercontent.com/u/5970246?v=3&amp;s=460">
-				<hgroup>
-				  <h1 class="header-author">violet_day</h1>
-				</hgroup>
-			</div>
-			
-			<p class="header-subtitle">Ride The Lightning</p>
-			
-			<nav class="header-menu">
-				<ul>
-				
-					<li><a href="/">主页</a></li>
-		        
-					<li><a href="/archives">所有文章</a></li>
-		        
-					<li><a href="/categories">随笔</a></li>
-		        
-					<li><a href="/tags">标签</a></li>
-		        
-		        <div class="clearfix"></div>
-				</ul>
-			</nav>
-			<nav class="header-nav">
-				<div class="social">
-					
-						<a class="github" target="_blank" href="https://github.com/violet-day" title="github">github</a>
-			        
-						<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
-			        
-						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
-			        
-						<a class="mail" target="_blank" href="/violet_day@live.com" title="mail">mail</a>
-			        
-				</div>
-			</nav>
-		</header>				
-	</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
 </nav>
-      <div class="body-wrap"><article id="post-Nodejs/[翻译]statejs" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2014/07/24/Nodejs/[翻译]statejs/" class="article-date">
-  	<time datetime="2014-07-23T21:59:31.000Z" itemprop="datePublished">Jul 24 2014</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
     
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
+
   
-    <h1 class="article-title" itemprop="name">
-      [翻译]statejs
-    </h1>
   
 
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                [翻译]statejs
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2014-07-24T05:59:31+08:00" content="Jul 24 2014">
+              Jul 24 2014
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2014/07/24/Nodejs/[翻译]statejs/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/07/24/Nodejs/[翻译]statejs/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
       </header>
-      
-      <div class="article-info article-info-post">
-        
-        
-
-        <div class="clearfix"></div>
-      </div>
-      
     
-    <div class="article-entry" itemprop="articleBody">
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
-        <h1 id="States">States</h1><p> <code>State</code> 的实例封装了<code>owner</code>在指定时刻下的条件和行为。 一个<code>State</code>是由methods, arbitrary data, events, guards, substates和 transition expressions的集合组成。<br>一个owner通常拥有多个<code>State</code>s, 并且指向其中一个作为 current state, 在current state中owner会表现出相应的方法和行为。通过行为来触发 transition使得由一个状态转变为另外一个状态。</p>
-<h1 id="Object_model">Object model</h1><p><code>State</code> objects are modeled by a set of relational references that define three distinct dimensions or “axes”.状态对象是由一组定义三个不同的维度或“轴”关系的参考蓝本。<br>从根本上来说，<code>State</code> 模型是分层次的，从 owner 拥有着唯一的root state开始，每个<code>state</code>都作为 superstate被 substates 继承。一个 <code>State</code> 可能从零个或者多个 parastates继承，提供了定义成分的关系，通过C3线性多重继承实现的一种手段。<br>如果owner的<code>state</code>树是由其他owner的prototypal继承而来 ，继承的owner将可以view their prototype’s States as protostates from which their own epistates inherit.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> p = &#123;&#125;;</span><br><span class="line">state(p, &#123;</span><br><span class="line">    A: state,</span><br><span class="line">    B: state(&#123;</span><br><span class="line">        BA: state,</span><br><span class="line">        BB: state</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> o = <span class="built_in">Object</span>.create(p);</span><br><span class="line">state(o, &#123;</span><br><span class="line">    A: state(&#123;</span><br><span class="line">        AA: state.extend(<span class="string">'X, Y'</span>)</span><br><span class="line">    &#125;),</span><br><span class="line">    X: state,</span><br><span class="line">    Y: state</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+      
+
+      
+        <h1 id="States"><a href="#States" class="headerlink" title="States"></a>States</h1><p> <code>State</code> 的实例封装了<code>owner</code>在指定时刻下的条件和行为。 一个<code>State</code>是由methods, arbitrary data, events, guards, substates和 transition expressions的集合组成。<br>一个owner通常拥有多个<code>State</code>s, 并且指向其中一个作为 current state, 在current state中owner会表现出相应的方法和行为。通过行为来触发 transition使得由一个状态转变为另外一个状态。</p>
+<h1 id="Object-model"><a href="#Object-model" class="headerlink" title="Object model"></a>Object model</h1><p><code>State</code> objects are modeled by a set of relational references that define three distinct dimensions or “axes”.状态对象是由一组定义三个不同的维度或“轴”关系的参考蓝本。<br>从根本上来说，<code>State</code> 模型是分层次的，从 owner 拥有着唯一的root state开始，每个<code>state</code>都作为 superstate被 substates 继承。一个 <code>State</code> 可能从零个或者多个 parastates继承，提供了定义成分的关系，通过C3线性多重继承实现的一种手段。<br>如果owner的<code>state</code>树是由其他owner的prototypal继承而来 ，继承的owner将可以view their prototype’s States as protostates from which their own epistates inherit.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> p = &#123;&#125;;</span><br><span class="line">state(p, &#123;</span><br><span class="line">    A: state,</span><br><span class="line">    B: state(&#123;</span><br><span class="line">        BA: state,</span><br><span class="line">        BB: state</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> o = <span class="built_in">Object</span>.create(p);</span><br><span class="line">state(o, &#123;</span><br><span class="line">    A: state(&#123;</span><br><span class="line">        AA: state.extend(<span class="string">'X, Y'</span>)</span><br><span class="line">    &#125;),</span><br><span class="line">    X: state,</span><br><span class="line">    Y: state</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
 <p>State S 的继承顺序如下 relation precedence:<br>1.S的protostate继承链<br>2.S的parastates，按照声明的先后顺序<br>3.S的superstate<br>其中parastate和superstate线性加载，或者并行，protostate则按照顺序加载</p>
-<h2 id="The_root_state">The root state</h2><p>所有被 <code>State</code> 影响的 owner 都有单独的 root state。root state的名称为唯一的空字符串 ‘’.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">owner.state().root === owner.state(<span class="string">''</span>);   <span class="comment">// &gt;&gt;&gt; true (invariant)</span></span><br><span class="line">owner.state(<span class="string">'-&gt;'</span>);</span><br><span class="line">owner.state();                            <span class="comment">// &gt;&gt;&gt; State ''</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="The-root-state"><a href="#The-root-state" class="headerlink" title="The root state"></a>The root state</h2><p>所有被 <code>State</code> 影响的 owner 都有单独的 root state。root state的名称为唯一的空字符串 ‘’.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">owner.state().root === owner.state(<span class="string">''</span>);   <span class="comment">// &gt;&gt;&gt; true (invariant)</span></span><br><span class="line">owner.state(<span class="string">'-&gt;'</span>);</span><br><span class="line">owner.state();                            <span class="comment">// &gt;&gt;&gt; State ''</span></span><br></pre></td></tr></table></figure></p>
 <p>默认的，owner的初始current state被设置为 root state — 除非 root state 被标记为 abstract attribute，或者另外一个 <code>State</code> 被标记为 initial attribute.<br>root state 还可以用来存储 methods 并且可以被owner的 <code>State</code>s重写。这些方法被替换至root state。如果没有被重写，则会调用默认的方法。</p>
-<h2 id="Superstates_and_substates">Superstates and substates</h2><p><strong>owner</strong> 表现得行为由 <strong>substates</strong> 决定 ，这些<strong>substates</strong> 由 <strong>superstates</strong> 生成<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o = &#123;&#125;;</span><br><span class="line">state( o, &#123;</span><br><span class="line">    A: state(&#123;</span><br><span class="line">        AA: state,</span><br><span class="line">        AB: state</span><br><span class="line">    &#125;),</span><br><span class="line">    B: state</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> root = o.state(<span class="string">''</span>);                    <span class="comment">// &gt;&gt;&gt; RootState</span></span><br><span class="line">o.state() === root;                        <span class="comment">// &gt;&gt;&gt; true</span></span><br><span class="line">o.state(<span class="string">'-&gt; AA'</span>);</span><br><span class="line">o.state() === o.state(<span class="string">'AA'</span>);               <span class="comment">// &gt;&gt;&gt; true</span></span><br><span class="line">o.state().superstate === o.state(<span class="string">'A'</span>);     <span class="comment">// &gt;&gt;&gt; true</span></span><br><span class="line">o.state().superstate.superstate === root;  <span class="comment">// &gt;&gt;&gt; true</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="Parastates_and_composition">Parastates and composition</h2><p>除了通过 <strong>superstates</strong> 继承，<code>State</code> 模型还支持通过 <strong>parastate</strong> 关系实现多继承。<br>最孤单的就是RootState，它不承担任何关系。<br>Parastates 通过 <code>state.extend</code> 函数声明, 参数为一个或多个字符串 to parastates, along with optional parameters attributes and expression, and returns a StateExpression that can be used to produce a State with the named parastates.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o = &#123;&#125;;</span><br><span class="line">state( o, &#123;</span><br><span class="line">    A: state(&#123;</span><br><span class="line">        AA: state.extend(<span class="string">'X, Y'</span>)</span><br><span class="line">    &#125;),</span><br><span class="line">    X: state,</span><br><span class="line">    Y: state</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
-<h1 id="状态表达式(Expressions)">状态表达式(Expressions)</h1><p><code>State</code> 通过 <em>state expression</em> 数据结构以声明的方式定义。<br><code>StateExpression</code> 通过调用不包含<code>owner</code>参数的 <code>state()</code> 函数创建，仅提供一个 <code>expression</code> 参数，还可以提供由空格分隔的 <code>attributes</code>参数。<br>在其内部， 状态表达式的内容根据对象的 categories 设置，其中包含 <code>data</code>, <code>methods</code>, <code>events</code>, <code>guards</code>, <code>substates</code> 和 <code>transitions</code>。<code>state()</code> 的 <code>expression</code>可以根据这些 categories形成结构化，或者可以通过类型推断来简化实现一些更加简单的缩写。</p>
-<h2 id="结构化状态表达式(Structured_state_expressions)">结构化状态表达式(Structured state expressions)</h2><p>以入门的例子为基础，我们可以写一个包含明确分类的expression，包含子状态、方法、事件等。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> longformExpression = state(&#123;</span><br><span class="line">    methods: &#123;</span><br><span class="line">        greet: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="string">"Hello."</span>; &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    states: &#123;</span><br><span class="line">        Formal: &#123;</span><br><span class="line">            methods: &#123;</span><br><span class="line">                greet: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="string">"How do you do?"</span>; &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            events: &#123;</span><br><span class="line">                enter: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">this</span>.wearTux(); &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        Casual: &#123;</span><br><span class="line">            methods: &#123;</span><br><span class="line">                greet: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="string">"Hi!"</span>; &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            events: &#123;</span><br><span class="line">                enter: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">this</span>.wearJeans(); &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// &gt;&gt;&gt; StateExpression</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="简写(Shorthand)">简写(Shorthand)</h2><p>明确的分类是很准确的，但是这样显得很冗余。所有 state() 同样接受更加简便的表达形式。效果同上面的一样。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> shorthandExpression = state(&#123;</span><br><span class="line">    greet: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="string">"Hello."</span>; &#125;,</span><br><span class="line"></span><br><span class="line">    Formal: &#123;</span><br><span class="line">        enter: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">this</span>.wearTux(); &#125;,</span><br><span class="line">        greet: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="string">"How do you do?"</span>; &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    Casual: &#123;</span><br><span class="line">        enter: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">this</span>.wearJeans(); &#125;,</span><br><span class="line">        greet: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="string">"Hi!"</span>; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// &gt;&gt;&gt; StateExpression</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="Superstates-and-substates"><a href="#Superstates-and-substates" class="headerlink" title="Superstates and substates"></a>Superstates and substates</h2><p><strong>owner</strong> 表现得行为由 <strong>substates</strong> 决定 ，这些<strong>substates</strong> 由 <strong>superstates</strong> 生成<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o = &#123;&#125;;</span><br><span class="line">state( o, &#123;</span><br><span class="line">    A: state(&#123;</span><br><span class="line">        AA: state,</span><br><span class="line">        AB: state</span><br><span class="line">    &#125;),</span><br><span class="line">    B: state</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> root = o.state(<span class="string">''</span>);                    <span class="comment">// &gt;&gt;&gt; RootState</span></span><br><span class="line">o.state() === root;                        <span class="comment">// &gt;&gt;&gt; true</span></span><br><span class="line">o.state(<span class="string">'-&gt; AA'</span>);</span><br><span class="line">o.state() === o.state(<span class="string">'AA'</span>);               <span class="comment">// &gt;&gt;&gt; true</span></span><br><span class="line">o.state().superstate === o.state(<span class="string">'A'</span>);     <span class="comment">// &gt;&gt;&gt; true</span></span><br><span class="line">o.state().superstate.superstate === root;  <span class="comment">// &gt;&gt;&gt; true</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="Parastates-and-composition"><a href="#Parastates-and-composition" class="headerlink" title="Parastates and composition"></a>Parastates and composition</h2><p>除了通过 <strong>superstates</strong> 继承，<code>State</code> 模型还支持通过 <strong>parastate</strong> 关系实现多继承。<br>最孤单的就是RootState，它不承担任何关系。<br>Parastates 通过 <code>state.extend</code> 函数声明, 参数为一个或多个字符串 to parastates, along with optional parameters attributes and expression, and returns a StateExpression that can be used to produce a State with the named parastates.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o = &#123;&#125;;</span><br><span class="line">state( o, &#123;</span><br><span class="line">    A: state(&#123;</span><br><span class="line">        AA: state.extend(<span class="string">'X, Y'</span>)</span><br><span class="line">    &#125;),</span><br><span class="line">    X: state,</span><br><span class="line">    Y: state</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h1 id="状态表达式-Expressions"><a href="#状态表达式-Expressions" class="headerlink" title="状态表达式(Expressions)"></a>状态表达式(Expressions)</h1><p><code>State</code> 通过 <em>state expression</em> 数据结构以声明的方式定义。<br><code>StateExpression</code> 通过调用不包含<code>owner</code>参数的 <code>state()</code> 函数创建，仅提供一个 <code>expression</code> 参数，还可以提供由空格分隔的 <code>attributes</code>参数。<br>在其内部， 状态表达式的内容根据对象的 categories 设置，其中包含 <code>data</code>, <code>methods</code>, <code>events</code>, <code>guards</code>, <code>substates</code> 和 <code>transitions</code>。<code>state()</code> 的 <code>expression</code>可以根据这些 categories形成结构化，或者可以通过类型推断来简化实现一些更加简单的缩写。</p>
+<h2 id="结构化状态表达式-Structured-state-expressions"><a href="#结构化状态表达式-Structured-state-expressions" class="headerlink" title="结构化状态表达式(Structured state expressions)"></a>结构化状态表达式(Structured state expressions)</h2><p>以入门的例子为基础，我们可以写一个包含明确分类的expression，包含子状态、方法、事件等。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> longformExpression = state(&#123;</span><br><span class="line">    methods: &#123;</span><br><span class="line">        greet: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="string">"Hello."</span>; &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    states: &#123;</span><br><span class="line">        Formal: &#123;</span><br><span class="line">            methods: &#123;</span><br><span class="line">                greet: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="string">"How do you do?"</span>; &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            events: &#123;</span><br><span class="line">                enter: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">this</span>.wearTux(); &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        Casual: &#123;</span><br><span class="line">            methods: &#123;</span><br><span class="line">                greet: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="string">"Hi!"</span>; &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            events: &#123;</span><br><span class="line">                enter: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">this</span>.wearJeans(); &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// &gt;&gt;&gt; StateExpression</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="简写-Shorthand"><a href="#简写-Shorthand" class="headerlink" title="简写(Shorthand)"></a>简写(Shorthand)</h2><p>明确的分类是很准确的，但是这样显得很冗余。所有 state() 同样接受更加简便的表达形式。效果同上面的一样。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> shorthandExpression = state(&#123;</span><br><span class="line">    greet: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="string">"Hello."</span>; &#125;,</span><br><span class="line"></span><br><span class="line">    Formal: &#123;</span><br><span class="line">        enter: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">this</span>.wearTux(); &#125;,</span><br><span class="line">        greet: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="string">"How do you do?"</span>; &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    Casual: &#123;</span><br><span class="line">        enter: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">this</span>.wearJeans(); &#125;,</span><br><span class="line">        greet: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="string">"Hi!"</span>; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// &gt;&gt;&gt; StateExpression</span></span><br></pre></td></tr></table></figure></p>
 <p>在这个例子中，<code>state()</code> 根据以下规则解释：<br><em>识别缺乏键名的类别 ，推断 <code>Formal</code> 和 <code>Casual</code> 为状态
 </em>将 <code>enter</code> 识别为内置的事件类型，将关联的函数作为 <code>enter</code> 事件的监听器，别且在被所在的 <code>state</code> 触发。<br>*推断 <code>greet</code> 不是一个内置的事件类型，所以被认为是一个方法。<br>所有显示的定义可以通过简写来实现，但是要避免出现含糊不清的情况 (例如，创建一个名为 <code>data</code> 的状态，或者方法名叫做 <code>enter</code>。</p>
-<h2 id="表达式推断(Interpreting_expression_input)">表达式推断(Interpreting expression input)</h2><p>提供给 <code>state()</code>的 <code>StateExpression</code>根据以下规则推断解释：<br>1.如果输入的值的类型为<code>StateExpression</code>或<code>TransitionExpression</code>并且推断如此，则使用输入的键名为它的名称，如果输入的值是<code>state</code>函数自身，则推断为名称为键名的空状态。<br>2.如果键名是类名，它的值是一个对象或null，那么它将被解释，因为它会在长期形成的结构化格式。<br>3.如果键名同 built-in event type 匹配，或者值是string， 则推断值作为一个事件监听函数，, an array of event listeners, or a named transition target to be bound to that event type.<br>4.Otherwise, if an entry’s key matches a guard action (i.e., admit, release), interpret the value as a guard condition (or array of guard conditions).<br>5.Otherwise, if an entry’s value is an object, interpret it as a substate whose name is the entry’s key, or if the entry’s value is a function, interpret it as a method whose name is the entry’s key.</p>
-<h1 id="Transitions过渡">Transitions过渡</h1><p>Whenever an object’s current state changes, a transition state is created, which temporarily assumes the role of the current state while the object is travelling from its origin or source state to its target state.<br>每当一个对象的当前状态的变化，会创建一个过渡状态，这暂时假定当前状态的角色，而对象从它的源状态变化到目标状态。</p>
-<h2 id="Transition_expressions">Transition expressions</h2><p>A state expression may include any number of transition expressions, which define some action to be performed, either synchronously or asynchronously, along with selectors for the origin/source and target states to which the transition should apply, and guards to determine the appropriate transition to employ.<br>状态表达式可以包括任何数量的过渡表达式，它定义要执行的操作，同步或异步，以及选择的原产地/来源和目标状态的过渡应适用的，和警卫来确定合适的过渡聘请。<br>Before an object undergoes a state change, it examines the transition expressions available for the given origin and target, and selects one to be enacted. To test each expression, its origin state is validated against its admit transition guards, and its target state is validated against its release transition guards. The object then instantiates a Transition based on the first valid transition expression it encounters, or, if no transition expression is available, a generic actionless Transition.<br>对象经历一个状态的改变之前，它会检查过渡表达式对于源状态和目标状态是否可用，并选择一个制定。要测试每个表达式，它的起源状态进行验证针对其承认过渡卫士，并将其目标状态及其对过渡释放警卫进行了验证。该对象，然后实例化基于它遇到的第一个有效的过渡表达一个过渡，或者，如果没有过渡表达式是可用的，一个通用的无为过渡。<br>Where transition expressions should be situated in the state hierarchy is largely a matter of discretion. In determining the appropriate transition expression for a given origin–target pairing, the search proceeds, in order:<br>过渡表达式在状态层次的设置应该非常慎重。<br>1.at 过渡表达式的<code>target</code>状态(CSS3过渡是相对于类声明的方式)<br>2.at 过渡表达式的<code>origin</code>状态<br>progressively up the superstate chain of target<br>progressively up the superstate chain of origin<br>Transitions can therefore be organized in a variety of ways, but ambiguity resolution is regular and predictable, as demonstrated with the Zig transition in the example below:<br>过渡可以实现为不同的方式，但是这是有规律并且可预测的，如示例中<code>Zig</code>过渡<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+<h2 id="表达式推断-Interpreting-expression-input"><a href="#表达式推断-Interpreting-expression-input" class="headerlink" title="表达式推断(Interpreting expression input)"></a>表达式推断(Interpreting expression input)</h2><p>提供给 <code>state()</code>的 <code>StateExpression</code>根据以下规则推断解释：<br>1.如果输入的值的类型为<code>StateExpression</code>或<code>TransitionExpression</code>并且推断如此，则使用输入的键名为它的名称，如果输入的值是<code>state</code>函数自身，则推断为名称为键名的空状态。<br>2.如果键名是类名，它的值是一个对象或null，那么它将被解释，因为它会在长期形成的结构化格式。<br>3.如果键名同 built-in event type 匹配，或者值是string， 则推断值作为一个事件监听函数，, an array of event listeners, or a named transition target to be bound to that event type.<br>4.Otherwise, if an entry’s key matches a guard action (i.e., admit, release), interpret the value as a guard condition (or array of guard conditions).<br>5.Otherwise, if an entry’s value is an object, interpret it as a substate whose name is the entry’s key, or if the entry’s value is a function, interpret it as a method whose name is the entry’s key.</p>
+<h1 id="Transitions过渡"><a href="#Transitions过渡" class="headerlink" title="Transitions过渡"></a>Transitions过渡</h1><p>Whenever an object’s current state changes, a transition state is created, which temporarily assumes the role of the current state while the object is travelling from its origin or source state to its target state.<br>每当一个对象的当前状态的变化，会创建一个过渡状态，这暂时假定当前状态的角色，而对象从它的源状态变化到目标状态。</p>
+<h2 id="Transition-expressions"><a href="#Transition-expressions" class="headerlink" title="Transition expressions"></a>Transition expressions</h2><p>A state expression may include any number of transition expressions, which define some action to be performed, either synchronously or asynchronously, along with selectors for the origin/source and target states to which the transition should apply, and guards to determine the appropriate transition to employ.<br>状态表达式可以包括任何数量的过渡表达式，它定义要执行的操作，同步或异步，以及选择的原产地/来源和目标状态的过渡应适用的，和警卫来确定合适的过渡聘请。<br>Before an object undergoes a state change, it examines the transition expressions available for the given origin and target, and selects one to be enacted. To test each expression, its origin state is validated against its admit transition guards, and its target state is validated against its release transition guards. The object then instantiates a Transition based on the first valid transition expression it encounters, or, if no transition expression is available, a generic actionless Transition.<br>对象经历一个状态的改变之前，它会检查过渡表达式对于源状态和目标状态是否可用，并选择一个制定。要测试每个表达式，它的起源状态进行验证针对其承认过渡卫士，并将其目标状态及其对过渡释放警卫进行了验证。该对象，然后实例化基于它遇到的第一个有效的过渡表达一个过渡，或者，如果没有过渡表达式是可用的，一个通用的无为过渡。<br>Where transition expressions should be situated in the state hierarchy is largely a matter of discretion. In determining the appropriate transition expression for a given origin–target pairing, the search proceeds, in order:<br>过渡表达式在状态层次的设置应该非常慎重。<br>1.at 过渡表达式的<code>target</code>状态(CSS3过渡是相对于类声明的方式)<br>2.at 过渡表达式的<code>origin</code>状态<br>progressively up the superstate chain of target<br>progressively up the superstate chain of origin<br>Transitions can therefore be organized in a variety of ways, but ambiguity resolution is regular and predictable, as demonstrated with the Zig transition in the example below:<br>过渡可以实现为不同的方式，但是这是有规律并且可预测的，如示例中<code>Zig</code>过渡<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
 
       
     </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/07/24/Linux/Linux下Node生产环境部署/" rel="next" title="Linux下Node生产环境部署">
+                <i class="fa fa-chevron-left"></i> Linux下Node生产环境部署
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2014/07/24/Nginx/414Request-URITooLarge/" rel="prev" title="Large Request-URI-Too-Large">
+                Large Request-URI-Too-Large <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2014/07/24/Nodejs/[翻译]statejs/"
+     data-title="[翻译]statejs"
+     data-content=""
+     data-url="http://violet-day.github.io/2014/07/24/Nodejs/[翻译]statejs/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2014/07/24/Nodejs/[翻译]statejs/"
+           data-title="[翻译]statejs" data-url="http://violet-day.github.io/2014/07/24/Nodejs/[翻译]statejs/">
+      </div>
     
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2014/07/24/Nginx/414Request-URITooLarge/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
+
+
+        </div>
         
-          Large Request-URI-Too-Large
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars2.githubusercontent.com/u/5970246?v=3&s=460"
+               alt="violet_day" />
+          <p class="site-author-name" itemprop="name">violet_day</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/violet-day" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#States"><span class="nav-number">1.</span> <span class="nav-text">States</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Object-model"><span class="nav-number">2.</span> <span class="nav-text">Object model</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#The-root-state"><span class="nav-number">2.1.</span> <span class="nav-text">The root state</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Superstates-and-substates"><span class="nav-number">2.2.</span> <span class="nav-text">Superstates and substates</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Parastates-and-composition"><span class="nav-number">2.3.</span> <span class="nav-text">Parastates and composition</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#状态表达式-Expressions"><span class="nav-number">3.</span> <span class="nav-text">状态表达式(Expressions)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#结构化状态表达式-Structured-state-expressions"><span class="nav-number">3.1.</span> <span class="nav-text">结构化状态表达式(Structured state expressions)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简写-Shorthand"><span class="nav-number">3.2.</span> <span class="nav-text">简写(Shorthand)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#表达式推断-Interpreting-expression-input"><span class="nav-number">3.3.</span> <span class="nav-text">表达式推断(Interpreting expression input)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Transitions过渡"><span class="nav-number">4.</span> <span class="nav-text">Transitions过渡</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Transition-expressions"><span class="nav-number">4.1.</span> <span class="nav-text">Transition expressions</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
         
       </div>
-    </a>
-  
-  
-    <a href="/2014/07/24/Linux/Linux下Node生产环境部署/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Linux下Node生产环境部署</div>
-      <strong class="article-nav-caption">></strong>
-    </a>
-  
-</nav>
+    </main>
 
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
   
-</article>
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">violet_day</span>
+</div>
 
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
 
-<div class="share">
-	<!-- JiaThis Button BEGIN -->
-	<div class="jiathis_style">
-		<span class="jiathis_txt">分享到：</span>
-		<a class="jiathis_button_tsina"></a>
-		<a class="jiathis_button_cqq"></a>
-		<a class="jiathis_button_douban"></a>
-		<a class="jiathis_button_weixin"></a>
-		<a class="jiathis_button_tumblr"></a>
-		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
-	</div>
-	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
-	<!-- JiaThis Button END -->
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
 </div>
 
 
 
-<div class="duoshuo">
-	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="Nodejs/[翻译]statejs" data-title="[翻译]statejs" data-url="http://violet-day.github.io/2014/07/24/Nodejs/[翻译]statejs/"></div>
-	<!-- 多说评论框 end -->
-	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-	<script type="text/javascript">
-	var duoshuoQuery = {short_name:"true"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		 || document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-	<!-- 多说公共JS代码 end -->
-</div>
+      </div>
+    </footer>
 
-
-
-</div>
-      <footer id="footer">
-  <div class="outer">
-    <div id="footer-info">
-    	<div class="footer-left">
-    		&copy; 2016 violet_day
-    	</div>
-      	<div class="footer-right">
-      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
-      	</div>
-    </div>
+    <div class="back-to-top"></div>
   </div>
-</footer>
-    </div>
-    
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
-  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+  
 
 
-<script src="/js/mobile.js" type="text/javascript"></script>
-<script src="/js/main.js" type="text/javascript"></script>
+  
 
 
 
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
 
 
-<! -- mathjax config similar to math.stackexchange -->
+  
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-    tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-        processEscapes: true,
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
     }
-});
 
-MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-        all[i].SourceElement().parentNode.className += ' has-jax';                 
-    }       
-});
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
 </script>
 
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
 </script>
 
 
 
-  </div>
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"Nemo"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+
+  
+  
+
+
 </body>
 </html>
