@@ -58,24 +58,24 @@
 
 
 <meta name="description" content="nodejs的应用一般都用pm2托管，但是pm2本身的日志处理比较弱，时间久了日志文件会变得很大，需要一些日志切割的策略。
-linux一般使用logrotate来作日志切割，具体设置可以参见文档
+linux一般使用logrotate来作日志切割，相关介绍见understanding-logrotate-utility
 demo配置如下，假设你的nodejs应用使用www-data启动：
-123456789101112131415$&amp;#123;loggerRoot&amp;#125;/*.log &amp;#123;    rotate">
+123456789101112131415$&amp;#123;loggerRoot&amp;#1">
 <meta property="og:type" content="article">
 <meta property="og:title" content="pm2 and logrotate">
 <meta property="og:url" content="http://violet-day.github.io/2016/10/03/pm2-and-logrotate/index.html">
 <meta property="og:site_name" content="Nemo's Blog">
 <meta property="og:description" content="nodejs的应用一般都用pm2托管，但是pm2本身的日志处理比较弱，时间久了日志文件会变得很大，需要一些日志切割的策略。
-linux一般使用logrotate来作日志切割，具体设置可以参见文档
+linux一般使用logrotate来作日志切割，相关介绍见understanding-logrotate-utility
 demo配置如下，假设你的nodejs应用使用www-data启动：
-123456789101112131415$&amp;#123;loggerRoot&amp;#125;/*.log &amp;#123;    rotate">
-<meta property="og:updated_time" content="2016-10-03T07:58:57.000Z">
+123456789101112131415$&amp;#123;loggerRoot&amp;#1">
+<meta property="og:updated_time" content="2016-10-03T08:32:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="pm2 and logrotate">
 <meta name="twitter:description" content="nodejs的应用一般都用pm2托管，但是pm2本身的日志处理比较弱，时间久了日志文件会变得很大，需要一些日志切割的策略。
-linux一般使用logrotate来作日志切割，具体设置可以参见文档
+linux一般使用logrotate来作日志切割，相关介绍见understanding-logrotate-utility
 demo配置如下，假设你的nodejs应用使用www-data启动：
-123456789101112131415$&amp;#123;loggerRoot&amp;#125;/*.log &amp;#123;    rotate">
+123456789101112131415$&amp;#123;loggerRoot&amp;#1">
 
 
 
@@ -278,7 +278,7 @@ demo配置如下，假设你的nodejs应用使用www-data启动：
 
       
         <p>nodejs的应用一般都用pm2托管，但是pm2本身的日志处理比较弱，时间久了日志文件会变得很大，需要一些日志切割的策略。</p>
-<p>linux一般使用<a href="http://www.linuxcommand.org/man_pages/logrotate8.html" target="_blank" rel="external">logrotate</a>来作日志切割，具体设置可以参见文档</p>
+<p>linux一般使用<a href="http://www.linuxcommand.org/man_pages/logrotate8.html" target="_blank" rel="external">logrotate</a>来作日志切割，相关介绍见<a href="https://support.rackspace.com/how-to/understanding-logrotate-utility/" target="_blank" rel="external">understanding-logrotate-utility</a></p>
 <p>demo配置如下，假设你的nodejs应用使用www-data启动：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">$&#123;loggerRoot&#125;/*.log &#123;</div><div class="line">    rotate 7</div><div class="line">    daily</div><div class="line">    dateext</div><div class="line">    dateformat .%Y%m%d</div><div class="line">    compress</div><div class="line">    missingok</div><div class="line">    notifempty</div><div class="line">    sharedscripts</div><div class="line">    postrotate</div><div class="line">        su -l www-data -c &apos;pm2 reloadLogs&apos;</div><div class="line">    endscript</div><div class="line"></div><div class="line">    su www-data www-data</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <p>原理就是在logrotate之后调用<a href="http://pm2.keymetrics.io/docs/usage/log-management/#reloading-all-logs" target="_blank" rel="external">pm2 reloadLogs</a></p>
