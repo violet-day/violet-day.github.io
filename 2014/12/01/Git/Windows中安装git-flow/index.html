@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion">
+<html class="theme-next pisces use-motion">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -82,7 +82,7 @@ http://msysgit.github.io 下载到最新的git bash(一个针对windows平台而
 <script type="text/javascript" id="hexo.configuration">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Muse',
+    scheme: 'Pisces',
     sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: true,
@@ -299,7 +299,7 @@ http://msysgit.github.io 下载到最新的git bash(一个针对windows平台而
         <p><a href="http://danielkummer.github.io/git-flow-cheatsheet/index.zh_CN.html" target="_blank" rel="external">git-flow 备忘清单</a></p>
 <p><a href="http://msysgit.github.io" target="_blank" rel="external">http://msysgit.github.io</a> 下载到最新的git bash(一个针对windows平台而封装的git命令行管理工具), 其实它还自带了超级难用的一个可视化操作工具git ui.</p>
 <p>安装完成git, 即可使用如下命令将gitflow克隆到本地:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> --recursive git://github.com/nvie/gitflow.git</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git <span class="built_in">clone</span> --recursive git://github.com/nvie/gitflow.git</div></pre></td></tr></table></figure>
 <p>其他方式具体可以参考gitflow官方介绍: <a href="https://github.com/nvie/gitflow" target="_blank" rel="external">https://github.com/nvie/gitflow</a>.</p>
 <p>然后分别下载下面两个文件:</p>
 <ul>
@@ -310,7 +310,7 @@ http://msysgit.github.io 下载到最新的git bash(一个针对windows平台而
 </ul>
 <p>下载完成后分别将两个压缩包解压文件下bin目录中的getopt.exe和libintl3.dll文件存放到git安装目录下的bin目录中.</p>
 <p>最后使用windows系统自带的命令行工具, 进入到我们已经克隆好的gitflow目录中执行以下命令:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">D:\gitflow contrib&gt;msysgit-install.cmd <span class="string">"C:\Program Files\Git"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">D:\gitflow contrib&gt;msysgit-install.cmd <span class="string">"C:\Program Files\Git"</span></div></pre></td></tr></table></figure>
 <p>注意这里, 这里以C盘为例, 首先是找到gitflow目录下contrib子目录中的msysgit-install.cmd表示我们要执行安装命令, 如果单独执行这个命令不带指定安装目录则会报: 找不到msysgit安装目录的错误, 并且会要求在命令行提供一个目录名称(安装目录). 因此在执行安装操作的后面需要指定一个安装目录.</p>
 <p>那么安装完成之后到git bash中执行git flow会列出git-flow提供的命令. 此时, 大功告成.</p>
 <p>题外话: git虽是基于命令行操作的. 但是也有可视化的工具如source tree就是一款非常好的工具, 而且source tree自身就提供了git-flow的功能. 可以根据自己的喜好而选择合适的方式使用git.</p>
@@ -435,7 +435,7 @@ http://msysgit.github.io 下载到最新的git bash(一个针对windows平台而
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-count">25</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -452,7 +452,7 @@ http://msysgit.github.io 下载到最新的git bash(一个针对windows平台而
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-count">30</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -531,7 +531,7 @@ http://msysgit.github.io 下载到最新的git bash(一个针对windows平台而
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Muse
+    NexT.Pisces
   </a>
 </div>
 
@@ -574,6 +574,13 @@ http://msysgit.github.io 下载到最新的git bash(一个针对windows平台而
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
 
   
   

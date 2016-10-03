@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion">
+<html class="theme-next pisces use-motion">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -57,23 +57,23 @@
 
 
 
-<meta name="description" content="1#user  nobody;&amp;#10;worker_processes  4;&amp;#10;&amp;#10;#error_log  logs/error.log;&amp;#10;#error_log  logs/error.log  notice;&amp;#10;#error_log  logs/error.log  info;&amp;#10;&amp;#10;#pid        logs/nginx.pid;&amp;#10;wor">
+<meta name="description" content="123456789101112131415161718192021222324252627282930313233343536373839404142#user  nobody;worker_processes  4;#error_log  logs/error.log;#error_log  logs/error.log  notice;#error_log  logs/error.log  i">
 <meta property="og:type" content="article">
 <meta property="og:title" content="nginx的配置文件">
 <meta property="og:url" content="http://violet-day.github.io/2014/08/05/Nginx/nginx-conf/index.html">
 <meta property="og:site_name" content="Nemo's Blog">
-<meta property="og:description" content="1#user  nobody;&amp;#10;worker_processes  4;&amp;#10;&amp;#10;#error_log  logs/error.log;&amp;#10;#error_log  logs/error.log  notice;&amp;#10;#error_log  logs/error.log  info;&amp;#10;&amp;#10;#pid        logs/nginx.pid;&amp;#10;wor">
+<meta property="og:description" content="123456789101112131415161718192021222324252627282930313233343536373839404142#user  nobody;worker_processes  4;#error_log  logs/error.log;#error_log  logs/error.log  notice;#error_log  logs/error.log  i">
 <meta property="og:updated_time" content="2015-03-24T01:39:35.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="nginx的配置文件">
-<meta name="twitter:description" content="1#user  nobody;&amp;#10;worker_processes  4;&amp;#10;&amp;#10;#error_log  logs/error.log;&amp;#10;#error_log  logs/error.log  notice;&amp;#10;#error_log  logs/error.log  info;&amp;#10;&amp;#10;#pid        logs/nginx.pid;&amp;#10;wor">
+<meta name="twitter:description" content="123456789101112131415161718192021222324252627282930313233343536373839404142#user  nobody;worker_processes  4;#error_log  logs/error.log;#error_log  logs/error.log  notice;#error_log  logs/error.log  i">
 
 
 
 <script type="text/javascript" id="hexo.configuration">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Muse',
+    scheme: 'Pisces',
     sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: true,
@@ -287,7 +287,7 @@
       
 
       
-        <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#user  nobody;&#10;worker_processes  4;&#10;&#10;#error_log  logs/error.log;&#10;#error_log  logs/error.log  notice;&#10;#error_log  logs/error.log  info;&#10;&#10;#pid        logs/nginx.pid;&#10;worker_rlimit_nofile  65535;   #nginx&#33021;&#25171;&#24320;&#25991;&#20214;&#30340;&#26368;&#22823;&#21477;&#26564;&#25968;,&#26368;&#22909;&#19982;ulimit -n&#30340;&#20540;&#20445;&#25345;&#19968;&#33268;,&#20351;&#29992;ulimit -SHn 65535 &#35774;&#32622;&#10;&#10;events &#123;&#10;    worker_connections  1024;&#10;&#125;&#10;&#10;&#10;http &#123;&#10;    include       mime.types;&#10;    include       vhost/*.conf;&#10;    default_type  application/octet-stream;&#10;    sendfile on; &#10;    #log_format  main  &#39;$remote_addr - $remote_user [$time_local] &#34;$request&#34; &#39;&#10;    #                  &#39;$status $body_bytes_sent &#34;$http_referer&#34; &#39;&#10;    #                  &#39;&#34;$http_user_agent&#34; &#34;$http_x_forwarded_for&#34;&#39;;&#10;&#10;    #access_log  logs/access.log  main;&#10;&#10;&#10;    #tcp_nopush     on;&#10;&#10;    #keepalive_timeout  0;&#10;    keepalive_timeout  65;&#10;&#10;    gzip on; #&#21551;&#29992;gzip&#21151;&#33021;  &#10;    gzip_static on; #&#26816;&#26597;&#26377;&#27809;&#26377;&#38745;&#24577;&#25991;&#20214;&#30340;.gz&#29256;&#26412;&#65292;&#27809;&#26377;&#33258;&#34892;gzip  &#10;    gzip_disable &#34;MSIE [1-6]\.(?!.*SV1)&#34;; #IE6&#20197;&#19979;&#31105;&#29992;gzip  &#10;    gzip_comp_level 7; #&#32423;&#21035;&#36234;&#39640;&#65292;CPU&#21344;&#29992;&#36234;&#22810;&#65292;&#21387;&#32553;&#30340;&#36234;&#23567;  &#10;    gzip_min_length 1024; #&#21040;&#36798;1K&#30340;&#25991;&#20214;&#25165;gzip&#10;&#10;    #&#35299;&#20915;414 Request URL Too Large&#10;    client_header_buffer_size 512k;&#10;    large_client_header_buffers 4 512k;&#10;&#125;</span><br></pre></td></tr></table></figure>
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">#user  nobody;</div><div class="line">worker_processes  4;</div><div class="line"></div><div class="line">#error_log  logs/error.log;</div><div class="line">#error_log  logs/error.log  notice;</div><div class="line">#error_log  logs/error.log  info;</div><div class="line"></div><div class="line">#pid        logs/nginx.pid;</div><div class="line">worker_rlimit_nofile  65535;   #nginx能打开文件的最大句柄数,最好与ulimit -n的值保持一致,使用ulimit -SHn 65535 设置</div><div class="line"></div><div class="line">events &#123;</div><div class="line">    worker_connections  1024;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">http &#123;</div><div class="line">    include       mime.types;</div><div class="line">    include       vhost/*.conf;</div><div class="line">    default_type  application/octet-stream;</div><div class="line">    sendfile on; </div><div class="line">    #log_format  main  &apos;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &apos;</div><div class="line">    #                  &apos;$status $body_bytes_sent &quot;$http_referer&quot; &apos;</div><div class="line">    #                  &apos;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&apos;;</div><div class="line"></div><div class="line">    #access_log  logs/access.log  main;</div><div class="line"></div><div class="line"></div><div class="line">    #tcp_nopush     on;</div><div class="line"></div><div class="line">    #keepalive_timeout  0;</div><div class="line">    keepalive_timeout  65;</div><div class="line"></div><div class="line">    gzip on; #启用gzip功能  </div><div class="line">    gzip_static on; #检查有没有静态文件的.gz版本，没有自行gzip  </div><div class="line">    gzip_disable &quot;MSIE [1-6]\.(?!.*SV1)&quot;; #IE6以下禁用gzip  </div><div class="line">    gzip_comp_level 7; #级别越高，CPU占用越多，压缩的越小  </div><div class="line">    gzip_min_length 1024; #到达1K的文件才gzip</div><div class="line"></div><div class="line">    #解决414 Request URL Too Large</div><div class="line">    client_header_buffer_size 512k;</div><div class="line">    large_client_header_buffers 4 512k;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
       
     </div>
 
@@ -405,7 +405,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-count">25</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -422,7 +422,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-count">30</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -501,7 +501,7 @@
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Muse
+    NexT.Pisces
   </a>
 </div>
 
@@ -544,6 +544,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
 
   
   

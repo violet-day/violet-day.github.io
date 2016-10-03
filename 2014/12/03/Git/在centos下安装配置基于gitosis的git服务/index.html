@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion">
+<html class="theme-next pisces use-motion">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -73,7 +73,7 @@
 <script type="text/javascript" id="hexo.configuration">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Muse',
+    scheme: 'Pisces',
     sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: true,
@@ -287,11 +287,11 @@
       
 
       
-        <h3 id="服务器-安装-openssh服务器与客户端工具"><a href="#服务器-安装-openssh服务器与客户端工具" class="headerlink" title="[服务器]安装 openssh服务器与客户端工具"></a>[服务器]安装 openssh服务器与客户端工具</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install openssh-server openssh-client -y</span><br><span class="line"></span><br><span class="line"><span class="comment">#安装python的setup tool</span></span><br><span class="line">sudo yum install python-setuptools -y</span><br><span class="line"></span><br><span class="line"><span class="comment">#安装git服务器</span></span><br><span class="line">sudo yum install git-core -y</span><br><span class="line"></span><br><span class="line"><span class="comment">#获取并安装gitosis</span></span><br><span class="line"><span class="built_in">cd</span> /tmp</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/res0nat0r/gitosis.git</span><br><span class="line"><span class="built_in">cd</span> gitosis</span><br><span class="line">sudo python setup.py install</span><br></pre></td></tr></table></figure>
-<h3 id="客户端-上传公钥"><a href="#客户端-上传公钥" class="headerlink" title="[客户端]上传公钥"></a>[客户端]上传公钥</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#创建个人公钥和私钥（用于后面的git服务的管理员管理）</span></span><br><span class="line">ssh-keygen -t rsa</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过ssh使用git用户把本机的公钥发送到/homt/git目录下</span></span><br><span class="line">scp /home/simen/.ssh/id_rsa.pub git@<span class="number">192.168</span>.<span class="number">88.88</span>:/home/git</span><br></pre></td></tr></table></figure>
-<h3 id="客户端-配置git服务器"><a href="#客户端-配置git服务器" class="headerlink" title="[客户端]配置git服务器"></a>[客户端]配置git服务器</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 增加git用户 不要给git设置密码 否则只要知道git密码可以绕过gitosis的验证</span></span><br><span class="line">sudo useradd -m <span class="operator">-s</span> /bin/bash <span class="operator">-d</span> /home/git git  </span><br><span class="line">sudo passwd git</span><br><span class="line"></span><br><span class="line"><span class="comment">#切换到git用户 注意中间有一个 -</span></span><br><span class="line">su - git</span><br><span class="line"><span class="comment">#初始化gitosis</span></span><br><span class="line">gitosis-init &lt; /home/git/id_rsa.pub</span><br><span class="line"><span class="comment">#设置权限让gitosis-admin仓库可clone</span></span><br><span class="line">sudo chmod <span class="number">755</span> /home/git/repositories/gitosis-admin.git/hooks/post-update</span><br></pre></td></tr></table></figure>
-<h3 id="客户端-clone-gitosis-admin"><a href="#客户端-clone-gitosis-admin" class="headerlink" title="[客户端]clone gitosis-admin"></a>[客户端]clone gitosis-admin</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#写相对路径即可</span></span><br><span class="line">git <span class="built_in">clone</span> ssh://git@<span class="number">221.224</span>.<span class="number">215.171</span>:<span class="number">4272</span>/gitosis-admin.git</span><br></pre></td></tr></table></figure>
-<h3 id="管理gitosis配置"><a href="#管理gitosis配置" class="headerlink" title="管理gitosis配置"></a>管理gitosis配置</h3><p>gitosis.conf 对应的内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[gitosis]&#10;&#10;#&#26174;&#31034;&#26085;&#24535;&#10;#loglevel = DEBUG&#10;&#10;[group gitosis-admin]&#10;writable = gitosis-admin&#10;#&#22810;&#20010;&#29992;&#25143;&#29992;&#31354;&#26684;&#38388;&#38548;&#10;members = root@localhost.localdomain  &#10;&#10;``` &#10;&#10;### &#26032;&#22686;&#20179;&#24211;&#10;```bash&#10;su git&#10;cd /home/git/repositories&#10;git init xxx --bare</span><br></pre></td></tr></table></figure></p>
+        <h3 id="服务器-安装-openssh服务器与客户端工具"><a href="#服务器-安装-openssh服务器与客户端工具" class="headerlink" title="[服务器]安装 openssh服务器与客户端工具"></a>[服务器]安装 openssh服务器与客户端工具</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">sudo yum install openssh-server openssh-client -y</div><div class="line"></div><div class="line"><span class="comment">#安装python的setup tool</span></div><div class="line">sudo yum install python-setuptools -y</div><div class="line"></div><div class="line"><span class="comment">#安装git服务器</span></div><div class="line">sudo yum install git-core -y</div><div class="line"></div><div class="line"><span class="comment">#获取并安装gitosis</span></div><div class="line"><span class="built_in">cd</span> /tmp</div><div class="line">git <span class="built_in">clone</span> https://github.com/res0nat0r/gitosis.git</div><div class="line"><span class="built_in">cd</span> gitosis</div><div class="line">sudo python setup.py install</div></pre></td></tr></table></figure>
+<h3 id="客户端-上传公钥"><a href="#客户端-上传公钥" class="headerlink" title="[客户端]上传公钥"></a>[客户端]上传公钥</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#创建个人公钥和私钥（用于后面的git服务的管理员管理）</span></div><div class="line">ssh-keygen -t rsa</div><div class="line"></div><div class="line"><span class="comment"># 通过ssh使用git用户把本机的公钥发送到/homt/git目录下</span></div><div class="line">scp /home/simen/.ssh/id_rsa.pub git@192.168.88.88:/home/git</div></pre></td></tr></table></figure>
+<h3 id="客户端-配置git服务器"><a href="#客户端-配置git服务器" class="headerlink" title="[客户端]配置git服务器"></a>[客户端]配置git服务器</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 增加git用户 不要给git设置密码 否则只要知道git密码可以绕过gitosis的验证</span></div><div class="line">sudo useradd -m <span class="_">-s</span> /bin/bash <span class="_">-d</span> /home/git git  </div><div class="line">sudo passwd git</div><div class="line"></div><div class="line"><span class="comment">#切换到git用户 注意中间有一个 -</span></div><div class="line">su - git</div><div class="line"><span class="comment">#初始化gitosis</span></div><div class="line">gitosis-init &lt; /home/git/id_rsa.pub</div><div class="line"><span class="comment">#设置权限让gitosis-admin仓库可clone</span></div><div class="line">sudo chmod 755 /home/git/repositories/gitosis-admin.git/hooks/post-update</div></pre></td></tr></table></figure>
+<h3 id="客户端-clone-gitosis-admin"><a href="#客户端-clone-gitosis-admin" class="headerlink" title="[客户端]clone gitosis-admin"></a>[客户端]clone gitosis-admin</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#写相对路径即可</span></div><div class="line">git <span class="built_in">clone</span> ssh://git@221.224.215.171:4272/gitosis-admin.git</div></pre></td></tr></table></figure>
+<h3 id="管理gitosis配置"><a href="#管理gitosis配置" class="headerlink" title="管理gitosis配置"></a>管理gitosis配置</h3><p>gitosis.conf 对应的内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">[gitosis]</div><div class="line"></div><div class="line">#显示日志</div><div class="line">#loglevel = DEBUG</div><div class="line"></div><div class="line">[group gitosis-admin]</div><div class="line">writable = gitosis-admin</div><div class="line">#多个用户用空格间隔</div><div class="line">members = root@localhost.localdomain  </div><div class="line"></div><div class="line">``` </div><div class="line"></div><div class="line">### 新增仓库</div><div class="line">```bash</div><div class="line">su git</div><div class="line">cd /home/git/repositories</div><div class="line">git init xxx --bare</div></pre></td></tr></table></figure></p>
 <a id="more"></a>
       
     </div>
@@ -412,7 +412,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-count">25</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -429,7 +429,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-count">30</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -508,7 +508,7 @@
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Muse
+    NexT.Pisces
   </a>
 </div>
 
@@ -551,6 +551,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
 
   
   
