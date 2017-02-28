@@ -205,490 +205,6 @@
 
     
     
-      
-      
-
-      
-    
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2014/12/03/Git/在centos下安装配置基于gitosis的git服务/" itemprop="url">
-                  在centos下安装配置基于gitosis的git服务
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2014-12-03T12:30:04+08:00" content="Dec 3 2014">
-              Dec 3 2014
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/git/" itemprop="url" rel="index">
-                    <span itemprop="name">git</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2014/12/03/Git/在centos下安装配置基于gitosis的git服务/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/12/03/Git/在centos下安装配置基于gitosis的git服务/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="服务器-安装-openssh服务器与客户端工具"><a href="#服务器-安装-openssh服务器与客户端工具" class="headerlink" title="[服务器]安装 openssh服务器与客户端工具"></a>[服务器]安装 openssh服务器与客户端工具</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">sudo yum install openssh-server openssh-client -y</div><div class="line"></div><div class="line"><span class="comment">#安装python的setup tool</span></div><div class="line">sudo yum install python-setuptools -y</div><div class="line"></div><div class="line"><span class="comment">#安装git服务器</span></div><div class="line">sudo yum install git-core -y</div><div class="line"></div><div class="line"><span class="comment">#获取并安装gitosis</span></div><div class="line"><span class="built_in">cd</span> /tmp</div><div class="line">git <span class="built_in">clone</span> https://github.com/res0nat0r/gitosis.git</div><div class="line"><span class="built_in">cd</span> gitosis</div><div class="line">sudo python setup.py install</div></pre></td></tr></table></figure>
-<h3 id="客户端-上传公钥"><a href="#客户端-上传公钥" class="headerlink" title="[客户端]上传公钥"></a>[客户端]上传公钥</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#创建个人公钥和私钥（用于后面的git服务的管理员管理）</span></div><div class="line">ssh-keygen -t rsa</div><div class="line"></div><div class="line"><span class="comment"># 通过ssh使用git用户把本机的公钥发送到/homt/git目录下</span></div><div class="line">scp /home/simen/.ssh/id_rsa.pub git@192.168.88.88:/home/git</div></pre></td></tr></table></figure>
-<h3 id="客户端-配置git服务器"><a href="#客户端-配置git服务器" class="headerlink" title="[客户端]配置git服务器"></a>[客户端]配置git服务器</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 增加git用户 不要给git设置密码 否则只要知道git密码可以绕过gitosis的验证</span></div><div class="line">sudo useradd -m <span class="_">-s</span> /bin/bash <span class="_">-d</span> /home/git git  </div><div class="line">sudo passwd git</div><div class="line"></div><div class="line"><span class="comment">#切换到git用户 注意中间有一个 -</span></div><div class="line">su - git</div><div class="line"><span class="comment">#初始化gitosis</span></div><div class="line">gitosis-init &lt; /home/git/id_rsa.pub</div><div class="line"><span class="comment">#设置权限让gitosis-admin仓库可clone</span></div><div class="line">sudo chmod 755 /home/git/repositories/gitosis-admin.git/hooks/post-update</div></pre></td></tr></table></figure>
-<h3 id="客户端-clone-gitosis-admin"><a href="#客户端-clone-gitosis-admin" class="headerlink" title="[客户端]clone gitosis-admin"></a>[客户端]clone gitosis-admin</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#写相对路径即可</span></div><div class="line">git <span class="built_in">clone</span> ssh://git@221.224.215.171:4272/gitosis-admin.git</div></pre></td></tr></table></figure>
-<h3 id="管理gitosis配置"><a href="#管理gitosis配置" class="headerlink" title="管理gitosis配置"></a>管理gitosis配置</h3><p>gitosis.conf 对应的内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">[gitosis]</div><div class="line"></div><div class="line">#显示日志</div><div class="line">#loglevel = DEBUG</div><div class="line"></div><div class="line">[group gitosis-admin]</div><div class="line">writable = gitosis-admin</div><div class="line">#多个用户用空格间隔</div><div class="line">members = root@localhost.localdomain  </div><div class="line"></div><div class="line">``` </div><div class="line"></div><div class="line">### 新增仓库</div><div class="line">```bash</div><div class="line">su git</div><div class="line">cd /home/git/repositories</div><div class="line">git init xxx --bare</div></pre></td></tr></table></figure></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/12/03/Git/在centos下安装配置基于gitosis的git服务/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2014/12/01/Git/Windows中安装git-flow/" itemprop="url">
-                  Windows中安装git-flow
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2014-12-01T21:11:32+08:00" content="Dec 1 2014">
-              Dec 1 2014
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/git/" itemprop="url" rel="index">
-                    <span itemprop="name">git</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2014/12/01/Git/Windows中安装git-flow/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/12/01/Git/Windows中安装git-flow/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><a href="http://danielkummer.github.io/git-flow-cheatsheet/index.zh_CN.html">git-flow 备忘清单</a></p>
-<p><a href="http://msysgit.github.io">http://msysgit.github.io</a> 下载到最新的git bash(一个针对windows平台而封装的git命令行管理工具), 其实它还自带了超级难用的一个可视化操作工具git ui.</p>
-<p>安装完成git, 即可使用如下命令将gitflow克隆到本地:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git <span class="built_in">clone</span> --recursive git://github.com/nvie/gitflow.git</div></pre></td></tr></table></figure>
-<p>其他方式具体可以参考gitflow官方介绍: <a href="https://github.com/nvie/gitflow">https://github.com/nvie/gitflow</a>.</p>
-<p>然后分别下载下面两个文件:</p>
-<ul>
-<li><p><a href="http://sourceforge.net/projects/gnuwin32/files/util-linux/2.14.1/util-linux-ng-2.14.1-bin.zip/download">util-linux-ng-2.14.1-bin</a></p>
-</li>
-<li><p><a href="http://sourceforge.net/projects/gnuwin32/files/util-linux/2.14.1/util-linux-ng-2.14.1-dep.zip/download">util-linux-ng-2.14.1-dep</a></p>
-</li>
-</ul>
-<p>下载完成后分别将两个压缩包解压文件下bin目录中的getopt.exe和libintl3.dll文件存放到git安装目录下的bin目录中.</p>
-<p>最后使用windows系统自带的命令行工具, 进入到我们已经克隆好的gitflow目录中执行以下命令:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">D:\gitflow contrib&gt;msysgit-install.cmd <span class="string">"C:\Program Files\Git"</span></div></pre></td></tr></table></figure>
-<p>注意这里, 这里以C盘为例, 首先是找到gitflow目录下contrib子目录中的msysgit-install.cmd表示我们要执行安装命令, 如果单独执行这个命令不带指定安装目录则会报: 找不到msysgit安装目录的错误, 并且会要求在命令行提供一个目录名称(安装目录). 因此在执行安装操作的后面需要指定一个安装目录.</p>
-<p>那么安装完成之后到git bash中执行git flow会列出git-flow提供的命令. 此时, 大功告成.</p>
-<p>题外话: git虽是基于命令行操作的. 但是也有可视化的工具如source tree就是一款非常好的工具, 而且source tree自身就提供了git-flow的功能. 可以根据自己的喜好而选择合适的方式使用git.</p>
-<p><a href="http://www.sourcetreeapp.com/">source tree</a>下载</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/12/01/Git/Windows中安装git-flow/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2014/09/10/Linux/解决SecureCRT中文编码问题/" itemprop="url">
-                  解决SecureCRT中文编码问题
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2014-09-10T17:08:59+08:00" content="Sep 10 2014">
-              Sep 10 2014
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2014/09/10/Linux/解决SecureCRT中文编码问题/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/09/10/Linux/解决SecureCRT中文编码问题/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>SecureCRT中文乱码、复制粘贴乱码解决办法</p>
-<p>SecureCRT的默认配置对中文支持不好。很容易出现中文乱码。<br>即使显示出来没有乱码，将文本复制粘贴到其他windows程序中也会是乱码，或者从windows复制进SecureCRT会乱码，很不方便。</p>
-<p>这个归结起来还是字符编码的问题，需要进行以下简单设置：</p>
-<ol>
-<li>首先进入 Option 菜单 &gt;&gt; Session Option </li>
-<li>Terminal &gt;&gt; Emulation，在右边 Terminal下拉菜单中选择”Linux”, “ANSI Color”前面打上勾。</li>
-<li>Terminal &gt;&gt; Appearance，<br>点右边的Font 按钮， 1) 选择新宋体，2) 字符集选”中文 GB2312”<br>Charactor 下拉菜单中选择 “Default”, 去掉”Use Unicode line drawing character”前面的勾。</li>
-</ol>
-<p>保存设置，重启SecureCRT，进入刚才配置的Session，终于可以跟烦人的乱码说BYEBYE了</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/09/10/Linux/解决SecureCRT中文编码问题/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2014/09/01/Nodejs/strongloop/" itemprop="url">
-                  strongloop
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2014-09-01T22:44:09+08:00" content="Sep 1 2014">
-              Sep 1 2014
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/node/" itemprop="url" rel="index">
-                    <span itemprop="name">node</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2014/09/01/Nodejs/strongloop/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/09/01/Nodejs/strongloop/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>npm i -g strongloop –msvs_version=2012</p>
-<p><a href="https://github.com/TooTallNate/node-gyp/issues/168">https://github.com/TooTallNate/node-gyp/issues/168</a></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/09/01/Nodejs/strongloop/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
 
     
       
@@ -2040,6 +1556,469 @@
 
 
     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2014/08/09/Ionic/Cordova/" itemprop="url">
+                  Can't install Cordova plugins from Git on CLI
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2014-08-09T06:53:03+08:00" content="Aug 9 2014">
+              Aug 9 2014
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/cordova/" itemprop="url" rel="index">
+                    <span itemprop="name">cordova</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2014/08/09/Ionic/Cordova/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/09/Ionic/Cordova/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>错误信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">C:\Users\UserName\Desktop\hello&gt;cordova plugin add https://github.com/danwilson/google-analytics-plugin.git</div><div class="line">Fetching plugin &quot;https://github.com/danwilson/google-analytics-plugin.git&quot; via git clone</div><div class="line">Error: Command failed: fatal: could not create work tree dir &apos;C:\Users\DAVIDH~1\AppData\Local\Temp\plugman\git\1397683376354&apos;.: No such file or directory</div></pre></td></tr></table></figure></p>
+<p>解决办法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkdir C:\Users\DAVIDH~1\AppData\Local\Temp\plugman\git</div></pre></td></tr></table></figure>
+<p>参考：<a href="http://stackoverflow.com/questions/23121382/cant-install-cordova-plugins-from-git-on-cli" target="_blank" rel="external">Can’t install Cordova plugins from Git on CLI</a></p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2014/08/06/Linux/linux笔记/" itemprop="url">
+                  linux笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2014-08-06T17:51:13+08:00" content="Aug 6 2014">
+              Aug 6 2014
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2014/08/06/Linux/linux笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/06/Linux/linux笔记/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="重启命令"><a href="#重启命令" class="headerlink" title="重启命令"></a>重启命令</h2><ol>
+<li>reboot</li>
+<li>shutdown -r now 立刻重启(root用户使用)</li>
+<li>shutdown -r 10 过10分钟自动重启(root用户使用) </li>
+<li>shutdown -r 20:35 在时间为20:35时候重启(root用户使用)</li>
+</ol>
+<p>如果是通过shutdown命令设置重启的话，可以用shutdown -c命令取消重启</p>
+<h2 id="关机命令"><a href="#关机命令" class="headerlink" title="关机命令"></a>关机命令</h2><ol>
+<li>halt   立刻关机</li>
+<li>poweroff  立刻关机</li>
+<li>shutdown -h now 立刻关机(root用户使用)</li>
+<li>shutdown -h 10 10分钟后自动关机</li>
+</ol>
+<p>如果是通过shutdown命令设置关机的话，可以用shutdown -c命令取消重启</p>
+<h2 id="创建用户（useradd）："><a href="#创建用户（useradd）：" class="headerlink" title="创建用户（useradd）："></a>创建用户（useradd）：</h2><p>在Linux下创建用户和删除用户，必须在root用户下，如果你当前不是用根用户登录，你可以打开终端，输入”su root”命令，再输入根口令，就可以进入root用户模式</p>
+<ol>
+<li>用useradd命令创建用户创建用户：<br>语法： useradd [所要创建的用户名] ，回车</li>
+<li>用passwd命令为该用户创建密码：<br>语法： passwd [用户名]  ，回车</li>
+<li>输入密码：一般密码至少要有六个字符，这里输入的密码是看不见的，所以看到屏幕没显示，不要以为是输入失败</li>
+<li>重新输一次密码：<br>这里我创建一个名为aillo的用户，如下所示：</li>
+</ol>
+<h2 id="删除用户（userdel）"><a href="#删除用户（userdel）" class="headerlink" title="删除用户（userdel）"></a>删除用户（userdel）</h2><p>语法：userdel [-r] [要删除的用户的名称]<br>例如：[root@localhost ~]userdel -r aillo</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2014/08/05/Nginx/nginx守护进程/" itemprop="url">
+                  nginx守护进程
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2014-08-05T23:37:54+08:00" content="Aug 5 2014">
+              Aug 5 2014
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/nginx/" itemprop="url" rel="index">
+                    <span itemprop="name">nginx</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2014/08/05/Nginx/nginx守护进程/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/05/Nginx/nginx守护进程/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#设置nginx开启启动，编辑启动文件添加下面内容</span></div><div class="line"><span class="comment">#################################################################</span></div><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="comment"># nginx Startup script for the Nginx HTTP Server</span></div><div class="line"><span class="comment"># it is v.0.0.2 version.</span></div><div class="line"><span class="comment"># chkconfig: - 85 15</span></div><div class="line"><span class="comment"># description: Nginx is a high-performance web and proxy server.</span></div><div class="line"><span class="comment"># It has a lot of features, but it's not for everyone.</span></div><div class="line"><span class="comment"># processname: nginx</span></div><div class="line"><span class="comment"># pidfile: /var/run/nginx.pid</span></div><div class="line"><span class="comment"># config: /usr/local/nginx/conf/nginx.conf</span></div><div class="line">nginxd=/usr/<span class="built_in">local</span>/nginx/sbin/nginx</div><div class="line">nginx_config=/usr/<span class="built_in">local</span>/nginx/conf/nginx.conf</div><div class="line">nginx_pid=/usr/<span class="built_in">local</span>/nginx/logs/nginx.pid</div><div class="line">RETVAL=0</div><div class="line">prog=<span class="string">"nginx"</span></div><div class="line"><span class="comment"># Source function library.</span></div><div class="line">./etc/rc.d/init.d/<span class="built_in">functions</span></div><div class="line"><span class="comment"># Source networking configuration.</span></div><div class="line">./etc/sysconfig/network</div><div class="line"><span class="comment"># Check that networking is up.</span></div><div class="line">[ <span class="variable">$&#123;NETWORKING&#125;</span> = <span class="string">"no"</span> ] &amp;&amp; <span class="built_in">exit</span> 0</div><div class="line">[ -x <span class="variable">$nginxd</span> ] || <span class="built_in">exit</span> 0</div><div class="line"><span class="comment"># Start nginx daemons functions.</span></div><div class="line"><span class="function"><span class="title">start</span></span>() &#123;</div><div class="line">    <span class="keyword">if</span> [ <span class="_">-e</span> <span class="variable">$nginx_pid</span> ];<span class="keyword">then</span></div><div class="line">        <span class="built_in">echo</span> <span class="string">"nginx already running...."</span></div><div class="line">        <span class="built_in">exit</span> 1</div><div class="line">    <span class="keyword">fi</span></div><div class="line">    <span class="built_in">echo</span> -n $<span class="string">"Starting <span class="variable">$prog</span>: "</span></div><div class="line">    daemon <span class="variable">$nginxd</span> -c <span class="variable">$&#123;nginx_config&#125;</span></div><div class="line">    RETVAL=$?</div><div class="line">    <span class="built_in">echo</span></div><div class="line">    [ <span class="variable">$RETVAL</span> = 0 ] &amp;&amp; touch /var/lock/subsys/nginx</div><div class="line">    <span class="built_in">return</span> <span class="variable">$RETVAL</span></div><div class="line">&#125;</div><div class="line"><span class="comment"># Stop nginx daemons functions.</span></div><div class="line"><span class="function"><span class="title">stop</span></span>() &#123;</div><div class="line">    <span class="built_in">echo</span> -n $<span class="string">"Stopping <span class="variable">$prog</span>: "</span></div><div class="line">    killproc <span class="variable">$nginxd</span></div><div class="line">    RETVAL=$?</div><div class="line">    <span class="built_in">echo</span></div><div class="line">    [ <span class="variable">$RETVAL</span> = 0 ] &amp;&amp; rm <span class="_">-f</span> /var/lock/subsys/nginx /usr/<span class="built_in">local</span>/nginx/logs/nginx.pid</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="title">reload</span></span>() &#123;</div><div class="line">    <span class="built_in">echo</span> -n $<span class="string">"Reloading <span class="variable">$prog</span>: "</span></div><div class="line">    <span class="comment">#kill -HUP `cat $&#123;nginx_pid&#125;`</span></div><div class="line">    killproc <span class="variable">$nginxd</span> -HUP</div><div class="line">    RETVAL=$?</div><div class="line">    <span class="built_in">echo</span></div><div class="line">&#125;</div><div class="line"><span class="comment"># See how we were called.</span></div><div class="line"><span class="keyword">case</span> <span class="string">"<span class="variable">$1</span>"</span> <span class="keyword">in</span></div><div class="line">    start)</div><div class="line">    start</div><div class="line">    ;;</div><div class="line">    stop)</div><div class="line">    stop</div><div class="line">    ;;</div><div class="line">    reload)</div><div class="line">    reload</div><div class="line">    ;;</div><div class="line">    restart)</div><div class="line">    stop</div><div class="line">    start</div><div class="line">    ;;</div><div class="line">    status)</div><div class="line">    status <span class="variable">$prog</span></div><div class="line">    RETVAL=$?</div><div class="line">    ;;</div><div class="line">    *)</div><div class="line">    <span class="built_in">echo</span> $<span class="string">"Usage: <span class="variable">$prog</span> &#123;start|stop|restart|reload|status|help&#125;"</span></div><div class="line">    <span class="built_in">exit</span> 1</div><div class="line">    <span class="keyword">esac</span></div><div class="line"><span class="built_in">exit</span> <span class="variable">$RETVAL</span></div><div class="line"></div><div class="line">:wq!           <span class="comment">#保存退出</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">chmod 775  /etc/rc.d/init.d/nginx       <span class="comment">#赋予文件执行权限</span></div><div class="line">chkconfig nginx on            <span class="comment">#设置开机启动</span></div><div class="line">/etc/rc.d/init.d/nginx restart             <span class="comment">#重启</span></div></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2014/08/05/Nginx/nginx-conf/" itemprop="url">
+                  nginx的配置文件
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2014-08-05T23:34:30+08:00" content="Aug 5 2014">
+              Aug 5 2014
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/nginx/" itemprop="url" rel="index">
+                    <span itemprop="name">nginx</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2014/08/05/Nginx/nginx-conf/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/05/Nginx/nginx-conf/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">#user  nobody;</div><div class="line">worker_processes  4;</div><div class="line"></div><div class="line">#error_log  logs/error.log;</div><div class="line">#error_log  logs/error.log  notice;</div><div class="line">#error_log  logs/error.log  info;</div><div class="line"></div><div class="line">#pid        logs/nginx.pid;</div><div class="line">worker_rlimit_nofile  65535;   #nginx能打开文件的最大句柄数,最好与ulimit -n的值保持一致,使用ulimit -SHn 65535 设置</div><div class="line"></div><div class="line">events &#123;</div><div class="line">    worker_connections  1024;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">http &#123;</div><div class="line">    include       mime.types;</div><div class="line">    include       vhost/*.conf;</div><div class="line">    default_type  application/octet-stream;</div><div class="line">    sendfile on; </div><div class="line">    #log_format  main  &apos;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &apos;</div><div class="line">    #                  &apos;$status $body_bytes_sent &quot;$http_referer&quot; &apos;</div><div class="line">    #                  &apos;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&apos;;</div><div class="line"></div><div class="line">    #access_log  logs/access.log  main;</div><div class="line"></div><div class="line"></div><div class="line">    #tcp_nopush     on;</div><div class="line"></div><div class="line">    #keepalive_timeout  0;</div><div class="line">    keepalive_timeout  65;</div><div class="line"></div><div class="line">    gzip on; #启用gzip功能  </div><div class="line">    gzip_static on; #检查有没有静态文件的.gz版本，没有自行gzip  </div><div class="line">    gzip_disable &quot;MSIE [1-6]\.(?!.*SV1)&quot;; #IE6以下禁用gzip  </div><div class="line">    gzip_comp_level 7; #级别越高，CPU占用越多，压缩的越小  </div><div class="line">    gzip_min_length 1024; #到达1K的文件才gzip</div><div class="line"></div><div class="line">    #解决414 Request URL Too Large</div><div class="line">    client_header_buffer_size 512k;</div><div class="line">    large_client_header_buffers 4 512k;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
 
   </section>
 
@@ -2086,7 +2065,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-count">25</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
