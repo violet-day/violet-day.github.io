@@ -205,15 +205,496 @@
 
     
     
+
+    
       
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/01/25/statsd/" itemprop="url">
+                  statsd源码笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-01-25T18:37:51+08:00" content="Jan 25 2017">
+              Jan 25 2017
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/01/25/statsd/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/25/statsd/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
-        
-        
-        
       
 
       
+        
+          
+            <h2 id="Key-Concepts"><a href="#Key-Concepts" class="headerlink" title="Key Concepts"></a>Key Concepts</h2><ul>
+<li><em>buckets</em>  每个stat都有各自的<code>bucket</code>，无需事先定义</li>
+<li><em>values</em> 每个stat都会有一个value</li>
+</ul>
+<h2 id="Line-Protocol"><a href="#Line-Protocol" class="headerlink" title="Line Protocol"></a>Line Protocol</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;metricname&gt;:&lt;value&gt;|&lt;type&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> <span class="string">"foo:1|c"</span> | nc -u -w0 127.0.0.1 8125</div></pre></td></tr></table></figure>
+<h2 id="Workflow"><a href="#Workflow" class="headerlink" title="Workflow"></a>Workflow</h2><p><img src="/images/statsd.png" alt=""></p>
+<h2 id="Project-Struct"><a href="#Project-Struct" class="headerlink" title="Project Struct"></a>Project Struct</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">├── CONTRIBUTING.md</div><div class="line">├── Changelog.md</div><div class="line">├── Dockerfile</div><div class="line">├── LICENSE</div><div class="line">├── README.md</div><div class="line">├── backends	在得到聚合的metric后，针对不同的后端各自的逻辑</div><div class="line">├── bin</div><div class="line">├── debian</div><div class="line">├── docker-compose.yml</div><div class="line">├── docs</div><div class="line">├── exampleConfig.js</div><div class="line">├── exampleProxyConfig.js</div><div class="line">├── examples</div><div class="line">├── lib</div><div class="line">│   ├── config.js	加载config处理的逻辑</div><div class="line">│   ├── helpers.js	help function</div><div class="line">│   ├── logger.js	自定义的logger类</div><div class="line">│   ├── mgmt_console.js	mangenment consoel的逻辑函数</div><div class="line">│   ├── mgmt_server.js	mangement server启动函数</div><div class="line">│   ├── process_metrics.js		加工处理metrics</div><div class="line">│   ├── process_mgmt.js	对主进程的一些基本设置</div><div class="line">│   └── set.js		自己实现的set结构</div><div class="line">├── package.json</div><div class="line">├── packager</div><div class="line">├── proxy.js</div><div class="line">├── run_tests.sh</div><div class="line">├── servers	metric server，包含tpc和udp两种</div><div class="line">├── stats.js	入口文件，包含大部分启动逻辑</div><div class="line">├── test</div><div class="line">└── utils</div></pre></td></tr></table></figure>
+<h3 id="stats-js"><a href="#stats-js" class="headerlink" title="stats.js"></a>stats.js</h3><p>应用启动的入口文件，主要:</p>
+<ol>
+<li>声明一些全局存储变量</li>
+<li>声明一些根据config启动server的函数</li>
+<li>根据process.args[2]即配置文件路径启动应用</li>
+</ol>
+<p>具体的代码的逻辑大致如下:</p>
+<ol>
+<li>config.configFile(configPath:String)，加载配置</li>
+<li>process_mgmt.init(config:Object)，设置进程相关的一些基本参数</li>
+<li>根据config.prefixStats(String:’statsd’)来设置一些内置metric的前缀</li>
+<li>初始化counter内bad_lines_seen、packets_received、metrics_received为0</li>
+<li>通过config.keyNameSanitize判断是否需要转义metric key</li>
+<li>声明<code>handlePacket(msg:Buffer,rinfo:Object)</code>，主要作用是接受报文，根据line protocol解析，然后将结果写入一开始申明的全局变量</li>
+<li>根据config.servers的配置，从servers目录中加载并启动server，server监听的回调函数就是上一步中声明的handlePacket</li>
+<li>mgmt_server.start(conifg:Object,on_data_callback:Functioin,on_error_callback)，启动一个tcp的mangement的server</li>
+<li>设置percentThreshold，默认[90]</li>
+<li>设置flushInterval，默认10s</li>
+<li>根据config.backends设置后端的server，默认为<code>backends/graphite</code>。<em>注意：如果我们需要测试，可以设置为<code>backends/console</code></em></li>
+<li>通过在flushMetrics函数中使用递归调用setTimeout实现flush timer。flushMetrics的大致逻辑内部逻辑为：<ol>
+<li>先构造metrics_hash对象</li>
+<li>在backendEvents:EventEmiter中注册flush事件监听，如果config设置了相关的delete配置，则删除相关key，否则置为0或者空数组</li>
+<li>通过process_metrics对构造的metrics_hash对象根据配置做一些加工计算处理，结束之后触发的backendEvents的flush事件</li>
+<li>再次注册setTimeout，进行下一次flush</li>
+</ol>
+</li>
+</ol>
+<h2 id="lib-process-metrics-js"><a href="#lib-process-metrics-js" class="headerlink" title="lib/process_metrics.js"></a>lib/process_metrics.js</h2><p>主要作用是对stats.js中flushMetrics函数中传入的metric_hash做计算加工，并将结果返回出去</p>
+<p>具体代码逻辑如下：</p>
+<ol>
+<li>声明基本的局部存储变量</li>
+<li>遍历counter，将将每秒的结果计算至counter_rates中</li>
+<li>遍历timers，每个timer对应的是数组，形如<code>bar: [200, 198, 199]</code>这样。因为timer表示的内容比较丰富，所以计算会多一些，timers中的计算结果最终会计算至timer_data中。比如<code>timers: { bar: [ 100, 200 ] }</code>，至少会计算出</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">std: <span class="number">50</span>,</div><div class="line"><span class="attr">upper</span>: <span class="number">200</span>,</div><div class="line"><span class="attr">lower</span>: <span class="number">100</span>,</div><div class="line"><span class="attr">count</span>: <span class="number">2</span>,</div><div class="line"><span class="attr">count_ps</span>: <span class="number">0.2</span>,</div><div class="line"><span class="attr">sum</span>: <span class="number">300</span>,</div><div class="line"><span class="attr">sum_squares</span>: <span class="number">50000</span>,</div><div class="line"><span class="attr">mean</span>: <span class="number">150</span>,</div><div class="line"><span class="attr">median</span>: <span class="number">150</span></div></pre></td></tr></table></figure>
+<p>然后根据<code>pctThreshold</code>参数，计算出各个不同分位的指标，像这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">count_$pct</div><div class="line">mean_$pct</div><div class="line">upper_|lower_$pct</div><div class="line">sum_$pct</div><div class="line">sum_squares_$pct</div></pre></td></tr></table></figure>
+<p>值得注意的是，关于<code>$pct</code>的相关的指标计算是将排序后，计算落在<code>$pct</code>内的点的计算</p>
+<p>做个简单的测试</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> <span class="string">"foo:1|c\nbar:1|ms\nbar:2|ms\nbar:3|ms\nbar:4|ms\nbar:5|ms\n"</span> | nc -u -w0 127.0.0.1 8125</div></pre></td></tr></table></figure>
+<p>console的backend显示如下:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">&#123; counters:</div><div class="line">   &#123; 'statsd.bad_lines_seen': 0,</div><div class="line">     'statsd.packets_received': 1,</div><div class="line">     'statsd.metrics_received': 6,</div><div class="line">     foo: 1 &#125;,</div><div class="line">  timers: &#123; bar: [ 1, 2, 3, 4, 5 ] &#125;,</div><div class="line">  gauges: &#123;&#125;,</div><div class="line">  timer_data:</div><div class="line">   &#123; bar:</div><div class="line">      &#123; count_45: 2,</div><div class="line">        mean_45: 1.5,</div><div class="line">        upper_45: 2,</div><div class="line">        sum_45: 3,</div><div class="line">        sum_squares_45: 5,</div><div class="line">        std: 1.4142135623730951,</div><div class="line">        upper: 5,</div><div class="line">        lower: 1,</div><div class="line">        count: 5,</div><div class="line">        count_ps: 0.5,</div><div class="line">        sum: 15,</div><div class="line">        sum_squares: 55,</div><div class="line">        mean: 3,</div><div class="line">        median: 3 &#125; &#125;,</div><div class="line">  counter_rates:</div><div class="line">   &#123; 'statsd.bad_lines_seen': 0,</div><div class="line">     'statsd.packets_received': 0.1,</div><div class="line">     'statsd.metrics_received': 0.6,</div><div class="line">     foo: 0.1 &#125;,</div><div class="line">  sets: &#123;&#125;,</div><div class="line">  pctThreshold: [ 45 ] &#125;</div></pre></td></tr></table></figure>
+<h2 id="backends-console-js"><a href="#backends-console-js" class="headerlink" title="backends/console.js"></a>backends/console.js</h2><p>Flush stats to <a href="http://graphiteapp.org/" target="_blank" rel="external">graphite</a></p>
+<p>每个backend中的代码均需要实现<code>init</code>方法，在<code>stats.js</code>中通过<code>loadBackend</code>函数调用。<code>init</code>方法中传入的参数有：</p>
+<pre><code>1. startup_time, 启动时间
+2. config, 
+3. backendEvents, 
+4. l，日志对象
+</code></pre><p><code>init</code>函数按照约定都需要同步返回<code>true</code></p>
+<p>比如<code>backends/console.js</code>，<code>init</code>中初始化了<code>ConsoleBackend</code>的一个实例，在构造函数中注册了对参数<code>backendEvents</code>的<code>flush</code>和<code>flush</code>事件</p>
+<h2 id="backends-graphite-js"><a href="#backends-graphite-js" class="headerlink" title="backends/graphite.js"></a>backends/<a href="http://graphiteapp.org/" target="_blank" rel="external">graphite.js</a></h2><p><strong>Metric</strong></p>
+<p>对发送至graphite的指标数据做了封装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">constructor(key:String,val:Number,ts:Timestamp)</div><div class="line">toPickle():String	在graphite使用pickle protocol时使用</div><div class="line">toText():String</div></pre></td></tr></table></figure>
+<p><strong>Stats</strong></p>
+<p>指标数据的集合，提供了<code>add</code>方法和<code>toText</code>和<code>toPickle</code>这两个序列化实现</p>
+<p><strong>init</strong></p>
+<ol>
+<li>设置默认host、port、protocol</li>
+<li>设置不同指标的默认的前缀和后缀</li>
+</ol>
+<p><strong>flush_stats</strong></p>
+<ol>
+<li>分别遍历metrics数据中的counters、timer_data、gauges、sets，统一添加至Stats的类实例中，方便后续统一做序列化处理</li>
+<li>在添加时stats实例中，会根据统一的前缀和后缀和命名空间做一些指标名称的处理</li>
+</ol>
+<p><strong>post_stats</strong> </p>
+<ol>
+<li>根据config中的host、port建立socket连接</li>
+<li>连接成功时，在stats实例中添加统计信息，根据protocol选择序列化方式并写入socket</li>
+<li>写入成功之后更新graphiteStats的统计信息，失败也是一样</li>
+</ol>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><ol>
+<li>代码很简单，由于是一个定时的flush的机制，将很多状态直接存储在对象中</li>
+<li><code>backend/*</code>的解耦了<code>process metrics</code>和<code>flush backend</code>，<code>backend/console</code>在开发时用起来很方便</li>
+<li>作为一个<code>daemon process</code>，通过<code>mangent server</code>提供简单<code>tcp</code>接口来反馈当前的统计信息。</li>
+<li>指标的量很大，所以在协议设计方面尽可能简单，并且对于不论是<code>handlePacket</code>和<code>flush backend</code>时，都尽可能使用了<code>batch</code></li>
+<li>在metrics的架构中，通常作为缓冲层存在。将大量的point的请求在时间维度做聚合，也是<code>batch</code>思想的体现</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/01/09/nodejs源码之stream/" itemprop="url">
+                  nodejs源码之stream
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-01-09T21:19:36+08:00" content="Jan 9 2017">
+              Jan 9 2017
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/01/09/nodejs源码之stream/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/09/nodejs源码之stream/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Readable"><a href="#Readable" class="headerlink" title="Readable"></a>Readable</h2><h3 id="construct-option"><a href="#construct-option" class="headerlink" title="construct(option)"></a>construct(option)</h3><h3 id="Readable-prototype-push-chunk-encoding"><a href="#Readable-prototype-push-chunk-encoding" class="headerlink" title="Readable.prototype.push(chunk, encoding)"></a>Readable.prototype.push(chunk, encoding)</h3><p>-Xms6g -Xmx6g -Xmn2048m -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.port=10826</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="https://github.com/DavidCai1993/my-blog/issues/22" target="_blank" rel="external">通过源码解析 Node.js 中导流（pipe）的实现</a></li>
+<li><a href="https://github.com/DavidCai1993/my-blog/issues/29" target="_blank" rel="external">通过源码解析 Node.js 中一个 HTTP 请求到响应的历程</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/01/07/thrift-timeout/" itemprop="url">
+                  thrift-timeout
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-01-07T13:58:33+08:00" content="Jan 7 2017">
+              Jan 7 2017
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/01/07/thrift-timeout/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/07/thrift-timeout/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="socket-timeout-test"><a href="#socket-timeout-test" class="headerlink" title="socket timeout test"></a>socket timeout test</h2><h3 id="net-socket的超时"><a href="#net-socket的超时" class="headerlink" title="net.socket的超时"></a>net.socket的超时</h3><h3 id="http-client如何实现调用超时"><a href="#http-client如何实现调用超时" class="headerlink" title="http.client如何实现调用超时"></a>http.client如何实现调用超时</h3><h3 id="core-module-class-diagram"><a href="#core-module-class-diagram" class="headerlink" title="core module class diagram"></a>core module class diagram</h3><ul>
+<li>stream</li>
+<li>socket</li>
+<li>http agent</li>
+<li>http common</li>
+<li>http incoming</li>
+<li>http outgoing</li>
+<li><p>http server</p>
+</li>
+<li><p>OutgoingMessage.prototype.write</p>
+<ul>
+<li>检查是否finshed，如果是抛错；进入下一次tick </li>
+<li></li>
+</ul>
+</li>
+<li>OutgoingMessage.prototype._send，相对底层的函数，直接写入socket或者写入buffer</li>
+<li>OutgoingMessage.prototype._writeRaw<ul>
+<li>socket可以写入<ul>
+<li>outputLengh&gt;0，this._flushOutput</li>
+<li>直接写入socket</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>OutgoingMessage.prototype._flushOutput<ul>
+<li>读取ouput数据</li>
+<li>cork-&gt;批量socket.write-&gt;uncork</li>
+<li>重置output</li>
+</ul>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="http://openexperience.iteye.com/blog/145701" target="_blank" rel="external">一个简单的python socket编程</a></li>
+<li><a href="https://nodejs.org/dist/latest-v6.x/docs/api/net.html#net_socket_settimeout_timeout_callback" target="_blank" rel="external">socket.setTimeout</a></li>
+<li><a href="https://github.com/eleme/thriftpy/blob/develop/thriftpy/transport/socket.py" target="_blank" rel="external">thriftpy/transport/socket.py</a></li>
+<li><a href="https://github.com/ReactiveX/RxJava/wiki/Backpressure" target="_blank" rel="external">Backpressure</a></li>
+<li><a href="https://www.zhihu.com/question/49618581" target="_blank" rel="external">如何形象的描述反应式编程中的背压(Backpressure)机制？</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/12/17/thrift-idl-parser-2016-12-17/" itemprop="url">
+                  未命名
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-17T15:52:18+08:00" content="Dec 17 2016">
+              Dec 17 2016
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/17/thrift-idl-parser-2016-12-17/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/17/thrift-idl-parser-2016-12-17/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://zh.wikipedia.org/wiki/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90" target="_blank" rel="external">https://zh.wikipedia.org/wiki/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90</a></p>
+<h2 id="Header-0"><a href="#Header-0" class="headerlink" title="Header(0+)"></a>Header(0+)</h2><h3 id="Thrift-Include"><a href="#Thrift-Include" class="headerlink" title="Thrift Include"></a>Thrift Include</h3><h3 id="C-Include"><a href="#C-Include" class="headerlink" title="C++ Include"></a>C++ Include</h3><h3 id="Namespace"><a href="#Namespace" class="headerlink" title="Namespace"></a>Namespace</h3><h2 id="Definition-0"><a href="#Definition-0" class="headerlink" title="Definition(0+)"></a>Definition(0+)</h2><h3 id="Const"><a href="#Const" class="headerlink" title="Const"></a>Const</h3><h3 id="Typedef"><a href="#Typedef" class="headerlink" title="Typedef"></a>Typedef</h3><h3 id="Enum"><a href="#Enum" class="headerlink" title="Enum"></a>Enum</h3><h3 id="Senum"><a href="#Senum" class="headerlink" title="Senum"></a>Senum</h3><h3 id="Struct"><a href="#Struct" class="headerlink" title="Struct"></a>Struct</h3><h3 id="Union"><a href="#Union" class="headerlink" title="Union"></a>Union</h3><h3 id="Exception"><a href="#Exception" class="headerlink" title="Exception"></a>Exception</h3><h3 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h3><h2 id="Field"><a href="#Field" class="headerlink" title="Field"></a>Field</h2><h3 id="Field-ID"><a href="#Field-ID" class="headerlink" title="Field ID"></a>Field ID</h3><h3 id="Field-Requiredness"><a href="#Field-Requiredness" class="headerlink" title="Field Requiredness"></a>Field Requiredness</h3><h4 id="required"><a href="#required" class="headerlink" title="required"></a>required</h4><h4 id="optional"><a href="#optional" class="headerlink" title="optional"></a>optional</h4><h4 id="default-requiredness-implicit"><a href="#default-requiredness-implicit" class="headerlink" title="default requiredness (implicit)"></a>default requiredness (implicit)</h4><h4 id="Semantics-of-Default-Values"><a href="#Semantics-of-Default-Values" class="headerlink" title="Semantics of Default Values"></a>Semantics of Default Values</h4><h3 id="XSD-Options"><a href="#XSD-Options" class="headerlink" title="XSD Options"></a>XSD Options</h3><h2 id="Functions"><a href="#Functions" class="headerlink" title="Functions"></a>Functions</h2><h2 id="Types"><a href="#Types" class="headerlink" title="Types"></a>Types</h2><h2 id="Constant-Values"><a href="#Constant-Values" class="headerlink" title="Constant Values"></a>Constant Values</h2><h2 id="Basic-Definitions"><a href="#Basic-Definitions" class="headerlink" title="Basic Definitions"></a>Basic Definitions</h2><h3 id="Literal"><a href="#Literal" class="headerlink" title="Literal"></a>Literal</h3><h3 id="Identifier"><a href="#Identifier" class="headerlink" title="Identifier"></a>Identifier</h3><h3 id="List-Separator"><a href="#List-Separator" class="headerlink" title="List Separator"></a>List Separator</h3><h3 id="Letters-and-Digits"><a href="#Letters-and-Digits" class="headerlink" title="Letters and Digits"></a>Letters and Digits</h3>
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -311,6 +792,738 @@
 
 
     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/02/14/Nodejs/hubot-scripting/" itemprop="url">
+                  hubot-scripting
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-02-14T13:24:37+08:00" content="Feb 14 2016">
+              Feb 14 2016
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/02/14/Nodejs/hubot-scripting/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/14/Nodejs/hubot-scripting/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Anatomy-of-a-script"><a href="#Anatomy-of-a-script" class="headerlink" title="Anatomy of a script"></a>Anatomy of a script</h2><p>当你创建了你的hubot之后，生成器同样创建了一个scripts目录。你如果打开看看，会发现一样示例脚本。为了让脚本生效，你需要：</p>
+<ul>
+<li>脚本需要位于hubot的脚本加载目录中(默认为<code>src/scripts</code>和<code>scripts</code>)</li>
+<li><code>.coffee</code>或<code>.js</code>文件</li>
+<li>export为一个函数</li>
+</ul>
+<p>export为一个函数，即：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">module.exports = (robot) -&gt;</div><div class="line">  # your code here</div></pre></td></tr></table></figure>
+<p>参数<code>robot</code>是的一个robot的一个实例。现在我们可以干一些碉堡了的事情了。</p>
+<h2 id="Hearing-and-responding"><a href="#Hearing-and-responding" class="headerlink" title="Hearing and responding"></a>Hearing and responding</h2><p>既然这是一个聊天机器人，那么最常见的互动方式就是基于消息的。Hubot可以<code>hear</code>房间中说的消息，也可以直接<code>respond</code>。这些方法都接受一个正则表达式和一个回调函数作为参数。例如：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">module.exports = (robot) -&gt;</div><div class="line">  robot.hear /badger/i, (res) -&gt;</div><div class="line">    # your code here</div><div class="line"></div><div class="line">  robot.respond /open the pod bay doors/i, (res) -&gt;</div><div class="line">    # your code here</div></pre></td></tr></table></figure>
+<p><code>robot.hear /badger/</code>，回调函数会在任何任何消息文本匹配时之行。比如：</p>
+<ul>
+<li>Stop badgering the witness</li>
+<li>badger me</li>
+<li>what exactly is a badger anyways</li>
+</ul>
+<p><code>robot.respond /open the pod bay doors/i</code>的回调函数仅在机器人的名字或别名在消息文本前面的时候执行。如果机器人的名字时HAL，别名时/，这些情况下回调触发：</p>
+<ul>
+<li>hal open the pod bay doors</li>
+<li>HAL: open the pod bay doors</li>
+<li>@HAL open the pod bay doors</li>
+<li>/open the pod bay doors</li>
+</ul>
+<p>这些情况下不会触发：</p>
+<ul>
+<li>HAL: please open the pod bay doors<ul>
+<li>因为<code>respond</code>需要文本信息之前跟着机器人名称</li>
+</ul>
+</li>
+<li>has anyone ever mentioned how lovely you are when you open the pod bay doors?<ul>
+<li>缺少机器人名称</li>
+</ul>
+</li>
+</ul>
+<h2 id="Send-amp-reply"><a href="#Send-amp-reply" class="headerlink" title="Send &amp; reply"></a>Send &amp; reply</h2><p><code>res</code>参数是<code>Response</code>的一个实例(historically, this parameter was msg and you may see other scripts use it this way)。你可以通过它<code>send</code>消息回去，<code>emote</code>消息（如果你的adapter支持的话），或者<code>reply</code>那个发送消息的用户。例如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = (robot) -&gt;</div><div class="line">  robot.hear /badger/i, (res) -&gt;</div><div class="line">    res.send <span class="string">"Badgers? BADGERS? WE DON'T NEED NO STINKIN BADGERS"</span></div><div class="line"></div><div class="line">  robot.respond /open the pod bay doors/i, (res) -&gt;</div><div class="line">    res.reply <span class="string">"I'm afraid I can't let you do that."</span></div><div class="line"></div><div class="line">  robot.hear /I like pie/i, (res) -&gt;</div><div class="line">    res.emote <span class="string">"makes a freshly baked pie"</span></div></pre></td></tr></table></figure>
+<p><code>robot.hear /badgers/</code>的回调不管谁发送的消息直接回复，”Badgers? BADGERS? WE DON’T NEED NO STINKIN BADGERS”。</p>
+<p>如果一个用户Dave说 “HAL: open the pod bay doors”, <code>robot.respond /open the pod bay doors/i</code>的回调函数就会发送消息”Dave: I’m afraid I can’t let you do that.”</p>
+<h2 id="Capturing-data"><a href="#Capturing-data" class="headerlink" title="Capturing data"></a>Capturing data</h2><p>至今，我们的脚本都是静态的回复，相对比较无趣一点。<code>res.match</code>包含了消息中正则匹配的部分。这是JavaScript的特性，返回一个数组，索引为0的是匹配正则表达式的全文本。比如：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">robot.respond /open the (.*) doors/i, (res) -&gt;</div><div class="line">  # your code here</div></pre></td></tr></table></figure>
+<p>如果Dave说”HAL: open the pod bay doors”, <code>res.match[0]</code>是”open the pod bay doors”, <code>res.match[1]</code>就是”pod bay”。现在，我们可以做一些更动态的事情了：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">robot.respond /open the (.*) doors/i, (res) -&gt;</div><div class="line">  doorType = res.match[<span class="number">1</span>]</div><div class="line">  <span class="keyword">if</span> doorType is <span class="string">"pod bay"</span></div><div class="line">    res.reply <span class="string">"I'm afraid I can't let you do that."</span></div><div class="line">  <span class="keyword">else</span></div><div class="line">    res.reply <span class="string">"Opening #&#123;doorType&#125; doors"</span></div></pre></td></tr></table></figure>
+<h2 id="Making-HTTP-calls-Unmaintained"><a href="#Making-HTTP-calls-Unmaintained" class="headerlink" title="Making HTTP calls Unmaintained"></a>Making HTTP calls <em>Unmaintained</em></h2><h2 id="JSON"><a href="#JSON" class="headerlink" title="JSON"></a>JSON</h2><h2 id="XML"><a href="#XML" class="headerlink" title="XML"></a>XML</h2><h2 id="Screen-scraping"><a href="#Screen-scraping" class="headerlink" title="Screen scraping"></a>Screen scraping</h2><h2 id="Random"><a href="#Random" class="headerlink" title="Random"></a>Random</h2><p>一个常见的场景就是听到或者相应一个命令，从数组中随即发送图片或者文本。JavaScript和CoffeeScript并没有提供什么方法，所以Hubot提供了一个方便的方法:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">lulz = [<span class="string">'lol'</span>, <span class="string">'rofl'</span>, <span class="string">'lmao'</span>]</div><div class="line"></div><div class="line">res.send res.random lulz</div></pre></td></tr></table></figure>
+<h2 id="Topic"><a href="#Topic" class="headerlink" title="Topic"></a>Topic</h2><p>如果adapter支持的话，Hubot可以对房间的主题变更作出相应的反应。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = (robot) -&gt;</div><div class="line">  robot.topic (res) -&gt;</div><div class="line">    res.send <span class="string">"#&#123;res.message.text&#125;? That's a Paddlin'"</span></div></pre></td></tr></table></figure>
+<h2 id="Entering-and-leaving"><a href="#Entering-and-leaving" class="headerlink" title="Entering and leaving"></a>Entering and leaving</h2><p>如果adapter支持，Hubot可以看到用户进入和离开。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">enterReplies = [<span class="string">'Hi'</span>, <span class="string">'Target Acquired'</span>, <span class="string">'Firing'</span>, <span class="string">'Hello friend.'</span>, <span class="string">'Gotcha'</span>, <span class="string">'I see you'</span>]</div><div class="line">leaveReplies = [<span class="string">'Are you still there?'</span>, <span class="string">'Target lost'</span>, <span class="string">'Searching'</span>]</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = (robot) -&gt;</div><div class="line">  robot.enter (res) -&gt;</div><div class="line">    res.send res.random enterReplies</div><div class="line">  robot.leave (res) -&gt;</div><div class="line">    res.send res.random leaveReplies</div></pre></td></tr></table></figure>
+<h2 id="Custom-Listeners"><a href="#Custom-Listeners" class="headerlink" title="Custom Listeners"></a>Custom Listeners</h2><p>上面涵盖了普通用户的大部分功能需求 (hear, respond, enter, leave, topic)，有时候，我们需要特别的匹配逻辑。如果这样，你可以使用<code>listen</code>来制定自定义的函数，而不是正则表达式。</p>
+<p>如果想回调函数执行，match函数必须返回可以转化为true的值，返回值会传递给<code>response.match</code></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">module.exports = (robot) -&gt;</div><div class="line">  robot.listen(</div><div class="line">    (message) -&gt; # Match function</div><div class="line">      # Occassionally respond to things that Steve says</div><div class="line">      message.user.name is "Steve" and Math.random() &gt; 0.8</div><div class="line">    (response) -&gt; # Standard listener callback</div><div class="line">      # Let Steve know how happy you are that he exists</div><div class="line">      response.reply "HI STEVE! YOU'RE MY BEST FRIEND! (but only like #&#123;response.match * 100&#125;% of the time)"</div><div class="line">  )</div></pre></td></tr></table></figure>
+<h2 id="Events"><a href="#Events" class="headerlink" title="Events"></a>Events</h2><p>Hubot还可以对事件作出相应，这可以用来script之间传递数据。<code>robot.emit</code>和<code>robot.on</code>通过Nodej.js的<code>EventEmitter</code>封装。</p>
+<p>一个例子就是有一个脚本和服务互动，当请求来的时候触发事件。比如，我们可以有一个脚本从Github的post-commit钩子接受数据，触发commit事件，另一个脚本处理这些commits。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># src/scripts/github-commits.coffee</div><div class="line">module.exports = (robot) -&gt;</div><div class="line">  robot.router.post "/hubot/gh-commits", (req, res) -&gt;</div><div class="line">    robot.emit "commit", &#123;</div><div class="line">        user    : &#123;&#125;, #hubot user object</div><div class="line">        repo    : 'https://github.com/github/hubot',</div><div class="line">        hash  : '2e1951c089bd865839328592ff673d2f08153643'</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># src/scripts/heroku.coffee</div><div class="line">module.exports = (robot) -&gt;</div><div class="line">  robot.on "commit", (commit) -&gt;</div><div class="line">    robot.send commit.user, "Will now deploy #&#123;commit.hash&#125; from #&#123;commit.repo&#125;!"</div><div class="line">    #deploy code goes here</div></pre></td></tr></table></figure>
+<p>如果提供事件，非常建议包含一个在数据中包含一个hubot用户或者房间，这样允许hubot来在聊天中通知用户或房间。</p>
+<h2 id="Error-Handling"><a href="#Error-Handling" class="headerlink" title="Error Handling"></a>Error Handling</h2><p>没有代码是完美的，错误和异常都是可以接受的。先前，未捕获的异常会导致hubot实例crash。Hubot现在包含了<code>uncaughtException</code>处理，他来提供脚本来做一些异常处理。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># src/scripts/does-not-compute.coffee</div><div class="line">module.exports = (robot) -&gt;</div><div class="line">  robot.error (err, res) -&gt;</div><div class="line">    robot.logger.error "DOES NOT COMPUTE"</div><div class="line"></div><div class="line">    if res?</div><div class="line">      res.reply "DOES NOT COMPUTE"</div></pre></td></tr></table></figure>
+<p>这里你可以做任何处理处理，但是如果你想做一些额外的补救措施、记录日志的话，最好是异步的代码。否则，你可能会遇到递归错误而且还不知道。</p>
+<p>会有一个<code>error</code>事件触发，用错误处理函数来消费这个事件。因此，不管会不会发生，你都要处理好自己的异常，并且自己触发他们。第一个参数是触发的错误对象，第二个是可选参数来描述错误。用上面一个例子：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">robot.router.post '/hubot/chatsecrets/:room', (req, res) -&gt;</div><div class="line">  room = req.params.room</div><div class="line">  data = null</div><div class="line">  try</div><div class="line">    data = JSON.parse req.body.payload</div><div class="line">  catch err</div><div class="line">    robot.emit 'error', err</div><div class="line"></div><div class="line">  # rest of the code here</div><div class="line"></div><div class="line"></div><div class="line">robot.hear /midnight train/i, (res)</div><div class="line">  robot.http("https://midnight-train")</div><div class="line">    .get() (err, res, body) -&gt;</div><div class="line">      if err</div><div class="line">        res.reply "Had problems taking the midnight train"</div><div class="line">        robot.emit 'error', err, res</div><div class="line">        return</div><div class="line">      # rest of code here</div></pre></td></tr></table></figure>
+<p>第二个例子中，很值得思考下用户会看到什么样子的信息。如果你有一个错误处理函数来回复用户，你可能不需要添加一个自定义的错误提示给用户，但是这个也取决于你对异常提示有多公开。</p>
+<h2 id="Persistence"><a href="#Persistence" class="headerlink" title="Persistence"></a>Persistence</h2><p>Hubot有一个基于内存的key-value存储，通过<code>robot.brain</code>来存储、设置数据。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">robot.respond /have a soda/i, (res) -&gt;</div><div class="line">  # Get number of sodas had (coerced to a number).</div><div class="line">  sodasHad = robot.brain.get('totalSodas') * 1 or 0</div><div class="line"></div><div class="line">  if sodasHad &gt; 4</div><div class="line">    res.reply "I'm too fizzy.."</div><div class="line"></div><div class="line">  else</div><div class="line">    res.reply 'Sure!'</div><div class="line"></div><div class="line">    robot.brain.set 'totalSodas', sodasHad+1</div><div class="line">robot.respond /sleep it off/i, (res) -&gt;</div><div class="line">  robot.brain.set 'totalSodas', 0</div><div class="line">  msg.reply 'zzzzz'</div></pre></td></tr></table></figure>
+<p>如果脚本需要寻找用户信息，有一些方法在<code>robot.brain</code>中可以用来通过id、name或者模糊匹配来查找一个或多个用户:<code>userForName</code>, <code>userForId</code>, <code>userForFuzzyName</code>, <code>usersForFuzzyName</code>。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">module.exports = (robot) -&gt;</div><div class="line"></div><div class="line">  robot.respond /who is @?([\w .\-]+)\?*$/i, (res) -&gt;</div><div class="line">    name = res.match[1].trim()</div><div class="line"></div><div class="line">    users = robot.brain.usersForFuzzyName(name)</div><div class="line">    if users.length is 1</div><div class="line">      user = users[0]</div><div class="line">      # Do something interesting here..</div><div class="line"></div><div class="line">      res.send "#&#123;name&#125; is user - #&#123;user&#125;"</div></pre></td></tr></table></figure>
+<h2 id="LISTENER-METADATA"><a href="#LISTENER-METADATA" class="headerlink" title="LISTENER METADATA"></a>LISTENER METADATA</h2><p>出了正则表达式和回调函数，<code>hear</code>和<code>respond</code>接受一个可选的Object参数，可以很容易的对即将创建的Listener对象添加metadata信息。metadata可以很容易的扩展脚本信息而不需要修改脚本本身。</p>
+<p>最重要而且最常见的metadata的key是<code>id</code>，每个Listener都应有被给予一个唯一的id(option.id，默认为null)。通过模块名来划分命名空间(‘my-module.my-listener’)。这些名称允许其他脚本很轻松的定位listeners，扩展像authorization和rate limiting的功能也不需要额外的函数。</p>
+<p>额外的扩展可能需要定义额外的metadata key。</p>
+<p>提前看个例子：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">module.exports = (robot) -&gt;</div><div class="line">  robot.respond /annoy me/, id:'annoyance.start', (msg)</div><div class="line">    # code to annoy someone</div><div class="line"></div><div class="line">  robot.respond /unannoy me/, id:'annoyance.stop', (msg)</div><div class="line">    # code to stop annoying someone</div></pre></td></tr></table></figure>
+<p>这些定义允许你扩展一些新的行为，比如：</p>
+<ul>
+<li>authorization策略，允许annoyers组的每个人执行<code>annoyers.*</code>命令</li>
+<li>rate limiting:30分钟内只能调用<code>annoyance.start</code>一次</li>
+</ul>
+<h2 id="MIDDLEWARE"><a href="#MIDDLEWARE" class="headerlink" title="MIDDLEWARE"></a>MIDDLEWARE</h2><p>有三种类型的中间件: Receive, Listener and Response.</p>
+<p>Receive 中间件在 listeners 检查之前运行<br>Listener 中间件运行在每个listener匹配消息之后<br>Response 中间件在每个消息发送出去时运行</p>
+<h3 id="Execution-Process-and-API"><a href="#Execution-Process-and-API" class="headerlink" title="Execution Process and API"></a>Execution Process and API</h3><p>和<a href="http://expressjs.com/api.html#middleware" target="_blank" rel="external">Express middleware</a>相似,<br>Hubot按定义顺序执行中间件。每个中间件通过<code>next</code>继续中间件，通过<code>done</code>打断中间件。</p>
+<p>Middleware调用的时候有以下参数：</p>
+<ul>
+<li><code>context</code><ul>
+<li>详见每个不同中间件的的API</li>
+</ul>
+</li>
+<li><code>next</code><ul>
+<li>一个没有任何额外属性的函数，用来被执行继续下一个中间件或者执行Listener的回调函数。</li>
+<li><code>next</code>调用时有一个可选参数，可以是<code>done</code>函数，或者是一个新的最终会调用<code>done</code>的函数。如果参数未指定，则认为传入了<code>done</code></li>
+</ul>
+</li>
+<li><code>done</code><ul>
+<li>一个没有任何额外属性的函数。当需要结束中间件调用和结束整个函数时调用。</li>
+<li>调用时没有参数</li>
+</ul>
+</li>
+</ul>
+<p>每个中间键都接受相同的API签名，<code>context</code>、<code>next</code>和<code>done</code>。不同类型的中间件在context中接受不同的信息。</p>
+<h3 id="Error-Handling-1"><a href="#Error-Handling-1" class="headerlink" title="Error Handling"></a>Error Handling</h3><p>对于同步的中间件（不会产生事件循环），hubot会自动捕获错误并且触发<code>error</code>事件。Hubot还会调用最近的<code>done</code>回调来结束中间件调用。异步中间件应该自己捕获异常，触发error事件，调用done函数。任何未捕获的异常都会打断中间件的所有回调。</p>
+<h2 id="LISTENER-MIDDLEWARE"><a href="#LISTENER-MIDDLEWARE" class="headerlink" title="LISTENER MIDDLEWARE"></a>LISTENER MIDDLEWARE</h2><p>Listener中间件在匹配消息和执行listener之间插入逻辑。这允许你为每个匹配的脚本创建扩展。比如，集中的认证策略、调用限制、日志、指标。Middleware的实现和其他脚本一样，但是并不是使用<code>hear</code>和<code>respond</code>，中间件使用<code>listenerMiddleware</code></p>
+<h3 id="Listener-Middleware-Examples"><a href="#Listener-Middleware-Examples" class="headerlink" title="Listener Middleware Examples"></a>Listener Middleware Examples</h3><p>完整的例子可以参见<a href="hubot-rate-limit">hubot-rate-limit</a>。</p>
+<p>一个记录执行命令的中间件：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">module.exports = (robot) -&gt;</div><div class="line">  robot.listenerMiddleware (context, next, done) -&gt;</div><div class="line">    # Log commands</div><div class="line">    robot.logger.info "#&#123;context.response.message.user.name&#125; asked me to #&#123;context.response.message.text&#125;"</div><div class="line">    # Continue executing middleware</div><div class="line">    next()</div><div class="line">```    </div><div class="line">   </div><div class="line">这个例子中，每个匹配的消息都会写下日志信息。</div><div class="line"></div><div class="line">更加复杂的调用限制的例子：</div><div class="line"></div><div class="line">```js</div><div class="line">module.exports = (robot) -&gt;</div><div class="line">  # Map of listener ID to last time it was executed</div><div class="line">  lastExecutedTime = &#123;&#125;</div><div class="line"></div><div class="line">  robot.listenerMiddleware (context, next, done) -&gt;</div><div class="line">    try</div><div class="line">      # Default to 1s unless listener provides a different minimum period</div><div class="line">      minPeriodMs = context.listener.options?.rateLimits?.minPeriodMs? or 1000</div><div class="line"></div><div class="line">      # See if command has been executed recently</div><div class="line">      if lastExecutedTime.hasOwnProperty(context.listener.options.id) and</div><div class="line">         lastExecutedTime[context.listener.options.id] &gt; Date.now() - minPeriodMs</div><div class="line">        # Command is being executed too quickly!</div><div class="line">        done()</div><div class="line">      else</div><div class="line">        next -&gt;</div><div class="line">          lastExecutedTime[context.listener.options.id] = Date.now()</div><div class="line">          done()</div><div class="line">    catch err</div><div class="line">      robot.emit('error', err, context.response)</div></pre></td></tr></table></figure>
+<p>这个例子中，中间件检查listener是否在最近的1s中被调用。如果有，中间件里面调用<code>done</code>，阻止listenr的回调调用。如果listenr允许执行，中间件在next中添加<code>done</code>，这样就能调用记录结束时间。</p>
+<p>这个例子同样展示了通过特定的metadata可以创建出很有用的扩展：使用限制中间件，脚本开发人员可以通过设置listener option参数创建调用限制的命令。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">module.exports = (robot) -&gt;</div><div class="line">  robot.hear /hello/, id: 'my-hello', rateLimits: &#123;minPeriodMs: 10000&#125;, (msg) -&gt;</div><div class="line">    # This will execute no faster than once every ten seconds</div><div class="line">    msg.reply 'Why, hello there!'</div></pre></td></tr></table></figure>
+<h3 id="Listener-Middleware-API"><a href="#Listener-Middleware-API" class="headerlink" title="Listener Middleware API"></a>Listener Middleware API</h3><p>Listener中间件的回调函数接受3个参数:<code>context</code>、<code>next</code>和<code>done</code>。</p>
+<p><code>context</code>包含这些字段：</p>
+<ul>
+<li><code>listener</code><ul>
+<li>options: 一个Object对象，包含listener中定义的metadata。</li>
+</ul>
+</li>
+<li><code>response</code><ul>
+<li>所有的response API都包含</li>
+<li>中间件用一些额外的信息来装饰（不是修改）response（比如为<code>response.message.user</code>添加LDAP groups信息）</li>
+<li>注意：文本信息(<code>response.message.text</code>)应该被考虑为不要改变</li>
+</ul>
+</li>
+</ul>
+<h2 id="RECEIVE-MIDDLEWARE"><a href="#RECEIVE-MIDDLEWARE" class="headerlink" title="RECEIVE MIDDLEWARE"></a>RECEIVE MIDDLEWARE</h2><p>Receive中间件在所有的listeners执行之前。很适合用来实现黑名单功能而不用考虑ID，metrics等。</p>
+<h3 id="Receive-Middleware-Example"><a href="#Receive-Middleware-Example" class="headerlink" title="Receive Middleware Example"></a>Receive Middleware Example</h3><p>示例中间件禁止特定的用户使用包括<code>hear</code>在内的功能。如果一个用户想使用一个命令，会返回一条错误信息。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">BLACKLISTED_USERS = [</div><div class="line">  '12345' # Restrict access for a user ID for a contractor</div><div class="line">]</div><div class="line"></div><div class="line">robot.receiveMiddleware (context, next, done) -&gt;</div><div class="line">  if context.response.message.user.id in BLACKLISTED_USERS</div><div class="line">    # Don't process this message further.</div><div class="line">    context.response.message.finish()</div><div class="line"></div><div class="line">    # If the message starts with 'hubot' or the alias pattern, this user was</div><div class="line">    # explicitly trying to run a command, so respond with an error message.</div><div class="line">    if context.response.message.text?.match(robot.respondPattern(''))</div><div class="line">      context.response.reply "I'm sorry @#&#123;context.response.message.user.name&#125;, but I'm configured to ignore your commands."</div><div class="line"></div><div class="line">    # Don't process further middleware.</div><div class="line">    done()</div><div class="line">  else</div><div class="line">    next(done)</div></pre></td></tr></table></figure>
+<h2 id="Receive-Middleware-API"><a href="#Receive-Middleware-API" class="headerlink" title="Receive Middleware API"></a>Receive Middleware API</h2><p>Receive中间件的回调函数接受3个参数:<code>context</code>、<code>next</code>和<code>done</code>。</p>
+<p><code>context</code>包含这些字段：</p>
+<ul>
+<li>response<ul>
+<li>response此时并没有match属性，因为listeners还没有被执行所以还没有匹配。</li>
+<li>中间件用一些额外的信息来装饰（不是修改）response（比如为<code>response.message.user</code>添加LDAP groups信息）</li>
+<li>中间可以修改<code>response.message</code>对象</li>
+</ul>
+</li>
+</ul>
+<h2 id="RESPONSE-MIDDLEWARE"><a href="#RESPONSE-MIDDLEWARE" class="headerlink" title="RESPONSE MIDDLEWARE"></a>RESPONSE MIDDLEWARE</h2><p>Response中间件在hubot发送消息给聊天室的时候执行。对消息格式化，防止密码泄漏，指标等很有用。</p>
+<h3 id="Response-Middleware-Example"><a href="#Response-Middleware-Example" class="headerlink" title="Response Middleware Example"></a>Response Middleware Example</h3><p>示例修改了发送至聊天室的链接。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = (robot) -&gt;</div><div class="line">  robot.responseMiddleware (context, next, done) -&gt;</div><div class="line">    <span class="keyword">return</span> unless context.plaintext?</div><div class="line">    context.strings = (string.replace(<span class="regexp">/\[([^\[\]]*?)\]\((https?:\/\/.*?)\)/</span>, <span class="string">"&lt;$2|$1&gt;"</span>) <span class="keyword">for</span> string <span class="keyword">in</span> context.strings)</div><div class="line">    next()</div></pre></td></tr></table></figure>
+<h3 id="Response-Middleware-API"><a href="#Response-Middleware-API" class="headerlink" title="Response Middleware API"></a>Response Middleware API</h3><p>Response中间件的回调函数接受3个参数:<code>context</code>、<code>next</code>和<code>done</code>。</p>
+<p><code>context</code>包含这些字段：</p>
+<ul>
+<li><code>response</code><ul>
+<li>response可以用来在中间件中发送新的消息。中间件会再次执行。小心无限循环。</li>
+</ul>
+</li>
+<li><code>strings</code><ul>
+<li>发送给聊天适配器的字符串数组。你可以修改这些信息，或者像<code>context.strings = [&quot;new strings&quot;]</code>这样来替换</li>
+</ul>
+</li>
+<li><code>method</code><ul>
+<li>字符串类型，表示listener发送的消息类型，比如<code>send</code>, <code>reply</code>, <code>emote</code> 或者 <code>topic</code></li>
+</ul>
+</li>
+<li><code>plaintext</code><ul>
+<li><code>true</code>或者<code>undefined</code>。如果消息是正常的 plaintext类型，则会设为<code>true</code>。比如<code>send</code> 和<code>reply</code>。该属性只读。</li>
+</ul>
+</li>
+</ul>
+<h2 id="TESTING-HUBOT-SCRIPTS"><a href="#TESTING-HUBOT-SCRIPTS" class="headerlink" title="TESTING HUBOT SCRIPTS"></a>TESTING HUBOT SCRIPTS</h2><p><a href="https://github.com/mtsmfm/hubot-test-helper" target="_blank" rel="external">hubot-test-helper</a>是用来测试Hubot脚本的很好的测试框架。</p>
+<p>安装包：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">% npm install hubot-test-helper --save-dev</div></pre></td></tr></table></figure></p>
+<p>同时还需要安装:</p>
+<ul>
+<li>一个测试框架，如 <em>Mocha</em></li>
+<li>断言库，如 <em>chai</em> 或者 <em>expect.js</em></li>
+</ul>
+<p>可能还需要安装:</p>
+<ul>
+<li>coffee-script (如果你想用CoffeeScript写测试)</li>
+<li>mock的库，比如 <em>Sinon.js</em> (如果你的脚本运行是webservice或者其他异步的服务)</li>
+</ul>
+<p>这里是个简单的例子，使用 <code>Mocha</code>, <code>chai</code>, <code>coffee-script</code> 和 <code>hubot-test-helper</code>:</p>
+<p><strong>test/example-test.coffee</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">Helper = <span class="built_in">require</span>(<span class="string">'hubot-test-helper'</span>)</div><div class="line">chai = <span class="built_in">require</span> <span class="string">'chai'</span></div><div class="line"></div><div class="line">expect = chai.expect</div><div class="line"></div><div class="line">helper = <span class="keyword">new</span> Helper(<span class="string">'../scripts/example.coffee'</span>)</div><div class="line"></div><div class="line">describe <span class="string">'example script'</span>, -&gt;</div><div class="line">  beforeEach -&gt;</div><div class="line">    @room = helper.createRoom()</div><div class="line"></div><div class="line">  afterEach -&gt;</div><div class="line">    @room.destroy()</div><div class="line"></div><div class="line">  it <span class="string">'doesn\'t need badgers'</span>, -&gt;</div><div class="line">    @room.user.say(<span class="string">'alice'</span>, <span class="string">'did someone call for a badger?'</span>).then =&gt;</div><div class="line">      expect(@room.messages).to.eql [</div><div class="line">        [<span class="string">'alice'</span>, <span class="string">'did someone call for a badger?'</span>]</div><div class="line">        [<span class="string">'hubot'</span>, <span class="string">'Badgers? BADGERS? WE DON\'T NEED NO STINKIN BADGERS'</span>]</div><div class="line">      ]</div><div class="line"></div><div class="line">  it <span class="string">'won\'t open the pod bay doors'</span>, -&gt;</div><div class="line">    @room.user.say(<span class="string">'bob'</span>, <span class="string">'@hubot open the pod bay doors'</span>).then =&gt;</div><div class="line">      expect(@room.messages).to.eql [</div><div class="line">        [<span class="string">'bob'</span>, <span class="string">'@hubot open the pod bay doors'</span>]</div><div class="line">        [<span class="string">'hubot'</span>, <span class="string">'@bob I\'m afraid I can\'t let you do that.'</span>]</div><div class="line">      ]</div><div class="line"></div><div class="line">  it <span class="string">'will open the dutch doors'</span>, -&gt;</div><div class="line">    @room.user.say(<span class="string">'bob'</span>, <span class="string">'@hubot open the dutch doors'</span>).then =&gt;</div><div class="line">      expect(@room.messages).to.eql [</div><div class="line">        [<span class="string">'bob'</span>, <span class="string">'@hubot open the dutch doors'</span>]</div><div class="line">        [<span class="string">'hubot'</span>, <span class="string">'@bob Opening dutch doors'</span>]</div><div class="line">      ]</div></pre></td></tr></table></figure>
+<p><strong>sample output</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">% mocha --compilers <span class="string">"coffee:coffee-script/register"</span> <span class="built_in">test</span>/*.coffee</div><div class="line"></div><div class="line"></div><div class="line">  example script</div><div class="line">    ✓ doesn<span class="string">'t need badgers</span></div><div class="line">    ✓ won't open the pod bay doors</div><div class="line">    ✓ will open the dutch doors</div><div class="line"></div><div class="line"></div><div class="line">  3 passing (212ms)</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/02/12/Nodejs/RabbitMQ中的Back-off和retry/" itemprop="url">
+                  RabbitMQ中的Back-off和retry
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-02-12T12:52:37+08:00" content="Feb 12 2016">
+              Feb 12 2016
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/02/12/Nodejs/RabbitMQ中的Back-off和retry/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/12/Nodejs/RabbitMQ中的Back-off和retry/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>使用第三方API的一个常见问题是峰值期间可用性问题。即便是非峰值期间，API请求仍可能被拒绝、超时或者失败。这篇文章中，我将讲解对于RabbitMQ消费者轻量级的<a href="http://en.wikipedia.org/wiki/Exponential_backoff" target="_blank" rel="external">指数退避</a>和重试机制。</p>
+<h2 id="New-API-new-service"><a href="#New-API-new-service" class="headerlink" title="New API, new service"></a>New API, new service</h2><p>当用户从我们的一个网站删除了一张照片之后，我们会将它从我们的CDN服务中删除。我们的后端是面向服务的架构，这里使用了CDN purge服务。这个服务对核心web应用发生的事情做出反应，发送消息队列，并且调用CDN的API清除资源。最近我更新了这个服务来使用<a href="https://api.ccu.akamai.com/ccu/v2/docs/index.html" target="_blank" rel="external">Akamai CCU REST API</a>。</p>
+<p>由于现有的服务已经存在很久了，我们决定重写它。对于一个初级开发者来说，这是一个很好的机会使用<a href="http://www.rabbitmq.com/" target="_blank" rel="external">RabbitMQ</a>和<a href="http://nodejs.org/" target="_blank" rel="external">Node.js</a>来实现后台任务。</p>
+<p>正如Paul在他最近的blog中所说<a href="http://dev.venntro.com/2014/04/rabbitmq-from-the-front-line/" target="_blank" rel="external">RabbitMQ: Front the Front Line</a>，我们是RabbitMQ的重度使用者。尽管我们很多消费者都是实用Ruby来实现的，但是我们发现Node.js在很少的业务逻辑下也是非常实用。事件驱动和消息流很契合，并且适用于快速编码。我们实用<a href="https://github.com/postwait/node-amqp" target="_blank" rel="external">node-amqp</a>作为我们的RabbitMQ客户端。</p>
+<p>一旦新的服务运行起来，很显然负载会很高，尤其是高峰8pm-2am。我们很快发现，我们的API被集中在晚上调用。这个API有一个内部队列用来处理purge请求，当队列满了的时候它会返回<code>507 queue is full</code>。</p>
+<p><img src="http://dev.venntro.com/images/uploads/2014/07/week-of-api-responses.png" alt="CDN response pattern over one week
+"></p>
+<p>观察调用成功和失败的API，很显然我们在高峰时期需要强大的退避和重试机制。</p>
+<h2 id="Starting-point"><a href="#Starting-point" class="headerlink" title="Starting point"></a>Starting point</h2><p>我们的平台发送多个不同的消息路由至CDN purge队列。CDN purge服务消费这些消息并且发送对应的请求给CDN API。下图描述了从平台到API的信息流。</p>
+<p><img src="http://dev.venntro.com/images/uploads/2014/07/cdn-purge-messages.png" alt="Diagram of our CDN purge process"></p>
+<p>当API请求被拒绝的时候，我们想过一段时间再重试。与此同时，我们该如何处理消息？</p>
+<h2 id="Let-RabbitMQ-do-the-work"><a href="#Let-RabbitMQ-do-the-work" class="headerlink" title="Let RabbitMQ do the work"></a>Let RabbitMQ do the work</h2><p>实现退避和重试机制，我的第一直觉是创建一个新的<code>wait queue</code>，把失败的请求放在里面，过一段时间继续重试。由于我刚刚使用RabbitMQ，有这么几个问题需要考虑：</p>
+<ul>
+<li>是否我需要消费者处理<code>wait queue</code>中的消息</li>
+<li>是否我能控制每个消息的重试等待时间</li>
+<li>是否我能追踪每个API请求我重试的次数</li>
+<li>是否能在一个<code>wait queue</code>中处理多个平台的事情</li>
+</ul>
+<p>感谢的是，RabbitMQ有很多<a href="https://www.rabbitmq.com/extensions.html" target="_blank" rel="external">protocol extensions</a>扩展了<a href="http://www.amqp.org/" target="_blank" rel="external">AMQP</a>规范。<br><code>dead letter exchanges</code>和<code>per-message TTL</code>正是<code>wait queue</code>需要的功能。</p>
+<h2 id="Dead-letter-exchanges-DLX"><a href="#Dead-letter-exchanges-DLX" class="headerlink" title="Dead letter exchanges (DLX)"></a>Dead letter exchanges (DLX)</h2><p>术语<a href="http://en.wikipedia.org/wiki/Dead_letter_mail" target="_blank" rel="external">dead letter mail 死信邮件</a>在邮政行业仍在使用，用来描述信件没有办法被送达。在RabbitMQ中，消息有以下几种情况的时候会被认为dead-lettered</p>
+<ul>
+<li>消息被拒绝</li>
+<li>消息已经过期</li>
+<li>队列已经满了</li>
+</ul>
+<p>邮政服务会将死信邮件返还给发送者，和这很相似，RabbitMQ会做一些工作并且重新将<code>dead-lettered</code>的消息发送给我们选择的exchange-dead letter exchange。</p>
+<p>既然我们想要一个<code>wait queue</code>，消息过期最容易触发<code>dead-lettering</code>。我们将控制消息短期内过期。</p>
+<p>任何队列都能设置dead-letter消息。<code>dead letter exchange</code>是队列的一个参数，当你声明的时候可以通过<code>x-dead-letter-exchange</code>参数来设定。这是一个使用<a href="https://github.com/postwait/node-amqp" target="_blank" rel="external">node-amqp</a>的例子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> queueOptions = &#123; <span class="attr">arguments</span>: &#123; <span class="string">"x-dead-letter-exchange"</span>: <span class="string">"exchange"</span> &#125; &#125;;</div><div class="line"></div><div class="line">connection.queue(<span class="string">"wait-queue"</span>, queueOptions, <span class="function"><span class="keyword">function</span>(<span class="params">waitQueue</span>) </span>&#123;</div><div class="line">  <span class="comment">// Bind to exchange</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>尽管<code>dead letter exchanges</code>没有做什么特别的配置，我们仍是有了<code>wait queue</code>。下一步我们将设置消息过期，这样RabbitMQ就能为我们重新分配。</p>
+<p>更多信息: <a href="https://www.rabbitmq.com/dlx.html" target="_blank" rel="external">RabbitMQ docs on DLX</a></p>
+<h2 id="Per-message-TTL"><a href="#Per-message-TTL" class="headerlink" title="Per-message TTL"></a>Per-message TTL</h2><p>消息可以使用默认的<code>expiry</code>或者<code>TTL</code>来声明。然而为了实现指数退避，我们需要对每个消息逐个设置过期时间。</p>
+<p>当你发布消息的时候，你可以设置expiration字段的毫秒值：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> messageOptions = &#123; <span class="attr">expiration</span>: <span class="number">10000</span> &#125;;</div><div class="line"></div><div class="line">exchange.publish(<span class="string">"routing-key"</span>, <span class="string">"body"</span>, messageOptions);</div></pre></td></tr></table></figure>
+<p>看起很简单，但是这也意味着，当一个purge请求失败的时候，因为需要<code>expiration</code>字段，我们的消费者需要复制消息。注意：如果你声明了你的队列使用消息确认机制，不要忘记确认原来的消息。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> subscribeOptions = &#123; <span class="attr">ack</span>: <span class="literal">true</span> &#125;;</div><div class="line"></div><div class="line">queue.subscribe(subscribeOptions, <span class="function"><span class="keyword">function</span>(<span class="params">message, headers, deliveryInfo, messageObject</span>) </span>&#123;</div><div class="line">  <span class="comment">// Post request to API</span></div><div class="line">  <span class="comment">// ...</span></div><div class="line"></div><div class="line">  <span class="comment">// If the API request fails</span></div><div class="line">  <span class="keyword">var</span> messageOptions = &#123;</div><div class="line">    <span class="attr">appId</span>: messageObject.appId,</div><div class="line">    <span class="attr">timestamp</span>: messageObject.timestamp,</div><div class="line">    <span class="attr">contentType</span>: messageObject.contentType,</div><div class="line">    <span class="attr">deliveryMode</span>: messageObject.deliveryMode,</div><div class="line">    <span class="attr">headers</span>: headers,</div><div class="line">    <span class="attr">expiration</span>: <span class="number">10000</span></div><div class="line">  &#125;;</div><div class="line">  exchange.publish(deliveryInfo.routingKey, message, messageOptions);</div><div class="line">  messageObject.acknowledge(<span class="literal">false</span>);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>你需要确保你复制你自己的消息的详细信息。下面让我们增加每次API调用失败时的的超时时间。</p>
+<p>更多信息: <a href="https://www.rabbitmq.com/ttl.html" target="_blank" rel="external">RabbitMQ docs on per-message TTL</a></p>
+<h2 id="Handling-dead-lettered-messages"><a href="#Handling-dead-lettered-messages" class="headerlink" title="Handling dead-lettered messages"></a>Handling dead-lettered messages</h2><p>当消息<code>dead-lettered</code>之后，RabbitMQ对它做了一些很有用的变化，在header中记录了这些变化。对于我们的<code>wait queue</code>，我们仅仅关心对<code>expiration</code>字段发生了什么。</p>
+<p><code>expiration</code>字段被移除了，并且重新在headers中的<code>x-death</code>中作为<code>original-expiration</code>值记录着。这允许我们找到上次的过期时间并且防止消息再次过期。重要的是，<code>x-death</code>header是有序数组，第一个是最近的值。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> expiration;</div><div class="line"></div><div class="line"><span class="keyword">if</span> (headers[<span class="string">"x-death"</span>]) &#123;</div><div class="line">  expiration = (headers[<span class="string">"x-death"</span>][<span class="number">0</span>][<span class="string">"original-expiration"</span>] * <span class="number">3</span>);</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">  expiration = <span class="number">10000</span>;</div><div class="line">&#125;</div><div class="line"><span class="comment">// Apply some randomness to the expiration</span></div><div class="line"><span class="comment">// ...</span></div></pre></td></tr></table></figure>
+<p>这个例子中，第一个个过期时间是10000毫秒，每次重试的时候它都会乘以3。这是指数退避算法中比较常见的实践。我们的例子中，我们增加了一点随即值来提高API调用的成功可能性。</p>
+<p>下面我们来组织我们的队列，这样他能管理多个平台的事件。</p>
+<h2 id="Routing-dead-lettered-messages"><a href="#Routing-dead-lettered-messages" class="headerlink" title="Routing dead-lettered messages"></a>Routing dead-lettered messages</h2><p>我们的CDN purge服务对于多个平台发生的事情做出反应，每个都有它自己的routing key。最简单的方式路由多个routing key的是声明单独的<code>wait exchange</code>。</p>
+<p>使用单独的<code>wait exchange</code>之后，你可以不用理会<code>routing keys</code>。当失败的消息发送到<code>wait exchange</code>时，你不需要改变<code>routing key</code>。仅仅需要将<code>wait queue</code>和<code>primary queue</code>绑定同样的<code>routing key</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> routingKeys = [<span class="string">"routing-key-a"</span>, <span class="string">"routing-key-b"</span>];</div><div class="line"></div><div class="line">connection.exchange(<span class="string">"wait-exchange"</span>, waitExchangeOptions, <span class="function"><span class="keyword">function</span>(<span class="params">waitExchange</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> waitQueueOptions = &#123; <span class="attr">arguments</span>: &#123; <span class="string">"x-dead-letter-exchange"</span>: <span class="string">"exchange"</span> &#125; &#125;;</div><div class="line"></div><div class="line">  connection.queue(<span class="string">"wait-queue"</span>, waitQueueOptions, <span class="function"><span class="keyword">function</span>(<span class="params">waitQueue</span>) </span>&#123;</div><div class="line">    <span class="comment">// Bind wait queue to all routing keys on wait exchange</span></div><div class="line">    routingKeys.map(<span class="function"><span class="keyword">function</span>(<span class="params">routingKey</span>) </span>&#123;</div><div class="line">      waitQueue.bind(<span class="string">"wait-exchange"</span>, routingKey);</div><div class="line">    &#125;);</div><div class="line">  &#125;);</div><div class="line">&#125;);</div><div class="line"></div><div class="line">connection.exchange(<span class="string">"primary-exchange"</span>, primaryExchangeOptions, <span class="function"><span class="keyword">function</span>(<span class="params">primaryExchange</span>) </span>&#123;</div><div class="line">  connection.queue(<span class="string">"primary-queue"</span>, primaryQueueOptions, <span class="function"><span class="keyword">function</span>(<span class="params">primaryQueue</span>) </span>&#123;</div><div class="line">    <span class="comment">// Bind primary queue to all routing keys on primary exchange</span></div><div class="line">    routingKeys.map(<span class="function"><span class="keyword">function</span>(<span class="params">routingKey</span>) </span>&#123;</div><div class="line">      primaryQueue.bind(<span class="string">"primary-exchange"</span>, routingKey);</div><div class="line">    &#125;);</div><div class="line">    <span class="comment">// Subscribe to messages</span></div><div class="line">    <span class="comment">// ...</span></div><div class="line">  &#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>这样配置之后，当消息被<code>wait queue</code> <code>dead-lettered</code>之后，会重新发布至<code>primary exchange</code>，<code>routing key</code>会保持不变。这样以后添加和移除<code>routing key</code>会很简单。</p>
+<h2 id="All-together-now"><a href="#All-together-now" class="headerlink" title="All together now"></a>All together now</h2><p>现在把所有的代码合并在一起。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> amqp = <span class="built_in">require</span>(<span class="string">"amqp"</span>);</div><div class="line"></div><div class="line">connection = amqp.createConnection(&#123; <span class="attr">host</span>: <span class="string">"localhost"</span> &#125;);</div><div class="line"></div><div class="line">connection.on(<span class="string">"ready"</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> waitExchange,</div><div class="line">      routingKeys = [<span class="string">"routing-key-a"</span>, <span class="string">"routing-key-b"</span>];</div><div class="line"></div><div class="line">  waitExchange = connection.exchange(<span class="string">"wait-exchange"</span>, waitExchangeOptions, <span class="function"><span class="keyword">function</span>(<span class="params">waitExchange</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> waitQueueOptions = &#123; <span class="attr">arguments</span>: &#123; <span class="string">"x-dead-letter-exchange"</span>: <span class="string">"primary-exchange"</span> &#125; &#125;;</div><div class="line"></div><div class="line">    connection.queue(<span class="string">"wait-queue"</span>, waitQueueOptions, <span class="function"><span class="keyword">function</span>(<span class="params">waitQueue</span>) </span>&#123;</div><div class="line">      routingKeys.map(<span class="function"><span class="keyword">function</span>(<span class="params">routingKey</span>) </span>&#123;</div><div class="line">        waitQueue.bind(<span class="string">"wait-exchange"</span>, routingKey);</div><div class="line">      &#125;);</div><div class="line">    &#125;);</div><div class="line">  &#125;);</div><div class="line"></div><div class="line">  connection.exchange(<span class="string">"primary-exchange"</span>, primaryExchangeOptions, <span class="function"><span class="keyword">function</span>(<span class="params">primaryExchange</span>) </span>&#123;</div><div class="line">    connection.queue(<span class="string">"primary-queue"</span>, primaryQueueOptions, <span class="function"><span class="keyword">function</span>(<span class="params">primaryQueue</span>) </span>&#123;</div><div class="line">      <span class="keyword">var</span> subscribeOptions = &#123; <span class="attr">ack</span>: <span class="literal">true</span> &#125;;</div><div class="line"></div><div class="line">      routingKeys.map(<span class="function"><span class="keyword">function</span>(<span class="params">routingKey</span>) </span>&#123;</div><div class="line">        primaryQueue.bind(<span class="string">"primary-exchange"</span>, routingKey);</div><div class="line">      &#125;);</div><div class="line"></div><div class="line">      primaryQueue.subscribe(subscribeOptions, <span class="function"><span class="keyword">function</span>(<span class="params">message, headers, deliveryInfo, messageObject</span>) </span>&#123;</div><div class="line">        <span class="keyword">var</span> expiration, messageOptions;</div><div class="line">        <span class="comment">// Post request to API</span></div><div class="line">        <span class="comment">// ...</span></div><div class="line"></div><div class="line">        <span class="comment">// If the API request fails</span></div><div class="line">        <span class="keyword">if</span> (headers[<span class="string">"x-death"</span>]) &#123;</div><div class="line">          expiration = (headers[<span class="string">"x-death"</span>][<span class="number">0</span>][<span class="string">"original-expiration"</span>] * <span class="number">3</span>);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">          expiration = <span class="number">10000</span>;</div><div class="line">        &#125;</div><div class="line">        messageOptions = &#123;</div><div class="line">          <span class="attr">appId</span>: messageObject.appId,</div><div class="line">          <span class="attr">timestamp</span>: messageObject.timestamp,</div><div class="line">          <span class="attr">contentType</span>: messageObject.contentType,</div><div class="line">          <span class="attr">deliveryMode</span>: messageObject.deliveryMode,</div><div class="line">          <span class="attr">headers</span>: headers,</div><div class="line">          <span class="attr">expiration</span>: expiration</div><div class="line">        &#125;;</div><div class="line">        waitExchange.publish(deliveryInfo.routingKey, message, messageOptions);</div><div class="line">        messageObject.acknowledge(<span class="literal">false</span>);</div><div class="line">      &#125;);</div><div class="line">    &#125;);</div><div class="line">  &#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>我已经介绍了如何使用<code>dead letter exchanges</code>和<code>per-message TTL</code>来实现轻量级别的指数退避和重试机制。上面的示例代码展示了在Node.js中使用node-amqp如何实现。下图表述了这个机制原理：</p>
+<p><img src="http://dev.venntro.com/images/uploads/2014/07/rabbitmq-back-off-and-retry.png" alt="Diagram of back-off and retry mechanism"></p>
+<p>如果你和第一个图比较，我希望可以清楚的解释其中原理。最后，下面对开始的问题做一些简要的回答：</p>
+<h3 id="是否我需要消费者处理wait-queue中的消息"><a href="#是否我需要消费者处理wait-queue中的消息" class="headerlink" title="是否我需要消费者处理wait queue中的消息?"></a>是否我需要消费者处理<code>wait queue</code>中的消息?</h3><p>否。RabbitMQ可以做这个工作，声明一个带<code>x-dead-letter-exchange</code>参数的<code>wait queue</code>，RabbitMQ会在他们过期的时候重新发布。</p>
+<h3 id="是否我能控制每个消息的重试等待时间"><a href="#是否我能控制每个消息的重试等待时间" class="headerlink" title="是否我能控制每个消息的重试等待时间?"></a>是否我能控制每个消息的重试等待时间?</h3><p>可以。但是<code>per-message TTL</code>仅能在你发送消息的时候设置。所以的你的消费者需要复制消息体并且发送的时候需要携带<code>expiration</code>字段。注意：如果使用了消息确认机制，不要忘了确认原来的消息。</p>
+<h3 id="是否我能追踪每个API请求我重试的次数"><a href="#是否我能追踪每个API请求我重试的次数" class="headerlink" title="是否我能追踪每个API请求我重试的次数?"></a>是否我能追踪每个API请求我重试的次数?</h3><p>是。每次消息变为dead-lettered时，RabbitMQ都会记录有用的信息在它的<code>x-death</code>header。第一条记录的是最新的，并且会包含<code>original-expiration</code></p>
+<h3 id="是否能在一个wait-queue中处理多个平台的事情"><a href="#是否能在一个wait-queue中处理多个平台的事情" class="headerlink" title="是否能在一个wait queue中处理多个平台的事情"></a>是否能在一个<code>wait queue</code>中处理多个平台的事情</h3><p>是。最简单的管理多个<code>routing key</code>的做法是为你的<code>wait queue</code>声明一个单独的exchange，然后和<code>primary exchange</code>绑定同样的<code>routing key</code>。</p>
+<h2 id="原文-Back-off-and-retry-with-RabbitMQ"><a href="#原文-Back-off-and-retry-with-RabbitMQ" class="headerlink" title="原文 Back-off and retry with RabbitMQ"></a>原文 <a href="http://dev.venntro.com/2014/07/back-off-and-retry-with-rabbitmq/" target="_blank" rel="external">Back-off and retry with RabbitMQ</a></h2>
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/01/15/Nodejs/Preserving-Data-Across-Async-Callbacks/" itemprop="url">
+                  Node.js – Preserving Data Across Async Callbacks
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-01-15T16:50:35+08:00" content="Jan 15 2016">
+              Jan 15 2016
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/01/15/Nodejs/Preserving-Data-Across-Async-Callbacks/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/15/Nodejs/Preserving-Data-Across-Async-Callbacks/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/03/31/Linux/AWS/" itemprop="url">
+                  AWS配置node
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-03-31T21:42:18+08:00" content="Mar 31 2015">
+              Mar 31 2015
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/03/31/Linux/AWS/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/03/31/Linux/AWS/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="install-nvm-amp-nodejs"><a href="#install-nvm-amp-nodejs" class="headerlink" title="install nvm&amp;nodejs"></a>install nvm&amp;nodejs</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">curl https://raw.githubusercontent.com/creationix/nvm/v0.23.3/install.sh | bash</div><div class="line"><span class="built_in">source</span> ~/.bashrc</div><div class="line">nvm --version</div><div class="line"></div><div class="line">nvm install v0.12.1</div><div class="line">nvm <span class="built_in">alias</span> default v0.12.1</div><div class="line">node -v</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">sudo git <span class="built_in">clone</span> https://github.com/creationix/nvm.git /opt/nvm-repo</div><div class="line"><span class="comment"># ^^^ this command clones the repo from github as root</span></div><div class="line">sudo mkdir /opt/nvm</div><div class="line">sudo chmod a+rx /opt/nvm</div><div class="line"><span class="built_in">echo</span> <span class="string">"export NVM_DIR=/opt/nvm"</span> | sudo tee <span class="_">-a</span> /root/.profile</div><div class="line">	</div><div class="line">sudo su -</div><div class="line"><span class="comment"># ^^^ To use 'sudo su' or just 'sudo' instead of 'sudo su -' or 'sudo -i':</span></div><div class="line"><span class="comment">#     source /root/.profile in /root/.bashrc</span></div><div class="line"><span class="built_in">echo</span> <span class="built_in">source</span> ~/.profile &gt;&gt; ~/.bashrc</div><div class="line"><span class="comment"># And then all of the following as root:</span></div><div class="line">nvm ls-remote</div><div class="line">nvm install stable</div><div class="line">node -v</div><div class="line">ln <span class="_">-s</span> /opt/nvm/v0.12.4/bin/node /usr/<span class="built_in">local</span>/bin/node</div><div class="line">npm install -g nodemon</div><div class="line">ln <span class="_">-s</span> /opt/nvm/v0.12.4/bin/nodemon /usr/<span class="built_in">local</span>/bin/nodemon</div><div class="line">npm install -g forever</div><div class="line">ln <span class="_">-s</span> /opt/nvm/v0.10.26/bin/forever /usr/<span class="built_in">local</span>/bin/forever</div><div class="line">npm install -g grunt-cli</div><div class="line">ln <span class="_">-s</span> /opt/nvm/v0.10.26/bin/grunt /usr/<span class="built_in">local</span>/bin/grunt</div><div class="line"><span class="comment"># And likewise for any other packages you want to use</span></div></pre></td></tr></table></figure>
+<h1 id="use-n"><a href="#use-n" class="headerlink" title="use n"></a>use n</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo yum install npm</div><div class="line">sudo npm install -g n</div><div class="line">sudo n stable</div></pre></td></tr></table></figure>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference:"></a>Reference:</h1><ul>
+<li><a href="https://qualocus.wordpress.com/2014/04/19/how-i-installed-nvm-and-node-js-globally/" target="_blank" rel="external">How I installed NVM and Node.JS globally</a></li>
+</ul>
+<h2 id="install-pomelo"><a href="#install-pomelo" class="headerlink" title="install pomelo"></a>install pomelo</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">npm install pomelo -g</div><div class="line">pomelo --version</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2014/12/23/Redis/Windows下Redis的安装使用/" itemprop="url">
+                  Windows下Redis的安装使用
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2014-12-23T13:22:46+08:00" content="Dec 23 2014">
+              Dec 23 2014
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2014/12/23/Redis/Windows下Redis的安装使用/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/12/23/Redis/Windows下Redis的安装使用/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>官方网站：<a href="http://redis.io/">http://redis.io/</a></p>
+<p>Redis中文：<a href="http://www.redis.cn/">http://www.redis.cn/</a></p>
+<p>官方下载：<a href="http://redis.io/download">http://redis.io/download</a> 可以根据需要下载不同版本</p>
+<p>部署服务器<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">clone</span> https://github.com/MSOpenTech/redis</div><div class="line"><span class="built_in">cd</span> redis/bin/relase</div><div class="line"><span class="comment">##启动redis服务器，一旦关闭cmd，服务停止</span></div><div class="line">redis-server.exe redis.windows.conf</div></pre></td></tr></table></figure></p>
+<p>启动客户端</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis-cli.exe -h 127.0.0.1 -p 6379</div></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/12/23/Redis/Windows下Redis的安装使用/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
 
   </section>
 
@@ -357,7 +1570,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-count">29</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -374,7 +1587,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-count">35</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -422,7 +1635,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2016</span>
+  <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

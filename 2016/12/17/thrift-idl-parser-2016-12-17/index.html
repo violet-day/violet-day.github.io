@@ -1,0 +1,739 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Ride The Lightning" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="https://zh.wikipedia.org/wiki/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90
+Header(0+)Thrift IncludeC++ IncludeNamespaceDefinition(0+)ConstTypedefEnumSenumStructUnionExceptionServiceFieldField IDField Required">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nemo's Blog">
+<meta property="og:url" content="http://violet-day.github.io/2016/12/17/thrift-idl-parser-2016-12-17/index.html">
+<meta property="og:site_name" content="Nemo's Blog">
+<meta property="og:description" content="https://zh.wikipedia.org/wiki/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90
+Header(0+)Thrift IncludeC++ IncludeNamespaceDefinition(0+)ConstTypedefEnumSenumStructUnionExceptionServiceFieldField IDField Required">
+<meta property="og:updated_time" content="2016-12-19T12:56:38.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nemo's Blog">
+<meta name="twitter:description" content="https://zh.wikipedia.org/wiki/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90
+Header(0+)Thrift IncludeC++ IncludeNamespaceDefinition(0+)ConstTypedefEnumSenumStructUnionExceptionServiceFieldField IDField Required">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 6218687468384814000,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title>  | Nemo's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-67357558-7', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nemo's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Ride The Lightning</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-17T15:52:18+08:00" content="Dec 17 2016">
+              Dec 17 2016
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/17/thrift-idl-parser-2016-12-17/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/17/thrift-idl-parser-2016-12-17/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><a href="https://zh.wikipedia.org/wiki/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90" target="_blank" rel="external">https://zh.wikipedia.org/wiki/%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90</a></p>
+<h2 id="Header-0"><a href="#Header-0" class="headerlink" title="Header(0+)"></a>Header(0+)</h2><h3 id="Thrift-Include"><a href="#Thrift-Include" class="headerlink" title="Thrift Include"></a>Thrift Include</h3><h3 id="C-Include"><a href="#C-Include" class="headerlink" title="C++ Include"></a>C++ Include</h3><h3 id="Namespace"><a href="#Namespace" class="headerlink" title="Namespace"></a>Namespace</h3><h2 id="Definition-0"><a href="#Definition-0" class="headerlink" title="Definition(0+)"></a>Definition(0+)</h2><h3 id="Const"><a href="#Const" class="headerlink" title="Const"></a>Const</h3><h3 id="Typedef"><a href="#Typedef" class="headerlink" title="Typedef"></a>Typedef</h3><h3 id="Enum"><a href="#Enum" class="headerlink" title="Enum"></a>Enum</h3><h3 id="Senum"><a href="#Senum" class="headerlink" title="Senum"></a>Senum</h3><h3 id="Struct"><a href="#Struct" class="headerlink" title="Struct"></a>Struct</h3><h3 id="Union"><a href="#Union" class="headerlink" title="Union"></a>Union</h3><h3 id="Exception"><a href="#Exception" class="headerlink" title="Exception"></a>Exception</h3><h3 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h3><h2 id="Field"><a href="#Field" class="headerlink" title="Field"></a>Field</h2><h3 id="Field-ID"><a href="#Field-ID" class="headerlink" title="Field ID"></a>Field ID</h3><h3 id="Field-Requiredness"><a href="#Field-Requiredness" class="headerlink" title="Field Requiredness"></a>Field Requiredness</h3><h4 id="required"><a href="#required" class="headerlink" title="required"></a>required</h4><h4 id="optional"><a href="#optional" class="headerlink" title="optional"></a>optional</h4><h4 id="default-requiredness-implicit"><a href="#default-requiredness-implicit" class="headerlink" title="default requiredness (implicit)"></a>default requiredness (implicit)</h4><h4 id="Semantics-of-Default-Values"><a href="#Semantics-of-Default-Values" class="headerlink" title="Semantics of Default Values"></a>Semantics of Default Values</h4><h3 id="XSD-Options"><a href="#XSD-Options" class="headerlink" title="XSD Options"></a>XSD Options</h3><h2 id="Functions"><a href="#Functions" class="headerlink" title="Functions"></a>Functions</h2><h2 id="Types"><a href="#Types" class="headerlink" title="Types"></a>Types</h2><h2 id="Constant-Values"><a href="#Constant-Values" class="headerlink" title="Constant Values"></a>Constant Values</h2><h2 id="Basic-Definitions"><a href="#Basic-Definitions" class="headerlink" title="Basic Definitions"></a>Basic Definitions</h2><h3 id="Literal"><a href="#Literal" class="headerlink" title="Literal"></a>Literal</h3><h3 id="Identifier"><a href="#Identifier" class="headerlink" title="Identifier"></a>Identifier</h3><h3 id="List-Separator"><a href="#List-Separator" class="headerlink" title="List Separator"></a>List Separator</h3><h3 id="Letters-and-Digits"><a href="#Letters-and-Digits" class="headerlink" title="Letters and Digits"></a>Letters and Digits</h3>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/03/pm2-and-logrotate/" rel="next" title="pm2 and logrotate">
+                <i class="fa fa-chevron-left"></i> pm2 and logrotate
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/01/07/thrift-timeout/" rel="prev" title="thrift-timeout">
+                thrift-timeout <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/12/17/thrift-idl-parser-2016-12-17/"
+     data-title=""
+     data-content=""
+     data-url="http://violet-day.github.io/2016/12/17/thrift-idl-parser-2016-12-17/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/12/17/thrift-idl-parser-2016-12-17/"
+           data-title="" data-url="http://violet-day.github.io/2016/12/17/thrift-idl-parser-2016-12-17/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars2.githubusercontent.com/u/5970246?v=3&s=460"
+               alt="violet_day" />
+          <p class="site-author-name" itemprop="name">violet_day</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/violet-day" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Header-0"><span class="nav-number">1.</span> <span class="nav-text">Header(0+)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Thrift-Include"><span class="nav-number">1.1.</span> <span class="nav-text">Thrift Include</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C-Include"><span class="nav-number">1.2.</span> <span class="nav-text">C++ Include</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Namespace"><span class="nav-number">1.3.</span> <span class="nav-text">Namespace</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Definition-0"><span class="nav-number">2.</span> <span class="nav-text">Definition(0+)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Const"><span class="nav-number">2.1.</span> <span class="nav-text">Const</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Typedef"><span class="nav-number">2.2.</span> <span class="nav-text">Typedef</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Enum"><span class="nav-number">2.3.</span> <span class="nav-text">Enum</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Senum"><span class="nav-number">2.4.</span> <span class="nav-text">Senum</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Struct"><span class="nav-number">2.5.</span> <span class="nav-text">Struct</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Union"><span class="nav-number">2.6.</span> <span class="nav-text">Union</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Exception"><span class="nav-number">2.7.</span> <span class="nav-text">Exception</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Service"><span class="nav-number">2.8.</span> <span class="nav-text">Service</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Field"><span class="nav-number">3.</span> <span class="nav-text">Field</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Field-ID"><span class="nav-number">3.1.</span> <span class="nav-text">Field ID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Field-Requiredness"><span class="nav-number">3.2.</span> <span class="nav-text">Field Requiredness</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#required"><span class="nav-number">3.2.1.</span> <span class="nav-text">required</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#optional"><span class="nav-number">3.2.2.</span> <span class="nav-text">optional</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#default-requiredness-implicit"><span class="nav-number">3.2.3.</span> <span class="nav-text">default requiredness (implicit)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Semantics-of-Default-Values"><span class="nav-number">3.2.4.</span> <span class="nav-text">Semantics of Default Values</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XSD-Options"><span class="nav-number">3.3.</span> <span class="nav-text">XSD Options</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Functions"><span class="nav-number">4.</span> <span class="nav-text">Functions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Types"><span class="nav-number">5.</span> <span class="nav-text">Types</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Constant-Values"><span class="nav-number">6.</span> <span class="nav-text">Constant Values</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Basic-Definitions"><span class="nav-number">7.</span> <span class="nav-text">Basic Definitions</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Literal"><span class="nav-number">7.1.</span> <span class="nav-text">Literal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Identifier"><span class="nav-number">7.2.</span> <span class="nav-text">Identifier</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#List-Separator"><span class="nav-number">7.3.</span> <span class="nav-text">List Separator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Letters-and-Digits"><span class="nav-number">7.4.</span> <span class="nav-text">Letters and Digits</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">violet_day</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"Nemo"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

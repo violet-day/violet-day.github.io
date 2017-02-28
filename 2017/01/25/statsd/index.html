@@ -1,0 +1,850 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="nodejs,statsd,metric," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="Key Concepts
+buckets  每个stat都有各自的bucket，无需事先定义
+values 每个stat都会有一个value
+
+Line Protocol1&amp;lt;metricname&amp;gt;:&amp;lt;value&amp;gt;|&amp;lt;type&amp;gt;
+1echo &quot;foo:1|c&quot; | nc -u -w0 127.0.0.1 8125
+Workflow
+Project Struct12">
+<meta property="og:type" content="article">
+<meta property="og:title" content="statsd源码笔记">
+<meta property="og:url" content="http://violet-day.github.io/2017/01/25/statsd/index.html">
+<meta property="og:site_name" content="Nemo's Blog">
+<meta property="og:description" content="Key Concepts
+buckets  每个stat都有各自的bucket，无需事先定义
+values 每个stat都会有一个value
+
+Line Protocol1&amp;lt;metricname&amp;gt;:&amp;lt;value&amp;gt;|&amp;lt;type&amp;gt;
+1echo &quot;foo:1|c&quot; | nc -u -w0 127.0.0.1 8125
+Workflow
+Project Struct12">
+<meta property="og:image" content="http://violet-day.github.io/images/statsd.png">
+<meta property="og:updated_time" content="2017-02-28T11:50:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="statsd源码笔记">
+<meta name="twitter:description" content="Key Concepts
+buckets  每个stat都有各自的bucket，无需事先定义
+values 每个stat都会有一个value
+
+Line Protocol1&amp;lt;metricname&amp;gt;:&amp;lt;value&amp;gt;|&amp;lt;type&amp;gt;
+1echo &quot;foo:1|c&quot; | nc -u -w0 127.0.0.1 8125
+Workflow
+Project Struct12">
+<meta name="twitter:image" content="http://violet-day.github.io/images/statsd.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 6218687468384814000,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> statsd源码笔记 | Nemo's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-67357558-7', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nemo's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Ride The Lightning</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                statsd源码笔记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-01-25T18:37:51+08:00" content="Jan 25 2017">
+              Jan 25 2017
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/01/25/statsd/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/25/statsd/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Key-Concepts"><a href="#Key-Concepts" class="headerlink" title="Key Concepts"></a>Key Concepts</h2><ul>
+<li><em>buckets</em>  每个stat都有各自的<code>bucket</code>，无需事先定义</li>
+<li><em>values</em> 每个stat都会有一个value</li>
+</ul>
+<h2 id="Line-Protocol"><a href="#Line-Protocol" class="headerlink" title="Line Protocol"></a>Line Protocol</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;metricname&gt;:&lt;value&gt;|&lt;type&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> <span class="string">"foo:1|c"</span> | nc -u -w0 127.0.0.1 8125</div></pre></td></tr></table></figure>
+<h2 id="Workflow"><a href="#Workflow" class="headerlink" title="Workflow"></a>Workflow</h2><p><img src="/images/statsd.png" alt=""></p>
+<h2 id="Project-Struct"><a href="#Project-Struct" class="headerlink" title="Project Struct"></a>Project Struct</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">├── CONTRIBUTING.md</div><div class="line">├── Changelog.md</div><div class="line">├── Dockerfile</div><div class="line">├── LICENSE</div><div class="line">├── README.md</div><div class="line">├── backends	在得到聚合的metric后，针对不同的后端各自的逻辑</div><div class="line">├── bin</div><div class="line">├── debian</div><div class="line">├── docker-compose.yml</div><div class="line">├── docs</div><div class="line">├── exampleConfig.js</div><div class="line">├── exampleProxyConfig.js</div><div class="line">├── examples</div><div class="line">├── lib</div><div class="line">│   ├── config.js	加载config处理的逻辑</div><div class="line">│   ├── helpers.js	help function</div><div class="line">│   ├── logger.js	自定义的logger类</div><div class="line">│   ├── mgmt_console.js	mangenment consoel的逻辑函数</div><div class="line">│   ├── mgmt_server.js	mangement server启动函数</div><div class="line">│   ├── process_metrics.js		加工处理metrics</div><div class="line">│   ├── process_mgmt.js	对主进程的一些基本设置</div><div class="line">│   └── set.js		自己实现的set结构</div><div class="line">├── package.json</div><div class="line">├── packager</div><div class="line">├── proxy.js</div><div class="line">├── run_tests.sh</div><div class="line">├── servers	metric server，包含tpc和udp两种</div><div class="line">├── stats.js	入口文件，包含大部分启动逻辑</div><div class="line">├── test</div><div class="line">└── utils</div></pre></td></tr></table></figure>
+<h3 id="stats-js"><a href="#stats-js" class="headerlink" title="stats.js"></a>stats.js</h3><p>应用启动的入口文件，主要:</p>
+<ol>
+<li>声明一些全局存储变量</li>
+<li>声明一些根据config启动server的函数</li>
+<li>根据process.args[2]即配置文件路径启动应用</li>
+</ol>
+<p>具体的代码的逻辑大致如下:</p>
+<ol>
+<li>config.configFile(configPath:String)，加载配置</li>
+<li>process_mgmt.init(config:Object)，设置进程相关的一些基本参数</li>
+<li>根据config.prefixStats(String:’statsd’)来设置一些内置metric的前缀</li>
+<li>初始化counter内bad_lines_seen、packets_received、metrics_received为0</li>
+<li>通过config.keyNameSanitize判断是否需要转义metric key</li>
+<li>声明<code>handlePacket(msg:Buffer,rinfo:Object)</code>，主要作用是接受报文，根据line protocol解析，然后将结果写入一开始申明的全局变量</li>
+<li>根据config.servers的配置，从servers目录中加载并启动server，server监听的回调函数就是上一步中声明的handlePacket</li>
+<li>mgmt_server.start(conifg:Object,on_data_callback:Functioin,on_error_callback)，启动一个tcp的mangement的server</li>
+<li>设置percentThreshold，默认[90]</li>
+<li>设置flushInterval，默认10s</li>
+<li>根据config.backends设置后端的server，默认为<code>backends/graphite</code>。<em>注意：如果我们需要测试，可以设置为<code>backends/console</code></em></li>
+<li>通过在flushMetrics函数中使用递归调用setTimeout实现flush timer。flushMetrics的大致逻辑内部逻辑为：<ol>
+<li>先构造metrics_hash对象</li>
+<li>在backendEvents:EventEmiter中注册flush事件监听，如果config设置了相关的delete配置，则删除相关key，否则置为0或者空数组</li>
+<li>通过process_metrics对构造的metrics_hash对象根据配置做一些加工计算处理，结束之后触发的backendEvents的flush事件</li>
+<li>再次注册setTimeout，进行下一次flush</li>
+</ol>
+</li>
+</ol>
+<h2 id="lib-process-metrics-js"><a href="#lib-process-metrics-js" class="headerlink" title="lib/process_metrics.js"></a>lib/process_metrics.js</h2><p>主要作用是对stats.js中flushMetrics函数中传入的metric_hash做计算加工，并将结果返回出去</p>
+<p>具体代码逻辑如下：</p>
+<ol>
+<li>声明基本的局部存储变量</li>
+<li>遍历counter，将将每秒的结果计算至counter_rates中</li>
+<li>遍历timers，每个timer对应的是数组，形如<code>bar: [200, 198, 199]</code>这样。因为timer表示的内容比较丰富，所以计算会多一些，timers中的计算结果最终会计算至timer_data中。比如<code>timers: { bar: [ 100, 200 ] }</code>，至少会计算出</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">std: <span class="number">50</span>,</div><div class="line"><span class="attr">upper</span>: <span class="number">200</span>,</div><div class="line"><span class="attr">lower</span>: <span class="number">100</span>,</div><div class="line"><span class="attr">count</span>: <span class="number">2</span>,</div><div class="line"><span class="attr">count_ps</span>: <span class="number">0.2</span>,</div><div class="line"><span class="attr">sum</span>: <span class="number">300</span>,</div><div class="line"><span class="attr">sum_squares</span>: <span class="number">50000</span>,</div><div class="line"><span class="attr">mean</span>: <span class="number">150</span>,</div><div class="line"><span class="attr">median</span>: <span class="number">150</span></div></pre></td></tr></table></figure>
+<p>然后根据<code>pctThreshold</code>参数，计算出各个不同分位的指标，像这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">count_$pct</div><div class="line">mean_$pct</div><div class="line">upper_|lower_$pct</div><div class="line">sum_$pct</div><div class="line">sum_squares_$pct</div></pre></td></tr></table></figure>
+<p>值得注意的是，关于<code>$pct</code>的相关的指标计算是将排序后，计算落在<code>$pct</code>内的点的计算</p>
+<p>做个简单的测试</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> <span class="string">"foo:1|c\nbar:1|ms\nbar:2|ms\nbar:3|ms\nbar:4|ms\nbar:5|ms\n"</span> | nc -u -w0 127.0.0.1 8125</div></pre></td></tr></table></figure>
+<p>console的backend显示如下:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">&#123; counters:</div><div class="line">   &#123; 'statsd.bad_lines_seen': 0,</div><div class="line">     'statsd.packets_received': 1,</div><div class="line">     'statsd.metrics_received': 6,</div><div class="line">     foo: 1 &#125;,</div><div class="line">  timers: &#123; bar: [ 1, 2, 3, 4, 5 ] &#125;,</div><div class="line">  gauges: &#123;&#125;,</div><div class="line">  timer_data:</div><div class="line">   &#123; bar:</div><div class="line">      &#123; count_45: 2,</div><div class="line">        mean_45: 1.5,</div><div class="line">        upper_45: 2,</div><div class="line">        sum_45: 3,</div><div class="line">        sum_squares_45: 5,</div><div class="line">        std: 1.4142135623730951,</div><div class="line">        upper: 5,</div><div class="line">        lower: 1,</div><div class="line">        count: 5,</div><div class="line">        count_ps: 0.5,</div><div class="line">        sum: 15,</div><div class="line">        sum_squares: 55,</div><div class="line">        mean: 3,</div><div class="line">        median: 3 &#125; &#125;,</div><div class="line">  counter_rates:</div><div class="line">   &#123; 'statsd.bad_lines_seen': 0,</div><div class="line">     'statsd.packets_received': 0.1,</div><div class="line">     'statsd.metrics_received': 0.6,</div><div class="line">     foo: 0.1 &#125;,</div><div class="line">  sets: &#123;&#125;,</div><div class="line">  pctThreshold: [ 45 ] &#125;</div></pre></td></tr></table></figure>
+<h2 id="backends-console-js"><a href="#backends-console-js" class="headerlink" title="backends/console.js"></a>backends/console.js</h2><p>Flush stats to <a href="http://graphiteapp.org/" target="_blank" rel="external">graphite</a></p>
+<p>每个backend中的代码均需要实现<code>init</code>方法，在<code>stats.js</code>中通过<code>loadBackend</code>函数调用。<code>init</code>方法中传入的参数有：</p>
+<pre><code>1. startup_time, 启动时间
+2. config, 
+3. backendEvents, 
+4. l，日志对象
+</code></pre><p><code>init</code>函数按照约定都需要同步返回<code>true</code></p>
+<p>比如<code>backends/console.js</code>，<code>init</code>中初始化了<code>ConsoleBackend</code>的一个实例，在构造函数中注册了对参数<code>backendEvents</code>的<code>flush</code>和<code>flush</code>事件</p>
+<h2 id="backends-graphite-js"><a href="#backends-graphite-js" class="headerlink" title="backends/graphite.js"></a>backends/<a href="http://graphiteapp.org/" target="_blank" rel="external">graphite.js</a></h2><p><strong>Metric</strong></p>
+<p>对发送至graphite的指标数据做了封装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">constructor(key:String,val:Number,ts:Timestamp)</div><div class="line">toPickle():String	在graphite使用pickle protocol时使用</div><div class="line">toText():String</div></pre></td></tr></table></figure>
+<p><strong>Stats</strong></p>
+<p>指标数据的集合，提供了<code>add</code>方法和<code>toText</code>和<code>toPickle</code>这两个序列化实现</p>
+<p><strong>init</strong></p>
+<ol>
+<li>设置默认host、port、protocol</li>
+<li>设置不同指标的默认的前缀和后缀</li>
+</ol>
+<p><strong>flush_stats</strong></p>
+<ol>
+<li>分别遍历metrics数据中的counters、timer_data、gauges、sets，统一添加至Stats的类实例中，方便后续统一做序列化处理</li>
+<li>在添加时stats实例中，会根据统一的前缀和后缀和命名空间做一些指标名称的处理</li>
+</ol>
+<p><strong>post_stats</strong> </p>
+<ol>
+<li>根据config中的host、port建立socket连接</li>
+<li>连接成功时，在stats实例中添加统计信息，根据protocol选择序列化方式并写入socket</li>
+<li>写入成功之后更新graphiteStats的统计信息，失败也是一样</li>
+</ol>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><ol>
+<li>代码很简单，由于是一个定时的flush的机制，将很多状态直接存储在对象中</li>
+<li><code>backend/*</code>的解耦了<code>process metrics</code>和<code>flush backend</code>，<code>backend/console</code>在开发时用起来很方便</li>
+<li>作为一个<code>daemon process</code>，通过<code>mangent server</code>提供简单<code>tcp</code>接口来反馈当前的统计信息。</li>
+<li>指标的量很大，所以在协议设计方面尽可能简单，并且对于不论是<code>handlePacket</code>和<code>flush backend</code>时，都尽可能使用了<code>batch</code></li>
+<li>在metrics的架构中，通常作为缓冲层存在。将大量的point的请求在时间维度做聚合，也是<code>batch</code>思想的体现</li>
+</ol>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/nodejs/" rel="tag">#nodejs</a>
+          
+            <a href="/tags/statsd/" rel="tag">#statsd</a>
+          
+            <a href="/tags/metric/" rel="tag">#metric</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/09/nodejs源码之stream/" rel="next" title="nodejs源码之stream">
+                <i class="fa fa-chevron-left"></i> nodejs源码之stream
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2017/01/25/statsd/"
+     data-title="statsd源码笔记"
+     data-content=""
+     data-url="http://violet-day.github.io/2017/01/25/statsd/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/01/25/statsd/"
+           data-title="statsd源码笔记" data-url="http://violet-day.github.io/2017/01/25/statsd/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars2.githubusercontent.com/u/5970246?v=3&s=460"
+               alt="violet_day" />
+          <p class="site-author-name" itemprop="name">violet_day</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/violet-day" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Key-Concepts"><span class="nav-number">1.</span> <span class="nav-text">Key Concepts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Line-Protocol"><span class="nav-number">2.</span> <span class="nav-text">Line Protocol</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Workflow"><span class="nav-number">3.</span> <span class="nav-text">Workflow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Project-Struct"><span class="nav-number">4.</span> <span class="nav-text">Project Struct</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#stats-js"><span class="nav-number">4.1.</span> <span class="nav-text">stats.js</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lib-process-metrics-js"><span class="nav-number">5.</span> <span class="nav-text">lib/process_metrics.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#backends-console-js"><span class="nav-number">6.</span> <span class="nav-text">backends/console.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#backends-graphite-js"><span class="nav-number">7.</span> <span class="nav-text">backends/graphite.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结："><span class="nav-number">8.</span> <span class="nav-text">总结：</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">violet_day</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"Nemo"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>
