@@ -228,6 +228,217 @@
             
               
                 
+                <a class="post-title-link" href="/2017/03/02/object-pool-node-version/" itemprop="url">
+                  object-pool实现之node版本分析
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-02T21:25:19+08:00" content="Mar 2 2017">
+              Mar 2 2017
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/03/02/object-pool-node-version/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/02/object-pool-node-version/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>对象池作为一种设计模式，很多语言都有对应的实现。比较著名的应该就是<a href="https://github.com/apache/commons-pool" target="_blank" rel="external">commons-pool</a>。实际开发中，可能接触的比较的多的就是db的连接池。以下摘自<a href="https://en.wikipedia.org/wiki/Object_pool_pattern" target="_blank" rel="external">wiki</a>：</p>
+<blockquote>
+<p>   The object pool pattern is a software creational design pattern that uses a set of initialized objects kept ready to use – a “pool” – rather than allocating and destroying them on demand. A client of the pool will request an object from the pool and perform operations on the returned object. When the client has finished, it returns the object to the pool rather than destroying it; this can be done manually or automatically.<br>   Object pools are primarily used for performance: in some circumstances, object pools significantly improve performance. Object pools complicate object lifetime, as objects obtained from and returned to a pool are not actually created or destroyed at this time, and thus require care in implementation.</p>
+</blockquote>
+<p>通过<a href="https://github.com/coopernurse/node-pool" target="_blank" rel="external">node-pool</a>简单了解下<code>object-pool</code>的具体实现</p>
+<h2 id="Project-Struct"><a href="#Project-Struct" class="headerlink" title="Project Struct"></a>Project Struct</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">├── CHANGELOG.md</div><div class="line">├── Makefile</div><div class="line">├── README.md</div><div class="line">├── index.js</div><div class="line">├── lib</div><div class="line">│   ├── DefaultEvictor.js</div><div class="line">│   ├── Deferred.js</div><div class="line">│   ├── Deque.js</div><div class="line">│   ├── DequeIterator.js</div><div class="line">│   ├── DoublyLinkedList.js</div><div class="line">│   ├── DoublyLinkedListIterator.js</div><div class="line">│   ├── Pool.js</div><div class="line">│   ├── PoolDefaults.js</div><div class="line">│   ├── PoolOptions.js</div><div class="line">│   ├── PooledResource.js</div><div class="line">│   ├── PooledResourceStateEnum.js</div><div class="line">│   ├── PriorityQueue.js</div><div class="line">│   ├── Queue.js</div><div class="line">│   ├── ResourceLoan.js</div><div class="line">│   ├── ResourceRequest.js</div><div class="line">│   ├── errors.js</div><div class="line">│   ├── factoryValidator.js</div><div class="line">│   └── utils.js</div><div class="line">├── package.json</div><div class="line">└── test</div><div class="line">    ├── doubly-linked-list-iterator-test.js</div><div class="line">    ├── doubly-linked-list-test.js</div><div class="line">    ├── generic-pool-acquiretimeout-test.js</div><div class="line">    ├── generic-pool-test.js</div><div class="line">    ├── resource-request-test.js</div><div class="line">    └── utils.js</div></pre></td></tr></table></figure>
+<p>整个结构可以划分如下：</p>
+<ul>
+<li>基本数据结构<ul>
+<li>DoublyLinkedList.js <a href="https://en.wikipedia.org/wiki/Doubly_linked_list" target="_blank" rel="external">双链表</a></li>
+<li>DoublyLinkedListIterator.js</li>
+<li>Deque.js <a href="https://en.wikipedia.org/wiki/Double-ended_queue" target="_blank" rel="external">双端对列</a></li>
+<li>DequeIterator.js</li>
+<li>Queue.js </li>
+<li>PriorityQueue.js</li>
+</ul>
+</li>
+<li>Promise相关的封装<ul>
+<li>Deferred.js</li>
+</ul>
+</li>
+<li>Pool相关<ul>
+<li>PooledResource.js</li>
+<li>PooledResourceStateEnum.js</li>
+<li>ResourceRequest.js</li>
+<li>ResourceLoan.js</li>
+<li>PoolDefaults.js</li>
+<li>PoolOptions.js</li>
+<li>DefaultEvictor.js 默认的evictor policy实现</li>
+<li>Pool.js pool的主要逻辑实现</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/generic-pool.jpeg" alt=""></p>
+<h2 id="pool-js"><a href="#pool-js" class="headerlink" title="pool.js"></a>pool.js</h2><h3 id="attribute"><a href="#attribute" class="headerlink" title="attribute"></a>attribute</h3><ul>
+<li>waitingClientsQueue:ProtorityQueue 请求资源中的clients</li>
+<li>factoryCreateOperations:Set<promise> 正在处理的创建资源的请求</promise></li>
+<li>factoryDestroyOperations:Set<promise> 正在处理的销毁资源的请求</promise></li>
+<li>avaiableObjects:Deque 状态为idel的资源，因为存在fifo的配置选项，所以存储时选择的数据结构为双端对列</li>
+<li>testOnBorrowResources:Set 在获取之前处于testing中的资源</li>
+<li>testOnReturnResources:Set 在返回pool之前的testing资源</li>
+<li>validationOperations: Set<promise></promise></li>
+<li>allObjects:Set 当前pool中所有的没有被destroy的资源</li>
+<li>resourceLoans：Map，结构为<resource,loan></resource,loan></li>
+</ul>
+<p>xxxOperations:Set<promise>的作用为暂存执行create、desitory、validation中的请求</promise></p>
+<h4 id="getter"><a href="#getter" class="headerlink" title="getter"></a>getter</h4><ul>
+<li>potentiallyAllocableResourceCount： 可以被分配的资源的数量，为以下之和<ul>
+<li>availableObjects</li>
+<li>testOnBorrowResources</li>
+<li>testOnReturnResources</li>
+<li>factoryCreateOperations</li>
+</ul>
+</li>
+<li>count = allObjects + factoryCreateOperations：当前已经创建的资源和即将创建的资源之和</li>
+<li>spareResourceCapacity = config.max - count：当前还可以创建的数量</li>
+</ul>
+<h4 id="function"><a href="#function" class="headerlink" title="function"></a>function</h4><p><strong>dispatchPooledResourceToNextWaitingClient(pooledResource)</strong></p>
+<ol>
+<li>从watingClientQueue dequeue一个request，如果request不存在，则将resource标记为idle并添加至availableObjects中，返回fasle</li>
+<li>如果存在request，构造ResourceLoan，并添加loan对象至resourceLoans中</li>
+<li>pooledResouce标记为allocated</li>
+<li>执行request.resolve</li>
+<li>返回true</li>
+</ol>
+<p><strong>dispatchResource(pooledResouce)</strong></p>
+<ol>
+<li>从availableObjects中取出resource，并执行dispatchPooledResourceToNextWaitingClient</li>
+</ol>
+<p><strong>dispense()</strong></p>
+<ol>
+<li>记录waitingClientsQueue.length为局部变numWaitingClients，如果numWaitingClients&lt;1则直接return</li>
+<li>记录numWaitingClients-potentiallyAllocableResourceCount的差值为resourceShotfall，即对于watingClient实际缺少的resource的数量</li>
+<li>resourceShotfall和spareResourceCapacity中取最小值，即本次执行函数时，可以创建resource的数量</li>
+<li>for循环执行createResource</li>
+<li>testOnBorrow设置为true，计算出实际多少resource需要转入test状态，for循环执行testOnBorrow</li>
+<li>testOnBorrow设置为false时，取availableObjects和numWaitingClients中较小的数值，for循环执行dispatchResource</li>
+</ol>
+<p><strong>createResource()</strong></p>
+<ol>
+<li>执行factory.create，resolve之后<ol>
+<li>构造PooledResource实例</li>
+<li>allObjects.add</li>
+<li>dispatchPooledResourceToNextWaitingClient</li>
+</ol>
+</li>
+<li>如果reject，则执行dispense，实现递归</li>
+</ol>
+<p><strong>testOnBorrow()</strong></p>
+<ol>
+<li>availableObjects中取出resource并标记状态为test</li>
+<li>添加址testOnBorrowResources中</li>
+<li>执行factory.validate，promise reoslve的结果为boolean类型，resolve结束时，从testOnBorrowResources移除<ol>
+<li>结果为true，执行dispatchPooledResourceToNextWaitingClient</li>
+<li>结果为false，标记resource为invalidate；destroy resource；dispense，实现递归</li>
+</ol>
+</li>
+</ol>
+<p><strong>acqurie(priority)</strong></p>
+<ol>
+<li>判断是否draining，如果是则reject error</li>
+<li>判断waitingClientsQueue是否已经大于maxWaitingClients，如果是，则reject error</li>
+<li>构造ResourceRequest，并enqueue至waitingClientsQueue中</li>
+<li>执行dispense</li>
+<li>返回resourceRequest.promise</li>
+</ol>
+<p><strong>release(resource)</strong></p>
+<ol>
+<li>在createResource的逻辑中，会讲分配出去的resource添加至resourceLoans中，release的主要作用也是从resourceLoans将resouce移除</li>
+<li>标记resource状态为idel，并归还至availableObjects</li>
+</ol>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><ol>
+<li>整个项目3.x版本重构过了，使用了es6的class来构建模块，可以通过类图理解结构，好评</li>
+<li>factory接口中定义的create、destory、validate的均为异步函数，关于在判断数量时均需要考虑正在create、destory和validte的数量。这里是factory中的promise通过set保存</li>
+<li>resource对象有很多状态，对应的pool中就要有相应的容器来存放相应状态的resource或者promise，理解pool的关键就在此。</li>
+<li>感觉好难用图来表述逻辑，只能用文字了。</li>
+</ol>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="https://github.com/coopernurse/node-pool" target="_blank" rel="external">Generic Pool</a></li>
+<li><a href="https://github.com/apache/commons-pool" target="_blank" rel="external">commons-pool</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/01/25/statsd/" itemprop="url">
                   statsd源码笔记
                 </a>
@@ -1486,119 +1697,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2014/09/01/Nodejs/strongloop/" itemprop="url">
-                  strongloop
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2014-09-01T22:44:09+08:00" content="Sep 1 2014">
-              Sep 1 2014
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/node/" itemprop="url" rel="index">
-                    <span itemprop="name">node</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2014/09/01/Nodejs/strongloop/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/09/01/Nodejs/strongloop/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>npm i -g strongloop –msvs_version=2012</p>
-<p><a href="https://github.com/TooTallNate/node-gyp/issues/168">https://github.com/TooTallNate/node-gyp/issues/168</a></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/09/01/Nodejs/strongloop/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1645,7 +1743,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-count">26</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1662,7 +1760,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-count">37</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

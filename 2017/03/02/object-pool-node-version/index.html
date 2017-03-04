@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="nginx,守护进程," />
+  <meta name="keywords" content="nodejs,generic-pool," />
 
 
 
@@ -57,16 +57,24 @@
 
 
 
-<meta name="description" content="1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677#设置nginx开启启动，编辑启动文件添加下面内容##############################">
+<meta name="description" content="前言对象池作为一种设计模式，很多语言都有对应的实现。比较著名的应该就是commons-pool。实际开发中，可能接触的比较的多的就是db的连接池。以下摘自wiki：
+
+   The object pool pattern is a software creational design pattern that uses a set of initialized objects kept ready">
 <meta property="og:type" content="article">
-<meta property="og:title" content="nginx守护进程">
-<meta property="og:url" content="http://violet-day.github.io/2014/08/05/Nginx/nginx守护进程/index.html">
+<meta property="og:title" content="object-pool实现之node版本分析">
+<meta property="og:url" content="http://violet-day.github.io/2017/03/02/object-pool-node-version/index.html">
 <meta property="og:site_name" content="Nemo's Blog">
-<meta property="og:description" content="1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677#设置nginx开启启动，编辑启动文件添加下面内容##############################">
-<meta property="og:updated_time" content="2015-03-24T01:39:35.000Z">
+<meta property="og:description" content="前言对象池作为一种设计模式，很多语言都有对应的实现。比较著名的应该就是commons-pool。实际开发中，可能接触的比较的多的就是db的连接池。以下摘自wiki：
+
+   The object pool pattern is a software creational design pattern that uses a set of initialized objects kept ready">
+<meta property="og:image" content="http://violet-day.github.io/images/generic-pool.jpeg">
+<meta property="og:updated_time" content="2017-03-04T14:56:55.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="nginx守护进程">
-<meta name="twitter:description" content="1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677#设置nginx开启启动，编辑启动文件添加下面内容##############################">
+<meta name="twitter:title" content="object-pool实现之node版本分析">
+<meta name="twitter:description" content="前言对象池作为一种设计模式，很多语言都有对应的实现。比较著名的应该就是commons-pool。实际开发中，可能接触的比较的多的就是db的连接池。以下摘自wiki：
+
+   The object pool pattern is a software creational design pattern that uses a set of initialized objects kept ready">
+<meta name="twitter:image" content="http://violet-day.github.io/images/generic-pool.jpeg">
 
 
 
@@ -84,7 +92,7 @@
   };
 </script>
 
-  <title> nginx守护进程 | Nemo's Blog </title>
+  <title> object-pool实现之node版本分析 | Nemo's Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -223,7 +231,7 @@
             
             
               
-                nginx守护进程
+                object-pool实现之node版本分析
               
             
           </h1>
@@ -235,38 +243,19 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2014-08-05T23:37:54+08:00" content="Aug 5 2014">
-              Aug 5 2014
+            <time itemprop="dateCreated" datetime="2017-03-02T21:25:19+08:00" content="Mar 2 2017">
+              Mar 2 2017
             </time>
           </span>
 
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/nginx/" itemprop="url" rel="index">
-                    <span itemprop="name">nginx</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
           
 
           
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2014/08/05/Nginx/nginx守护进程/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/05/Nginx/nginx守护进程/" itemprop="commentsCount"></span>
+                <a href="/2017/03/02/object-pool-node-version/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/02/object-pool-node-version/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -287,8 +276,128 @@
       
 
       
-        <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#设置nginx开启启动，编辑启动文件添加下面内容</span></div><div class="line"><span class="comment">#################################################################</span></div><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="comment"># nginx Startup script for the Nginx HTTP Server</span></div><div class="line"><span class="comment"># it is v.0.0.2 version.</span></div><div class="line"><span class="comment"># chkconfig: - 85 15</span></div><div class="line"><span class="comment"># description: Nginx is a high-performance web and proxy server.</span></div><div class="line"><span class="comment"># It has a lot of features, but it's not for everyone.</span></div><div class="line"><span class="comment"># processname: nginx</span></div><div class="line"><span class="comment"># pidfile: /var/run/nginx.pid</span></div><div class="line"><span class="comment"># config: /usr/local/nginx/conf/nginx.conf</span></div><div class="line">nginxd=/usr/<span class="built_in">local</span>/nginx/sbin/nginx</div><div class="line">nginx_config=/usr/<span class="built_in">local</span>/nginx/conf/nginx.conf</div><div class="line">nginx_pid=/usr/<span class="built_in">local</span>/nginx/logs/nginx.pid</div><div class="line">RETVAL=0</div><div class="line">prog=<span class="string">"nginx"</span></div><div class="line"><span class="comment"># Source function library.</span></div><div class="line">./etc/rc.d/init.d/<span class="built_in">functions</span></div><div class="line"><span class="comment"># Source networking configuration.</span></div><div class="line">./etc/sysconfig/network</div><div class="line"><span class="comment"># Check that networking is up.</span></div><div class="line">[ <span class="variable">$&#123;NETWORKING&#125;</span> = <span class="string">"no"</span> ] &amp;&amp; <span class="built_in">exit</span> 0</div><div class="line">[ -x <span class="variable">$nginxd</span> ] || <span class="built_in">exit</span> 0</div><div class="line"><span class="comment"># Start nginx daemons functions.</span></div><div class="line"><span class="function"><span class="title">start</span></span>() &#123;</div><div class="line">    <span class="keyword">if</span> [ <span class="_">-e</span> <span class="variable">$nginx_pid</span> ];<span class="keyword">then</span></div><div class="line">        <span class="built_in">echo</span> <span class="string">"nginx already running...."</span></div><div class="line">        <span class="built_in">exit</span> 1</div><div class="line">    <span class="keyword">fi</span></div><div class="line">    <span class="built_in">echo</span> -n $<span class="string">"Starting <span class="variable">$prog</span>: "</span></div><div class="line">    daemon <span class="variable">$nginxd</span> -c <span class="variable">$&#123;nginx_config&#125;</span></div><div class="line">    RETVAL=$?</div><div class="line">    <span class="built_in">echo</span></div><div class="line">    [ <span class="variable">$RETVAL</span> = 0 ] &amp;&amp; touch /var/lock/subsys/nginx</div><div class="line">    <span class="built_in">return</span> <span class="variable">$RETVAL</span></div><div class="line">&#125;</div><div class="line"><span class="comment"># Stop nginx daemons functions.</span></div><div class="line"><span class="function"><span class="title">stop</span></span>() &#123;</div><div class="line">    <span class="built_in">echo</span> -n $<span class="string">"Stopping <span class="variable">$prog</span>: "</span></div><div class="line">    killproc <span class="variable">$nginxd</span></div><div class="line">    RETVAL=$?</div><div class="line">    <span class="built_in">echo</span></div><div class="line">    [ <span class="variable">$RETVAL</span> = 0 ] &amp;&amp; rm <span class="_">-f</span> /var/lock/subsys/nginx /usr/<span class="built_in">local</span>/nginx/logs/nginx.pid</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="title">reload</span></span>() &#123;</div><div class="line">    <span class="built_in">echo</span> -n $<span class="string">"Reloading <span class="variable">$prog</span>: "</span></div><div class="line">    <span class="comment">#kill -HUP `cat $&#123;nginx_pid&#125;`</span></div><div class="line">    killproc <span class="variable">$nginxd</span> -HUP</div><div class="line">    RETVAL=$?</div><div class="line">    <span class="built_in">echo</span></div><div class="line">&#125;</div><div class="line"><span class="comment"># See how we were called.</span></div><div class="line"><span class="keyword">case</span> <span class="string">"<span class="variable">$1</span>"</span> <span class="keyword">in</span></div><div class="line">    start)</div><div class="line">    start</div><div class="line">    ;;</div><div class="line">    stop)</div><div class="line">    stop</div><div class="line">    ;;</div><div class="line">    reload)</div><div class="line">    reload</div><div class="line">    ;;</div><div class="line">    restart)</div><div class="line">    stop</div><div class="line">    start</div><div class="line">    ;;</div><div class="line">    status)</div><div class="line">    status <span class="variable">$prog</span></div><div class="line">    RETVAL=$?</div><div class="line">    ;;</div><div class="line">    *)</div><div class="line">    <span class="built_in">echo</span> $<span class="string">"Usage: <span class="variable">$prog</span> &#123;start|stop|restart|reload|status|help&#125;"</span></div><div class="line">    <span class="built_in">exit</span> 1</div><div class="line">    <span class="keyword">esac</span></div><div class="line"><span class="built_in">exit</span> <span class="variable">$RETVAL</span></div><div class="line"></div><div class="line">:wq!           <span class="comment">#保存退出</span></div></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">chmod 775  /etc/rc.d/init.d/nginx       <span class="comment">#赋予文件执行权限</span></div><div class="line">chkconfig nginx on            <span class="comment">#设置开机启动</span></div><div class="line">/etc/rc.d/init.d/nginx restart             <span class="comment">#重启</span></div></pre></td></tr></table></figure>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>对象池作为一种设计模式，很多语言都有对应的实现。比较著名的应该就是<a href="https://github.com/apache/commons-pool" target="_blank" rel="external">commons-pool</a>。实际开发中，可能接触的比较的多的就是db的连接池。以下摘自<a href="https://en.wikipedia.org/wiki/Object_pool_pattern" target="_blank" rel="external">wiki</a>：</p>
+<blockquote>
+<p>   The object pool pattern is a software creational design pattern that uses a set of initialized objects kept ready to use – a “pool” – rather than allocating and destroying them on demand. A client of the pool will request an object from the pool and perform operations on the returned object. When the client has finished, it returns the object to the pool rather than destroying it; this can be done manually or automatically.<br>   Object pools are primarily used for performance: in some circumstances, object pools significantly improve performance. Object pools complicate object lifetime, as objects obtained from and returned to a pool are not actually created or destroyed at this time, and thus require care in implementation.</p>
+</blockquote>
+<p>通过<a href="https://github.com/coopernurse/node-pool" target="_blank" rel="external">node-pool</a>简单了解下<code>object-pool</code>的具体实现</p>
+<h2 id="Project-Struct"><a href="#Project-Struct" class="headerlink" title="Project Struct"></a>Project Struct</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">├── CHANGELOG.md</div><div class="line">├── Makefile</div><div class="line">├── README.md</div><div class="line">├── index.js</div><div class="line">├── lib</div><div class="line">│   ├── DefaultEvictor.js</div><div class="line">│   ├── Deferred.js</div><div class="line">│   ├── Deque.js</div><div class="line">│   ├── DequeIterator.js</div><div class="line">│   ├── DoublyLinkedList.js</div><div class="line">│   ├── DoublyLinkedListIterator.js</div><div class="line">│   ├── Pool.js</div><div class="line">│   ├── PoolDefaults.js</div><div class="line">│   ├── PoolOptions.js</div><div class="line">│   ├── PooledResource.js</div><div class="line">│   ├── PooledResourceStateEnum.js</div><div class="line">│   ├── PriorityQueue.js</div><div class="line">│   ├── Queue.js</div><div class="line">│   ├── ResourceLoan.js</div><div class="line">│   ├── ResourceRequest.js</div><div class="line">│   ├── errors.js</div><div class="line">│   ├── factoryValidator.js</div><div class="line">│   └── utils.js</div><div class="line">├── package.json</div><div class="line">└── test</div><div class="line">    ├── doubly-linked-list-iterator-test.js</div><div class="line">    ├── doubly-linked-list-test.js</div><div class="line">    ├── generic-pool-acquiretimeout-test.js</div><div class="line">    ├── generic-pool-test.js</div><div class="line">    ├── resource-request-test.js</div><div class="line">    └── utils.js</div></pre></td></tr></table></figure>
+<p>整个结构可以划分如下：</p>
+<ul>
+<li>基本数据结构<ul>
+<li>DoublyLinkedList.js <a href="https://en.wikipedia.org/wiki/Doubly_linked_list" target="_blank" rel="external">双链表</a></li>
+<li>DoublyLinkedListIterator.js</li>
+<li>Deque.js <a href="https://en.wikipedia.org/wiki/Double-ended_queue" target="_blank" rel="external">双端对列</a></li>
+<li>DequeIterator.js</li>
+<li>Queue.js </li>
+<li>PriorityQueue.js</li>
+</ul>
+</li>
+<li>Promise相关的封装<ul>
+<li>Deferred.js</li>
+</ul>
+</li>
+<li>Pool相关<ul>
+<li>PooledResource.js</li>
+<li>PooledResourceStateEnum.js</li>
+<li>ResourceRequest.js</li>
+<li>ResourceLoan.js</li>
+<li>PoolDefaults.js</li>
+<li>PoolOptions.js</li>
+<li>DefaultEvictor.js 默认的evictor policy实现</li>
+<li>Pool.js pool的主要逻辑实现</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/generic-pool.jpeg" alt=""></p>
+<h2 id="pool-js"><a href="#pool-js" class="headerlink" title="pool.js"></a>pool.js</h2><h3 id="attribute"><a href="#attribute" class="headerlink" title="attribute"></a>attribute</h3><ul>
+<li>waitingClientsQueue:ProtorityQueue 请求资源中的clients</li>
+<li>factoryCreateOperations:Set<promise> 正在处理的创建资源的请求</promise></li>
+<li>factoryDestroyOperations:Set<promise> 正在处理的销毁资源的请求</promise></li>
+<li>avaiableObjects:Deque 状态为idel的资源，因为存在fifo的配置选项，所以存储时选择的数据结构为双端对列</li>
+<li>testOnBorrowResources:Set 在获取之前处于testing中的资源</li>
+<li>testOnReturnResources:Set 在返回pool之前的testing资源</li>
+<li>validationOperations: Set<promise></promise></li>
+<li>allObjects:Set 当前pool中所有的没有被destroy的资源</li>
+<li>resourceLoans：Map，结构为<resource,loan></resource,loan></li>
+</ul>
+<p>xxxOperations:Set<promise>的作用为暂存执行create、desitory、validation中的请求</promise></p>
+<h4 id="getter"><a href="#getter" class="headerlink" title="getter"></a>getter</h4><ul>
+<li>potentiallyAllocableResourceCount： 可以被分配的资源的数量，为以下之和<ul>
+<li>availableObjects</li>
+<li>testOnBorrowResources</li>
+<li>testOnReturnResources</li>
+<li>factoryCreateOperations</li>
+</ul>
+</li>
+<li>count = allObjects + factoryCreateOperations：当前已经创建的资源和即将创建的资源之和</li>
+<li>spareResourceCapacity = config.max - count：当前还可以创建的数量</li>
+</ul>
+<h4 id="function"><a href="#function" class="headerlink" title="function"></a>function</h4><p><strong>dispatchPooledResourceToNextWaitingClient(pooledResource)</strong></p>
+<ol>
+<li>从watingClientQueue dequeue一个request，如果request不存在，则将resource标记为idle并添加至availableObjects中，返回fasle</li>
+<li>如果存在request，构造ResourceLoan，并添加loan对象至resourceLoans中</li>
+<li>pooledResouce标记为allocated</li>
+<li>执行request.resolve</li>
+<li>返回true</li>
+</ol>
+<p><strong>dispatchResource(pooledResouce)</strong></p>
+<ol>
+<li>从availableObjects中取出resource，并执行dispatchPooledResourceToNextWaitingClient</li>
+</ol>
+<p><strong>dispense()</strong></p>
+<ol>
+<li>记录waitingClientsQueue.length为局部变numWaitingClients，如果numWaitingClients&lt;1则直接return</li>
+<li>记录numWaitingClients-potentiallyAllocableResourceCount的差值为resourceShotfall，即对于watingClient实际缺少的resource的数量</li>
+<li>resourceShotfall和spareResourceCapacity中取最小值，即本次执行函数时，可以创建resource的数量</li>
+<li>for循环执行createResource</li>
+<li>testOnBorrow设置为true，计算出实际多少resource需要转入test状态，for循环执行testOnBorrow</li>
+<li>testOnBorrow设置为false时，取availableObjects和numWaitingClients中较小的数值，for循环执行dispatchResource</li>
+</ol>
+<p><strong>createResource()</strong></p>
+<ol>
+<li>执行factory.create，resolve之后<ol>
+<li>构造PooledResource实例</li>
+<li>allObjects.add</li>
+<li>dispatchPooledResourceToNextWaitingClient</li>
+</ol>
+</li>
+<li>如果reject，则执行dispense，实现递归</li>
+</ol>
+<p><strong>testOnBorrow()</strong></p>
+<ol>
+<li>availableObjects中取出resource并标记状态为test</li>
+<li>添加址testOnBorrowResources中</li>
+<li>执行factory.validate，promise reoslve的结果为boolean类型，resolve结束时，从testOnBorrowResources移除<ol>
+<li>结果为true，执行dispatchPooledResourceToNextWaitingClient</li>
+<li>结果为false，标记resource为invalidate；destroy resource；dispense，实现递归</li>
+</ol>
+</li>
+</ol>
+<p><strong>acqurie(priority)</strong></p>
+<ol>
+<li>判断是否draining，如果是则reject error</li>
+<li>判断waitingClientsQueue是否已经大于maxWaitingClients，如果是，则reject error</li>
+<li>构造ResourceRequest，并enqueue至waitingClientsQueue中</li>
+<li>执行dispense</li>
+<li>返回resourceRequest.promise</li>
+</ol>
+<p><strong>release(resource)</strong></p>
+<ol>
+<li>在createResource的逻辑中，会讲分配出去的resource添加至resourceLoans中，release的主要作用也是从resourceLoans将resouce移除</li>
+<li>标记resource状态为idel，并归还至availableObjects</li>
+</ol>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><ol>
+<li>整个项目3.x版本重构过了，使用了es6的class来构建模块，可以通过类图理解结构，好评</li>
+<li>factory接口中定义的create、destory、validate的均为异步函数，关于在判断数量时均需要考虑正在create、destory和validte的数量。这里是factory中的promise通过set保存</li>
+<li>resource对象有很多状态，对应的pool中就要有相应的容器来存放相应状态的resource或者promise，理解pool的关键就在此。</li>
+<li>感觉好难用图来表述逻辑，只能用文字了。</li>
+</ol>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="https://github.com/coopernurse/node-pool" target="_blank" rel="external">Generic Pool</a></li>
+<li><a href="https://github.com/apache/commons-pool" target="_blank" rel="external">commons-pool</a></li>
+</ul>
+
       
     </div>
 
@@ -296,9 +405,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/nginx/" rel="tag">#nginx</a>
+            <a href="/tags/nodejs/" rel="tag">#nodejs</a>
           
-            <a href="/tags/守护进程/" rel="tag">#守护进程</a>
+            <a href="/tags/generic-pool/" rel="tag">#generic-pool</a>
           
         </div>
       
@@ -307,17 +416,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2014/08/05/Nginx/nginx-conf/" rel="next" title="nginx的配置文件">
-                <i class="fa fa-chevron-left"></i> nginx的配置文件
+              <a href="/2017/01/25/statsd/" rel="next" title="statsd源码笔记">
+                <i class="fa fa-chevron-left"></i> statsd源码笔记
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2014/08/06/Linux/linux笔记/" rel="prev" title="linux笔记">
-                linux笔记 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -332,10 +437,10 @@
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2014/08/05/Nginx/nginx守护进程/"
-     data-title="nginx守护进程"
+        <div class="ds-share flat" data-thread-key="2017/03/02/object-pool-node-version/"
+     data-title="object-pool实现之node版本分析"
      data-content=""
-     data-url="http://violet-day.github.io/2014/08/05/Nginx/nginx守护进程/">
+     data-url="http://violet-day.github.io/2017/03/02/object-pool-node-version/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -362,8 +467,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2014/08/05/Nginx/nginx守护进程/"
-           data-title="nginx守护进程" data-url="http://violet-day.github.io/2014/08/05/Nginx/nginx守护进程/">
+      <div class="ds-thread" data-thread-key="2017/03/02/object-pool-node-version/"
+           data-title="object-pool实现之node版本分析" data-url="http://violet-day.github.io/2017/03/02/object-pool-node-version/">
       </div>
     
   </div>
@@ -468,7 +573,7 @@
               
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Project-Struct"><span class="nav-number">2.</span> <span class="nav-text">Project Struct</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pool-js"><span class="nav-number">3.</span> <span class="nav-text">pool.js</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#attribute"><span class="nav-number">3.1.</span> <span class="nav-text">attribute</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#getter"><span class="nav-number">3.1.1.</span> <span class="nav-text">getter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#function"><span class="nav-number">3.1.2.</span> <span class="nav-text">function</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结："><span class="nav-number">4.</span> <span class="nav-text">总结：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">5.</span> <span class="nav-text">Reference</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
