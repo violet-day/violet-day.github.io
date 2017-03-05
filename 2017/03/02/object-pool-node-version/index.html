@@ -68,7 +68,7 @@
 
    The object pool pattern is a software creational design pattern that uses a set of initialized objects kept ready">
 <meta property="og:image" content="http://violet-day.github.io/images/generic-pool.jpeg">
-<meta property="og:updated_time" content="2017-03-04T15:04:53.000Z">
+<meta property="og:updated_time" content="2017-03-05T08:38:15.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="object-pool实现之node版本分析">
 <meta name="twitter:description" content="前言对象池作为一种设计模式，很多语言都有对应的实现。比较著名的应该就是commons-pool。实际开发中，可能接触的比较的多的就是db的连接池。以下摘自wiki：
@@ -322,7 +322,7 @@
 <li>resourceLoans：Map，结构为<resource,loan></resource,loan></li>
 </ul>
 <p>xxxOperations:Set<promise>的作用为暂存执行create、desitory、validation中的请求</promise></p>
-<h4 id="getter"><a href="#getter" class="headerlink" title="getter"></a>getter</h4><ul>
+<h3 id="getter"><a href="#getter" class="headerlink" title="getter"></a>getter</h3><ul>
 <li>potentiallyAllocableResourceCount： 可以被分配的资源的数量，为以下之和<ul>
 <li>availableObjects</li>
 <li>testOnBorrowResources</li>
@@ -333,7 +333,7 @@
 <li>count = allObjects + factoryCreateOperations：当前已经创建的资源和即将创建的资源之和</li>
 <li>spareResourceCapacity = config.max - count：当前还可以创建的数量</li>
 </ul>
-<h4 id="function"><a href="#function" class="headerlink" title="function"></a>function</h4><p><strong>dispatchPooledResourceToNextWaitingClient(pooledResource)</strong></p>
+<h3 id="function"><a href="#function" class="headerlink" title="function"></a>function</h3><p><strong>dispatchPooledResourceToNextWaitingClient(pooledResource)</strong></p>
 <ol>
 <li>从watingClientQueue dequeue一个request，如果request不存在，则将resource标记为idle并添加至availableObjects中，返回fasle</li>
 <li>如果存在request，构造ResourceLoan，并添加loan对象至resourceLoans中</li>
@@ -384,7 +384,7 @@
 </ol>
 <p><strong>release(resource)</strong></p>
 <ol>
-<li>在createResource的逻辑中，会讲分配出去的resource添加至resourceLoans中，release的主要作用也是从resourceLoans将resouce移除</li>
+<li>在createResource的逻辑中，会将分配出去的resource添加至resourceLoans中，release的主要作用也是从resourceLoans将resouce移除</li>
 <li>标记resource状态为idel，并归还至availableObjects</li>
 </ol>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
@@ -530,7 +530,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-count">38</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -573,7 +573,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Project-Struct"><span class="nav-number">2.</span> <span class="nav-text">Project Struct</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pool-js"><span class="nav-number">3.</span> <span class="nav-text">pool.js</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#attribute"><span class="nav-number">3.1.</span> <span class="nav-text">attribute</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#getter"><span class="nav-number">3.1.1.</span> <span class="nav-text">getter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#function"><span class="nav-number">3.1.2.</span> <span class="nav-text">function</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">5.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Project-Struct"><span class="nav-number">2.</span> <span class="nav-text">Project Struct</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pool-js"><span class="nav-number">3.</span> <span class="nav-text">pool.js</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#attribute"><span class="nav-number">3.1.</span> <span class="nav-text">attribute</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#getter"><span class="nav-number">3.2.</span> <span class="nav-text">getter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#function"><span class="nav-number">3.3.</span> <span class="nav-text">function</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">5.</span> <span class="nav-text">Reference</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
