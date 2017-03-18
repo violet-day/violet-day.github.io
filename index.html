@@ -205,6 +205,131 @@
 
     
     
+      
+      
+        
+        
+        
+      
+
+      
+    
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/03/17/graceful-shutdown-or-restart/" itemprop="url">
+                  如何优雅关闭/重启server
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-17T17:35:49+08:00" content="Mar 17 2017">
+              Mar 17 2017
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/03/17/graceful-shutdown-or-restart/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/17/graceful-shutdown-or-restart/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Signal"><a href="#Signal" class="headerlink" title="Signal"></a>Signal</h2><blockquote>
+<p>软中断信号（signal，又简称为信号）用来通知进程发生了异步事件。进程之间可以互相通过系统调用kill发送软中断信号。内核也可以因为内部事件而给进程发送信号，通知进程发生了某个事件。注意，信号只是用来通知某进程发生了什么事件，并不给该进程传递任何数据。 </p>
+</blockquote>
+<p>在<a href="https://en.wikipedia.org/wiki/Unix_signal" target="_blank" rel="external">UnixSignal</a>中提到了很多Signal，这里主要关注以下两个:</p>
+<ul>
+<li><code>SIGTERM</code> 用来通知进程停止。<code>Kill</code> 命令默认就是发送该信号。这是一种相对<em>礼貌</em>的方式，进程可以对改信号做出处理，比如释放正在使用的资源之后再退出，或者直接忽略。</li>
+<li><code>SIGKILL</code> 用来让进程立即停止。<code>Kill -s SIGKILL $pid</code>。和<code>SIGTERM</code>不同，该信号不能被进程监听或者忽略。</li>
+</ul>
+<h2 id="Graceful-Shutdown"><a href="#Graceful-Shutdown" class="headerlink" title="Graceful Shutdown"></a>Graceful Shutdown</h2><p>生产环境中我们的应用一般通过守护进程来托管。下面看下不同的守护进程是否如何使用上面的信号的</p>
+<ul>
+<li><a href="http://supervisord.org/configuration.html" target="_blank" rel="external">supervisord</a> 停止服务时，默认使用<code>SIGTERM</code>，并且等待10s，如果进程还在运行，则使用<code>SIGKILL</code>。参考<code>stopsignal</code>和<code>stopwaitsecs</code>配置</li>
+<li><a href="https://docs.docker.com/engine/reference/commandline/stop/" target="_blank" rel="external">docker</a> 容器中的主进程会接受的<code>SIGTERM</code>，默认10s之后，发送<code>SIGKILL</code></li>
+<li><a href="https://github.com/Unitech/pm2/blob/master/lib/God/Methods.js#L216" target="_blank" rel="external">pm2</a> 发送<code>SIGINT</code>给相关子进程，没有和上面两个做类似的动作，不过<a href="http://pm2.keymetrics.io/docs/usage/signals-clean-restart" target="_blank" rel="external">官方文档</a>中提到了应用如何自己实现优雅关闭</li>
+</ul>
+<p>上面提到的都是守护进程方面如何优雅的停止进程。但是仍然有一个问题，以web server为例，在<code>SIGTERM</code>超时到<code>SIGKILL</code>过程中，还是会有请求不断的过来。那么在集群环境下，如何做到重启一个节点对生产无感知?</p>
+<p>以zk作为服务发现为例，可以用以下步骤:</p>
+<ol>
+<li>zk通知consumer节点，有一个server即将关闭。即将关闭的消息需要同步给很多consumer，如果确保所有consumer节点均收到消息之后修改本地负载均衡池的话再执行server关闭的话，保证一致性带来的成本会比较高，可以简单设置一个超时时间。</li>
+<li>在同步下线消息之后，consumer应该确保不再向即将下线的server发起新的请求。</li>
+<li>一般server端都会有服务端超时时间，即处理一个请求，超过一定时间，即抛出Timeout异常。上文中提到的<code>SIGTERM</code>到<code>SIGKILL</code>超时10s对于一个请求来说已经绰绰有余。server接受到关闭的信号之后，尽可能处理好进程中正在处理的请求，到了超时时间之后再执行关闭动作</li>
+</ol>
+<h2 id="Referecne"><a href="#Referecne" class="headerlink" title="Referecne"></a>Referecne</h2><ul>
+<li><a href="https://en.wikipedia.org/wiki/Unix_signal" target="_blank" rel="external">Unix signal</a></li>
+<li><a href="http://www.cnblogs.com/taobataoma/archive/2007/08/30/875743.html" target="_blank" rel="external">Linux 信号signal处理机制</a></li>
+<li><a href="http://joseoncode.com/2014/07/21/graceful-shutdown-in-node-dot-js/" target="_blank" rel="external">Graceful shutdown in node.js</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -1577,126 +1702,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2014/09/10/Linux/解决SecureCRT中文编码问题/" itemprop="url">
-                  解决SecureCRT中文编码问题
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2014-09-10T17:08:59+08:00" content="Sep 10 2014">
-              Sep 10 2014
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2014/09/10/Linux/解决SecureCRT中文编码问题/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/09/10/Linux/解决SecureCRT中文编码问题/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>SecureCRT中文乱码、复制粘贴乱码解决办法</p>
-<p>SecureCRT的默认配置对中文支持不好。很容易出现中文乱码。<br>即使显示出来没有乱码，将文本复制粘贴到其他windows程序中也会是乱码，或者从windows复制进SecureCRT会乱码，很不方便。</p>
-<p>这个归结起来还是字符编码的问题，需要进行以下简单设置：</p>
-<ol>
-<li>首先进入 Option 菜单 &gt;&gt; Session Option </li>
-<li>Terminal &gt;&gt; Emulation，在右边 Terminal下拉菜单中选择”Linux”, “ANSI Color”前面打上勾。</li>
-<li>Terminal &gt;&gt; Appearance，<br>点右边的Font 按钮， 1) 选择新宋体，2) 字符集选”中文 GB2312”<br>Charactor 下拉菜单中选择 “Default”, 去掉”Use Unicode line drawing character”前面的勾。</li>
-</ol>
-<p>保存设置，重启SecureCRT，进入刚才配置的Session，终于可以跟烦人的乱码说BYEBYE了</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/09/10/Linux/解决SecureCRT中文编码问题/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1743,7 +1748,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">26</span>
+              <span class="site-state-item-count">27</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
