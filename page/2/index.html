@@ -233,6 +233,136 @@
             
               
                 
+                <a class="post-title-link" href="/2014/12/01/Git/Windows中安装git-flow/" itemprop="url">
+                  Windows中安装git-flow
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2014-12-01T21:11:32+08:00" content="Dec 1 2014">
+              Dec 1 2014
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/git/" itemprop="url" rel="index">
+                    <span itemprop="name">git</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2014/12/01/Git/Windows中安装git-flow/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/12/01/Git/Windows中安装git-flow/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><a href="http://danielkummer.github.io/git-flow-cheatsheet/index.zh_CN.html">git-flow 备忘清单</a></p>
+<p><a href="http://msysgit.github.io">http://msysgit.github.io</a> 下载到最新的git bash(一个针对windows平台而封装的git命令行管理工具), 其实它还自带了超级难用的一个可视化操作工具git ui.</p>
+<p>安装完成git, 即可使用如下命令将gitflow克隆到本地:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git <span class="built_in">clone</span> --recursive git://github.com/nvie/gitflow.git</div></pre></td></tr></table></figure>
+<p>其他方式具体可以参考gitflow官方介绍: <a href="https://github.com/nvie/gitflow">https://github.com/nvie/gitflow</a>.</p>
+<p>然后分别下载下面两个文件:</p>
+<ul>
+<li><p><a href="http://sourceforge.net/projects/gnuwin32/files/util-linux/2.14.1/util-linux-ng-2.14.1-bin.zip/download">util-linux-ng-2.14.1-bin</a></p>
+</li>
+<li><p><a href="http://sourceforge.net/projects/gnuwin32/files/util-linux/2.14.1/util-linux-ng-2.14.1-dep.zip/download">util-linux-ng-2.14.1-dep</a></p>
+</li>
+</ul>
+<p>下载完成后分别将两个压缩包解压文件下bin目录中的getopt.exe和libintl3.dll文件存放到git安装目录下的bin目录中.</p>
+<p>最后使用windows系统自带的命令行工具, 进入到我们已经克隆好的gitflow目录中执行以下命令:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">D:\gitflow contrib&gt;msysgit-install.cmd <span class="string">"C:\Program Files\Git"</span></div></pre></td></tr></table></figure>
+<p>注意这里, 这里以C盘为例, 首先是找到gitflow目录下contrib子目录中的msysgit-install.cmd表示我们要执行安装命令, 如果单独执行这个命令不带指定安装目录则会报: 找不到msysgit安装目录的错误, 并且会要求在命令行提供一个目录名称(安装目录). 因此在执行安装操作的后面需要指定一个安装目录.</p>
+<p>那么安装完成之后到git bash中执行git flow会列出git-flow提供的命令. 此时, 大功告成.</p>
+<p>题外话: git虽是基于命令行操作的. 但是也有可视化的工具如source tree就是一款非常好的工具, 而且source tree自身就提供了git-flow的功能. 可以根据自己的喜好而选择合适的方式使用git.</p>
+<p><a href="http://www.sourcetreeapp.com/">source tree</a>下载</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2014/12/01/Git/Windows中安装git-flow/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2014/09/10/Linux/解决SecureCRT中文编码问题/" itemprop="url">
                   解决SecureCRT中文编码问题
                 </a>
@@ -1907,137 +2037,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2014/08/06/Linux/linux笔记/" itemprop="url">
-                  linux笔记
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2014-08-06T17:51:13+08:00" content="Aug 6 2014">
-              Aug 6 2014
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2014/08/06/Linux/linux笔记/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/06/Linux/linux笔记/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="重启命令"><a href="#重启命令" class="headerlink" title="重启命令"></a>重启命令</h2><ol>
-<li>reboot</li>
-<li>shutdown -r now 立刻重启(root用户使用)</li>
-<li>shutdown -r 10 过10分钟自动重启(root用户使用) </li>
-<li>shutdown -r 20:35 在时间为20:35时候重启(root用户使用)</li>
-</ol>
-<p>如果是通过shutdown命令设置重启的话，可以用shutdown -c命令取消重启</p>
-<h2 id="关机命令"><a href="#关机命令" class="headerlink" title="关机命令"></a>关机命令</h2><ol>
-<li>halt   立刻关机</li>
-<li>poweroff  立刻关机</li>
-<li>shutdown -h now 立刻关机(root用户使用)</li>
-<li>shutdown -h 10 10分钟后自动关机</li>
-</ol>
-<p>如果是通过shutdown命令设置关机的话，可以用shutdown -c命令取消重启</p>
-<h2 id="创建用户（useradd）："><a href="#创建用户（useradd）：" class="headerlink" title="创建用户（useradd）："></a>创建用户（useradd）：</h2><p>在Linux下创建用户和删除用户，必须在root用户下，如果你当前不是用根用户登录，你可以打开终端，输入”su root”命令，再输入根口令，就可以进入root用户模式</p>
-<ol>
-<li>用useradd命令创建用户创建用户：<br>语法： useradd [所要创建的用户名] ，回车</li>
-<li>用passwd命令为该用户创建密码：<br>语法： passwd [用户名]  ，回车</li>
-<li>输入密码：一般密码至少要有六个字符，这里输入的密码是看不见的，所以看到屏幕没显示，不要以为是输入失败</li>
-<li>重新输一次密码：<br>这里我创建一个名为aillo的用户，如下所示：</li>
-</ol>
-<h2 id="删除用户（userdel）"><a href="#删除用户（userdel）" class="headerlink" title="删除用户（userdel）"></a>删除用户（userdel）</h2><p>语法：userdel [-r] [要删除的用户的名称]<br>例如：[root@localhost ~]userdel -r aillo</p>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -2084,7 +2083,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">27</span>
+              <span class="site-state-item-count">28</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -2092,7 +2091,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -2101,7 +2100,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">38</span>
+                <span class="site-state-item-count">41</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -2149,7 +2148,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

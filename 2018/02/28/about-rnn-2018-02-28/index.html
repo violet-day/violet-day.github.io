@@ -1,0 +1,830 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="deeplearning,rnn,tensorflow," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="人的思维是具有连续性的，但是普通的神经网络并不不能维持记忆。循环神经网络的主要用途是处理和预测 序列数据。
+序列是一个比较抽象的概念，比如
+
+股票价格曲线对应的时间轴
+正弦曲线的x轴
+一张图片的以宽度作为滑动窗口的序列
+一段文字
+一段语音
+
+处理：即将指定维度的特征经过神经网络处理之后，再处理为原来的维度预测：使用神经网络的输出直接做预测
+RNNRNNs看成是一个普通的网络做了多次复制之后叠加在一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于RNN">
+<meta property="og:url" content="http://violet-day.github.io/2018/02/28/about-rnn-2018-02-28/index.html">
+<meta property="og:site_name" content="Nemo's Blog">
+<meta property="og:description" content="人的思维是具有连续性的，但是普通的神经网络并不不能维持记忆。循环神经网络的主要用途是处理和预测 序列数据。
+序列是一个比较抽象的概念，比如
+
+股票价格曲线对应的时间轴
+正弦曲线的x轴
+一张图片的以宽度作为滑动窗口的序列
+一段文字
+一段语音
+
+处理：即将指定维度的特征经过神经网络处理之后，再处理为原来的维度预测：使用神经网络的输出直接做预测
+RNNRNNs看成是一个普通的网络做了多次复制之后叠加在一">
+<meta property="og:image" content="http://violet-day.github.io/images/about-rnn/RNNs展开网络结构.png">
+<meta property="og:image" content="http://violet-day.github.io/images/about-rnn/普通的RNNs内部结构.png">
+<meta property="og:image" content="http://violet-day.github.io/images/about-rnn/循环神经网络前向传播计算过程.jpg">
+<meta property="og:image" content="http://violet-day.github.io/images/about-rnn/LSTM内部结构.png">
+<meta property="og:image" content="http://violet-day.github.io/images/about-rnn/遗忘门.png">
+<meta property="og:image" content="http://violet-day.github.io/images/about-rnn/传入门.png">
+<meta property="og:image" content="http://violet-day.github.io/images/about-rnn/更新cell状态.png">
+<meta property="og:updated_time" content="2018-05-04T14:58:28.543Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于RNN">
+<meta name="twitter:description" content="人的思维是具有连续性的，但是普通的神经网络并不不能维持记忆。循环神经网络的主要用途是处理和预测 序列数据。
+序列是一个比较抽象的概念，比如
+
+股票价格曲线对应的时间轴
+正弦曲线的x轴
+一张图片的以宽度作为滑动窗口的序列
+一段文字
+一段语音
+
+处理：即将指定维度的特征经过神经网络处理之后，再处理为原来的维度预测：使用神经网络的输出直接做预测
+RNNRNNs看成是一个普通的网络做了多次复制之后叠加在一">
+<meta name="twitter:image" content="http://violet-day.github.io/images/about-rnn/RNNs展开网络结构.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 6218687468384814000,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 关于RNN | Nemo's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-67357558-7', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Nemo's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Ride The Lightning</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                关于RNN
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2018-02-28T01:32:28+08:00" content="Feb 28 2018">
+              Feb 28 2018
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/deeplearning/" itemprop="url" rel="index">
+                    <span itemprop="name">deeplearning</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2018/02/28/about-rnn-2018-02-28/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/28/about-rnn-2018-02-28/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>人的思维是具有连续性的，但是普通的神经网络并不不能维持记忆。循环神经网络的主要用途是<strong>处理</strong>和<strong>预测</strong> <strong>序列数据</strong>。</p>
+<p>序列是一个比较抽象的概念，比如</p>
+<ul>
+<li>股票价格曲线对应的时间轴</li>
+<li>正弦曲线的x轴</li>
+<li>一张图片的以宽度作为滑动窗口的序列</li>
+<li>一段文字</li>
+<li>一段语音</li>
+</ul>
+<p>处理：即将指定维度的特征经过神经网络处理之后，再处理为原来的维度<br>预测：使用神经网络的输出直接做预测</p>
+<h2 id="RNN"><a href="#RNN" class="headerlink" title="RNN"></a>RNN</h2><p>RNNs看成是一个普通的网络做了多次复制之后叠加在一起</p>
+<p><img src="/images/about-rnn/RNNs展开网络结构.png" alt=""></p>
+<p><img src="/images/about-rnn/普通的RNNs内部结构.png" alt="普通 RNNs 内部结构"></p>
+<ul>
+<li>RNN内部状态通过向量表示，维度h</li>
+<li>输入向量维度 x</li>
+<li>输入：上一个时刻的状态+当前时刻的输入，h+x</li>
+<li>输出：输出为当前时刻的状态，维度h。即做一次 tanh(h+x-&gt;x 的全连接)</li>
+</ul>
+<p>还是很抽象，看一下前向传播的具体过程普通</p>
+<p><img src="/images/about-rnn/循环神经网络前向传播计算过程.jpg" alt=""></p>
+<p>RNN出现的主要目的是将以前的信息联系到现在，从而解决现在的问题。</p>
+<p>但是随着预测信息和相关信息间的间隔增大， RNNs 很难去把它们关联起来了。</p>
+<h2 id="LSTM-长短期记忆网络（Long-Short-Term-Memory-networks）"><a href="#LSTM-长短期记忆网络（Long-Short-Term-Memory-networks）" class="headerlink" title="LSTM 长短期记忆网络（Long Short Term Memory networks）"></a>LSTM 长短期记忆网络（Long Short Term Memory networks）</h2><p><img src="/images/about-rnn/LSTM内部结构.png" alt=""></p>
+<h3 id="遗忘门"><a href="#遗忘门" class="headerlink" title="遗忘门"></a>遗忘门</h3><p><img src="/images/about-rnn/遗忘门.png" alt=""></p>
+<h3 id="传入门"><a href="#传入门" class="headerlink" title="传入门"></a>传入门</h3><p><img src="/images/about-rnn/传入门.png" alt=""></p>
+<h3 id="更新门"><a href="#更新门" class="headerlink" title="更新门"></a>更新门</h3><p><img src="/images/about-rnn/更新cell状态.png" alt=""></p>
+<h2 id="其他变种"><a href="#其他变种" class="headerlink" title="其他变种"></a>其他变种</h2><ol>
+<li>双向神经网络 bidirectional RNN，两个单向神经网络的结合，比如 完形填空，需要预测的值和前后都相关</li>
+<li>深层神经网络，增强模型表达能力，在每一个时刻上将循环体重复多次，内部结构维度一样，但是值不一样</li>
+</ol>
+<h2 id="Refercnce"><a href="#Refercnce" class="headerlink" title="Refercnce"></a>Refercnce</h2><p><a href="http://blog.csdn.net/jerr__y/article/details/58598296" target="_blank" rel="external">（译）理解 LSTM 网络 （Understanding LSTM Networks by colah）</a></p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/deeplearning/" rel="tag">#deeplearning</a>
+          
+            <a href="/tags/rnn/" rel="tag">#rnn</a>
+          
+            <a href="/tags/tensorflow/" rel="tag">#tensorflow</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/17/graceful-shutdown-or-restart/" rel="next" title="如何优雅关闭/重启server">
+                <i class="fa fa-chevron-left"></i> 如何优雅关闭/重启server
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2018/02/28/about-rnn-2018-02-28/"
+     data-title="关于RNN"
+     data-content=""
+     data-url="http://violet-day.github.io/2018/02/28/about-rnn-2018-02-28/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2018/02/28/about-rnn-2018-02-28/"
+           data-title="关于RNN" data-url="http://violet-day.github.io/2018/02/28/about-rnn-2018-02-28/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars2.githubusercontent.com/u/5970246?v=3&s=460"
+               alt="violet_day" />
+          <p class="site-author-name" itemprop="name">violet_day</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/violet-day" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#RNN"><span class="nav-number">1.</span> <span class="nav-text">RNN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LSTM-长短期记忆网络（Long-Short-Term-Memory-networks）"><span class="nav-number">2.</span> <span class="nav-text">LSTM 长短期记忆网络（Long Short Term Memory networks）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#遗忘门"><span class="nav-number">2.1.</span> <span class="nav-text">遗忘门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#传入门"><span class="nav-number">2.2.</span> <span class="nav-text">传入门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新门"><span class="nav-number">2.3.</span> <span class="nav-text">更新门</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他变种"><span class="nav-number">3.</span> <span class="nav-text">其他变种</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Refercnce"><span class="nav-number">4.</span> <span class="nav-text">Refercnce</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">violet_day</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"Nemo"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

@@ -205,15 +205,147 @@
 
     
     
+
+    
       
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/02/28/about-rnn-2018-02-28/" itemprop="url">
+                  关于RNN
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2018-02-28T01:32:28+08:00" content="Feb 28 2018">
+              Feb 28 2018
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/deeplearning/" itemprop="url" rel="index">
+                    <span itemprop="name">deeplearning</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2018/02/28/about-rnn-2018-02-28/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/28/about-rnn-2018-02-28/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
-        
-        
-        
       
 
       
-    
+        
+          
+            <p>人的思维是具有连续性的，但是普通的神经网络并不不能维持记忆。循环神经网络的主要用途是<strong>处理</strong>和<strong>预测</strong> <strong>序列数据</strong>。</p>
+<p>序列是一个比较抽象的概念，比如</p>
+<ul>
+<li>股票价格曲线对应的时间轴</li>
+<li>正弦曲线的x轴</li>
+<li>一张图片的以宽度作为滑动窗口的序列</li>
+<li>一段文字</li>
+<li>一段语音</li>
+</ul>
+<p>处理：即将指定维度的特征经过神经网络处理之后，再处理为原来的维度<br>预测：使用神经网络的输出直接做预测</p>
+<h2 id="RNN"><a href="#RNN" class="headerlink" title="RNN"></a>RNN</h2><p>RNNs看成是一个普通的网络做了多次复制之后叠加在一起</p>
+<p><img src="/images/about-rnn/RNNs展开网络结构.png" alt=""></p>
+<p><img src="/images/about-rnn/普通的RNNs内部结构.png" alt="普通 RNNs 内部结构"></p>
+<ul>
+<li>RNN内部状态通过向量表示，维度h</li>
+<li>输入向量维度 x</li>
+<li>输入：上一个时刻的状态+当前时刻的输入，h+x</li>
+<li>输出：输出为当前时刻的状态，维度h。即做一次 tanh(h+x-&gt;x 的全连接)</li>
+</ul>
+<p>还是很抽象，看一下前向传播的具体过程普通</p>
+<p><img src="/images/about-rnn/循环神经网络前向传播计算过程.jpg" alt=""></p>
+<p>RNN出现的主要目的是将以前的信息联系到现在，从而解决现在的问题。</p>
+<p>但是随着预测信息和相关信息间的间隔增大， RNNs 很难去把它们关联起来了。</p>
+<h2 id="LSTM-长短期记忆网络（Long-Short-Term-Memory-networks）"><a href="#LSTM-长短期记忆网络（Long-Short-Term-Memory-networks）" class="headerlink" title="LSTM 长短期记忆网络（Long Short Term Memory networks）"></a>LSTM 长短期记忆网络（Long Short Term Memory networks）</h2><p><img src="/images/about-rnn/LSTM内部结构.png" alt=""></p>
+<h3 id="遗忘门"><a href="#遗忘门" class="headerlink" title="遗忘门"></a>遗忘门</h3><p><img src="/images/about-rnn/遗忘门.png" alt=""></p>
+<h3 id="传入门"><a href="#传入门" class="headerlink" title="传入门"></a>传入门</h3><p><img src="/images/about-rnn/传入门.png" alt=""></p>
+<h3 id="更新门"><a href="#更新门" class="headerlink" title="更新门"></a>更新门</h3><p><img src="/images/about-rnn/更新cell状态.png" alt=""></p>
+<h2 id="其他变种"><a href="#其他变种" class="headerlink" title="其他变种"></a>其他变种</h2><ol>
+<li>双向神经网络 bidirectional RNN，两个单向神经网络的结合，比如 完形填空，需要预测的值和前后都相关</li>
+<li>深层神经网络，增强模型表达能力，在每一个时刻上将循环体重复多次，内部结构维度一样，但是值不一样</li>
+</ol>
+<h2 id="Refercnce"><a href="#Refercnce" class="headerlink" title="Refercnce"></a>Refercnce</h2><p><a href="http://blog.csdn.net/jerr__y/article/details/58598296" target="_blank" rel="external">（译）理解 LSTM 网络 （Understanding LSTM Networks by colah）</a></p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -1572,136 +1704,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2014/12/01/Git/Windows中安装git-flow/" itemprop="url">
-                  Windows中安装git-flow
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2014-12-01T21:11:32+08:00" content="Dec 1 2014">
-              Dec 1 2014
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/git/" itemprop="url" rel="index">
-                    <span itemprop="name">git</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2014/12/01/Git/Windows中安装git-flow/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/12/01/Git/Windows中安装git-flow/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><a href="http://danielkummer.github.io/git-flow-cheatsheet/index.zh_CN.html">git-flow 备忘清单</a></p>
-<p><a href="http://msysgit.github.io">http://msysgit.github.io</a> 下载到最新的git bash(一个针对windows平台而封装的git命令行管理工具), 其实它还自带了超级难用的一个可视化操作工具git ui.</p>
-<p>安装完成git, 即可使用如下命令将gitflow克隆到本地:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git <span class="built_in">clone</span> --recursive git://github.com/nvie/gitflow.git</div></pre></td></tr></table></figure>
-<p>其他方式具体可以参考gitflow官方介绍: <a href="https://github.com/nvie/gitflow">https://github.com/nvie/gitflow</a>.</p>
-<p>然后分别下载下面两个文件:</p>
-<ul>
-<li><p><a href="http://sourceforge.net/projects/gnuwin32/files/util-linux/2.14.1/util-linux-ng-2.14.1-bin.zip/download">util-linux-ng-2.14.1-bin</a></p>
-</li>
-<li><p><a href="http://sourceforge.net/projects/gnuwin32/files/util-linux/2.14.1/util-linux-ng-2.14.1-dep.zip/download">util-linux-ng-2.14.1-dep</a></p>
-</li>
-</ul>
-<p>下载完成后分别将两个压缩包解压文件下bin目录中的getopt.exe和libintl3.dll文件存放到git安装目录下的bin目录中.</p>
-<p>最后使用windows系统自带的命令行工具, 进入到我们已经克隆好的gitflow目录中执行以下命令:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">D:\gitflow contrib&gt;msysgit-install.cmd <span class="string">"C:\Program Files\Git"</span></div></pre></td></tr></table></figure>
-<p>注意这里, 这里以C盘为例, 首先是找到gitflow目录下contrib子目录中的msysgit-install.cmd表示我们要执行安装命令, 如果单独执行这个命令不带指定安装目录则会报: 找不到msysgit安装目录的错误, 并且会要求在命令行提供一个目录名称(安装目录). 因此在执行安装操作的后面需要指定一个安装目录.</p>
-<p>那么安装完成之后到git bash中执行git flow会列出git-flow提供的命令. 此时, 大功告成.</p>
-<p>题外话: git虽是基于命令行操作的. 但是也有可视化的工具如source tree就是一款非常好的工具, 而且source tree自身就提供了git-flow的功能. 可以根据自己的喜好而选择合适的方式使用git.</p>
-<p><a href="http://www.sourcetreeapp.com/">source tree</a>下载</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/12/01/Git/Windows中安装git-flow/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1748,7 +1750,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">27</span>
+              <span class="site-state-item-count">28</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1756,7 +1758,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1765,7 +1767,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">38</span>
+                <span class="site-state-item-count">41</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1813,7 +1815,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
