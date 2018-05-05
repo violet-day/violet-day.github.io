@@ -1,15 +1,28 @@
-<!doctype html>
+<!DOCTYPE html>
+
+
+
 
 
 
   
 
 
-<html class="theme-next pisces use-motion">
+<html class="theme-next mist use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
 
 
 
@@ -27,21 +40,6 @@
 
 
 
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
-
-
-
-
-  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-
-
-
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Ride The Lightning" />
 
 
 
@@ -50,51 +48,96 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.2.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.2.0" color="#222">
 
 
 
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Nemo's Blog">
-<meta property="og:url" content="http://violet-day.github.io/page/2/index.html">
-<meta property="og:site_name" content="Nemo's Blog">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Nemo's Blog">
 
 
 
-<script type="text/javascript" id="hexo.configuration">
+<script type="text/javascript" id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Pisces',
-    sidebar: {"position":"left","display":"post"},
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: 6218687468384814000,
-      author: '博主'
+    root: '/',
+    scheme: 'Mist',
+    version: '6.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
     }
   };
 </script>
 
-  <title> Nemo's Blog </title>
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
 
 
+
+
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Nemo&#39;s Blog">
+<meta property="og:url" content="http://violet-day.github.io/page/2/index.html">
+<meta property="og:site_name" content="Nemo&#39;s Blog">
+<meta property="og:locale" content="zh-Hans">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nemo&#39;s Blog">
+
+
+
+
+
+
+  <link rel="canonical" href="http://violet-day.github.io/page/2/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Nemo's Blog</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-67357558-7"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-67357558-7', 'auto');
-  ga('send', 'pageview');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-67357558-7');
 </script>
 
 
@@ -102,256 +145,171 @@
 
 
 
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
     
   
 
-  <div class="container one-collumn sidebar-position-left 
-   page-home 
- ">
+  <div class="container sidebar-position-left 
+  page-home">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
-  
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
 
-  <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">Nemo's Blog</span>
-      <span class="logo-line-after"><i></i></span>
-    </a>
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Nemo's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Ride The Lightning</p>
+      
   </div>
-  <p class="site-subtitle">Ride The Lightning</p>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
 </div>
 
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
-</div>
+
+
 
 <nav class="site-nav">
   
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+  </li>
 
-  
-    <ul id="menu" class="menu ">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
-            首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
-            
-            分类
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
-            归档
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
-            
-            标签
-          </a>
-        </li>
-      
-
-      
       
       
     </ul>
   
 
   
+    
+
+  
+
+  
 </nav>
 
- </div>
+
+
+  
+
+
+
+</div>
     </header>
+
+    
+
 
     <main id="main" class="main">
       <div class="main-inner">
         <div class="content-wrap">
+          
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
-
-    
-
-    
-    
-      
-      
-
-      
-    
-
     
       
 
   
-  
 
   
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2014/12/01/Git/Windows中安装git-flow/" itemprop="url">
-                  Windows中安装git-flow
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2014-12-01T21:11:32+08:00" content="Dec 1 2014">
-              Dec 1 2014
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/git/" itemprop="url" rel="index">
-                    <span itemprop="name">git</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2014/12/01/Git/Windows中安装git-flow/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/12/01/Git/Windows中安装git-flow/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><a href="http://danielkummer.github.io/git-flow-cheatsheet/index.zh_CN.html">git-flow 备忘清单</a></p>
-<p><a href="http://msysgit.github.io">http://msysgit.github.io</a> 下载到最新的git bash(一个针对windows平台而封装的git命令行管理工具), 其实它还自带了超级难用的一个可视化操作工具git ui.</p>
-<p>安装完成git, 即可使用如下命令将gitflow克隆到本地:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git <span class="built_in">clone</span> --recursive git://github.com/nvie/gitflow.git</div></pre></td></tr></table></figure>
-<p>其他方式具体可以参考gitflow官方介绍: <a href="https://github.com/nvie/gitflow">https://github.com/nvie/gitflow</a>.</p>
-<p>然后分别下载下面两个文件:</p>
-<ul>
-<li><p><a href="http://sourceforge.net/projects/gnuwin32/files/util-linux/2.14.1/util-linux-ng-2.14.1-bin.zip/download">util-linux-ng-2.14.1-bin</a></p>
-</li>
-<li><p><a href="http://sourceforge.net/projects/gnuwin32/files/util-linux/2.14.1/util-linux-ng-2.14.1-dep.zip/download">util-linux-ng-2.14.1-dep</a></p>
-</li>
-</ul>
-<p>下载完成后分别将两个压缩包解压文件下bin目录中的getopt.exe和libintl3.dll文件存放到git安装目录下的bin目录中.</p>
-<p>最后使用windows系统自带的命令行工具, 进入到我们已经克隆好的gitflow目录中执行以下命令:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">D:\gitflow contrib&gt;msysgit-install.cmd <span class="string">"C:\Program Files\Git"</span></div></pre></td></tr></table></figure>
-<p>注意这里, 这里以C盘为例, 首先是找到gitflow目录下contrib子目录中的msysgit-install.cmd表示我们要执行安装命令, 如果单独执行这个命令不带指定安装目录则会报: 找不到msysgit安装目录的错误, 并且会要求在命令行提供一个目录名称(安装目录). 因此在执行安装操作的后面需要指定一个安装目录.</p>
-<p>那么安装完成之后到git bash中执行git flow会列出git-flow提供的命令. 此时, 大功告成.</p>
-<p>题外话: git虽是基于命令行操作的. 但是也有可视化的工具如source tree就是一款非常好的工具, 而且source tree自身就提供了git-flow的功能. 可以根据自己的喜好而选择合适的方式使用git.</p>
-<p><a href="http://www.sourcetreeapp.com/">source tree</a>下载</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/12/01/Git/Windows中安装git-flow/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
   
 
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
   
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://violet-day.github.io/2014/08/10/Ionic/Side Menus/">
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="violet_day">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/5970246?v=3&s=460">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nemo's Blog">
+    </span>
 
     
       <header class="post-header">
@@ -359,1065 +317,6 @@
         
         
           <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2014/09/10/Linux/解决SecureCRT中文编码问题/" itemprop="url">
-                  解决SecureCRT中文编码问题
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2014-09-10T17:08:59+08:00" content="Sep 10 2014">
-              Sep 10 2014
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2014/09/10/Linux/解决SecureCRT中文编码问题/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/09/10/Linux/解决SecureCRT中文编码问题/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>SecureCRT中文乱码、复制粘贴乱码解决办法</p>
-<p>SecureCRT的默认配置对中文支持不好。很容易出现中文乱码。<br>即使显示出来没有乱码，将文本复制粘贴到其他windows程序中也会是乱码，或者从windows复制进SecureCRT会乱码，很不方便。</p>
-<p>这个归结起来还是字符编码的问题，需要进行以下简单设置：</p>
-<ol>
-<li>首先进入 Option 菜单 &gt;&gt; Session Option </li>
-<li>Terminal &gt;&gt; Emulation，在右边 Terminal下拉菜单中选择”Linux”, “ANSI Color”前面打上勾。</li>
-<li>Terminal &gt;&gt; Appearance，<br>点右边的Font 按钮， 1) 选择新宋体，2) 字符集选”中文 GB2312”<br>Charactor 下拉菜单中选择 “Default”, 去掉”Use Unicode line drawing character”前面的勾。</li>
-</ol>
-<p>保存设置，重启SecureCRT，进入刚才配置的Session，终于可以跟烦人的乱码说BYEBYE了</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/09/10/Linux/解决SecureCRT中文编码问题/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2014/09/01/Nodejs/strongloop/" itemprop="url">
-                  strongloop
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2014-09-01T22:44:09+08:00" content="Sep 1 2014">
-              Sep 1 2014
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/node/" itemprop="url" rel="index">
-                    <span itemprop="name">node</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2014/09/01/Nodejs/strongloop/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/09/01/Nodejs/strongloop/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>npm i -g strongloop –msvs_version=2012</p>
-<p><a href="https://github.com/TooTallNate/node-gyp/issues/168">https://github.com/TooTallNate/node-gyp/issues/168</a></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/09/01/Nodejs/strongloop/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2014/08/17/Java/Java集合框架List，Map，Set等全面介绍/" itemprop="url">
-                  Java集合框架List，Map，Set等全面介绍
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2014-08-17T20:10:50+08:00" content="Aug 17 2014">
-              Aug 17 2014
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2014/08/17/Java/Java集合框架List，Map，Set等全面介绍/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/17/Java/Java集合框架List，Map，Set等全面介绍/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Java Collections Framework是Java提供的对集合进行定义，操作，和管理的包含一组接口，类的体系结构。</p>
-<p>Java集合框架的基本接口/类层次结构：</p>
-<p>java.util.Collection [I]<br>+–java.util.List [I]<br>   +–java.util.ArrayList [C]<br>   +–java.util.LinkedList [C]<br>   +–java.util.Vector [C]<br>      +–java.util.Stack [C]<br>+–java.util.Set [I]<br>   +–java.util.HashSet [C]<br>   +–java.util.SortedSet [I]<br>      +–java.util.TreeSet [C]</p>
-<p>java.util.Map [I]<br>+–java.util.SortedMap [I]<br>   +–java.util.TreeMap [C]<br>+–java.util.Hashtable [C]<br>+–java.util.HashMap [C]<br>+–java.util.LinkedHashMap [C]<br>+–java.util.WeakHashMap [C]</p>
-<p>[I]：接口<br>[C]：类</p>
-<h2 id="Collection接口"><a href="#Collection接口" class="headerlink" title="Collection接口"></a>Collection接口</h2><p>Collection是最基本的集合接口，一个Collection代表一组Object的集合，这些Object被称作Collection的元素。</p>
-<p>所有实现Collection接口的类都必须提供两个标准的构造函数：无参数的构造函数用于创建一个空的Collection，有一个Collection参数的构造函数用于创建一个新的Collection，这 个新的Collection与传入的Collection有相同的元素。后一个构造函数允许用户复制一个Collection。</p>
-<p>如何遍历Collection中的每一个元素？不论Collection的实际类型如何，它都支持一个iterator()的方法，该方法返回一个迭代子，使用该迭代子即可逐一访问Collection中每一个元素。典型的用法如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Iterator it = collection.iterator(); <span class="comment">// 获得一个迭代子 </span></div><div class="line"><span class="keyword">while</span>(it.hasNext()) &#123; </div><div class="line">　　Object obj = it.next(); <span class="comment">// 得到下一个元素 </span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>根据用途的不同，Collection又划分为List与Set。</p>
-<h2 id="List接口"><a href="#List接口" class="headerlink" title="List接口"></a>List接口</h2><p>List继承自Collection接口。List是有序的Collection，使用此接口能够精确的控制每个元素插入的位置。用户能够使用索引（元素在List中的位置，类似于数组下标）来访问List中的元素，这类似于Java的数组。</p>
-<p>跟Set集合不同的是，List允许有重复元素。对于满足e1.equals(e2)条件的e1与e2对象元素，可以同时存在于List集合中。当然，也有List的实现类不允许重复元素的存在。</p>
-<p>除了具有Collection接口必备的iterator()方法外，List还提供一个listIterator()方法，返回一个 ListIterator接口，和标准的Iterator接口相比，ListIterator多了一些add()之类的方法，允许添加，删除，设定元素， 还能向前或向后遍历。</p>
-<p>实现List接口的常用类有LinkedList，ArrayList，Vector和Stack。</p>
-<h2 id="LinkedList类"><a href="#LinkedList类" class="headerlink" title="LinkedList类"></a>LinkedList类</h2><p>LinkedList实现了List接口，允许null元素。此外LinkedList提供额外的get，remove，insert方法在 LinkedList的首部或尾部。这些操作使LinkedList可被用作堆栈（stack），队列（queue）或双向队列（deque）。</p>
-<p>注意LinkedList没有同步方法。如果多个线程同时访问一个List，则必须自己实现访问同步。一种解决方法是在创建List时构造一个同步的List：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">List list = Collections.synchronizedList(<span class="keyword">new</span> LinkedList(...));</div></pre></td></tr></table></figure>
-<h2 id="ArrayList类"><a href="#ArrayList类" class="headerlink" title="ArrayList类"></a>ArrayList类</h2><p>ArrayList实现了可变大小的数组。它允许所有元素，包括null。ArrayList没有同步。<br>size，isEmpty，get，set方法运行时间为常数。但是add方法开销为分摊的常数，添加n个元素需要O(n)的时间。其他的方法运行时间为线性。</p>
-<p>每个ArrayList实例都有一个容量（Capacity），即用于存储元素的数组的大小。这个容量可随着不断添加新元素而自动增加，但是增长算法并 没有定义。当需要插入大量元素时，在插入前可以调用ensureCapacity方法来增加ArrayList的容量以提高插入效率。</p>
-<p>和LinkedList一样，ArrayList也是非同步的（unsynchronized）。</p>
-<h2 id="Vector类"><a href="#Vector类" class="headerlink" title="Vector类"></a>Vector类</h2><p>Vector非常类似ArrayList，但是Vector是同步的。由Vector创建的Iterator，虽然和ArrayList创建的 Iterator是同一接口，但是，因为Vector是同步的，当一个Iterator被创建而且正在被使用，另一个线程改变了Vector的状态（例如，添加或删除了一些元素），这时调用Iterator的方法时将抛出</p>
-<p>ConcurrentModificationException，因此必须捕获该异常。</p>
-<h2 id="Stack-类"><a href="#Stack-类" class="headerlink" title="Stack 类"></a>Stack 类</h2><p>Stack继承自Vector，实现一个后进先出的堆栈。Stack提供5个额外的方法使得Vector得以被当作堆栈使用。基本的push和pop方 法，还有peek方法得到栈顶的元素，empty方法测试堆栈是否为空，search方法检测一个元素在堆栈中的位置。Stack刚创建后是空栈。</p>
-<h2 id="Set接口"><a href="#Set接口" class="headerlink" title="Set接口"></a>Set接口</h2><p>Set继承自Collection接口。Set是一种不能包含有重复元素的集合，即对于满足e1.equals(e2)条件的e1与e2对象元素，不能同时存在于同一个Set集合里，换句话说，Set集合里任意两个元素e1和e2都满足e1.equals(e2)==false条件，Set最多有一个null元素。</p>
-<p>因为Set的这个制约，在使用Set集合的时候，应该注意：</p>
-<ol>
-<li>为Set集合里的元素的实现类实现一个有效的equals(Object)方法。</li>
-<li>对Set的构造函数，传入的Collection参数不能包含重复的元素。</li>
-</ol>
-<p>请注意：必须小心操作可变对象（Mutable Object）。如果一个Set中的可变元素改变了自身状态导致Object.equals(Object)=true将导致一些问题。</p>
-<h2 id="HashSet类"><a href="#HashSet类" class="headerlink" title="HashSet类"></a>HashSet类</h2><p>此类实现 Set 接口，由哈希表（实际上是一个 HashMap 实例）支持。它不保证集合的迭代顺序；特别是它不保证该顺序恒久不变。此类允许使用 null 元素。</p>
-<p>HashSet不是同步的，需要用以下语句来进行S同步转换：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Set s = Collections.synchronizedSet(<span class="keyword">new</span> HashSet(...));</div></pre></td></tr></table></figure>
-<h2 id="Map接口"><a href="#Map接口" class="headerlink" title="Map接口"></a>Map接口</h2><p>Map没有继承Collection接口。也就是说Map和Collection是2种不同的集合。Collection可以看作是（value）的集合，而Map可以看作是（key，value）的集合。</p>
-<p>Map接口由Map的内容提供3种类型的集合视图，一组key集合，一组value集合，或者一组key-value映射关系的集合。</p>
-<h2 id="Hashtable类"><a href="#Hashtable类" class="headerlink" title="Hashtable类"></a>Hashtable类</h2><p>Hashtable继承Map接口，实现一个key-value映射的哈希表。任何非空（non-null）的对象都可作为key或者value。</p>
-<p>添加数据使用put(key, value)，取出数据使用get(key)，这两个基本操作的时间开销为常数。</p>
-<p>Hashtable 通过initial capacity和load factor两个参数调整性能。通常缺省的load factor 0.75较好地实现了时间和空间的均衡。增大load factor可以节省空间但相应的查找时间将增大，这会影响像get和put这样的操作。<br>使用Hashtable的简单示例如下，将1，2，3放到Hashtable中，他们的key分别是”one”，”two”，”three”：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Hashtable numbers = <span class="keyword">new</span> Hashtable(); </div><div class="line">numbers.put(<span class="string">"one"</span>, <span class="keyword">new</span> Integer(<span class="number">1</span>)); </div><div class="line">numbers.put(<span class="string">"two"</span>, <span class="keyword">new</span> Integer(<span class="number">2</span>)); </div><div class="line">numbers.put(<span class="string">"three"</span>, <span class="keyword">new</span> Integer(<span class="number">3</span>));</div></pre></td></tr></table></figure>
-<p>要取出一个数，比如2，用相应的key：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Integer n = (Integer)numbers.get(<span class="string">"two"</span>); </div><div class="line">System.out.println(<span class="string">"two ="</span> + n);</div></pre></td></tr></table></figure>
-<p>由于作为key的对象将通过计算其散列函数来确定与之对应的value的位置，因此任何作为key的对象都必须实现hashCode和equals方 法。hashCode和equals方法继承自根类Object，如果你用自定义的类当作key的话，要相当小心，按照散列函数的定义，如果两个对象相 同，即obj1.equals(obj2)=true，则它们的hashCode必须相同，但如果两个对象不同，则它们的hashCode不一定不同，如 果两个不同对象的hashCode相同，这种现象称为冲突，冲突会导致操作哈希表的时间开销增大，所以尽量定义好的hashCode()方法，能加快哈希 表的操作。</p>
-<p>如果相同的对象有不同的hashCode，对哈希表的操作会出现意想不到的结果（期待的get方法返回null），要避免这种问题，只需要牢记一条：要同时复写equals方法和hashCode方法，而不要只写其中一个。</p>
-<p>Hashtable是同步的。</p>
-<h2 id="HashMap类"><a href="#HashMap类" class="headerlink" title="HashMap类"></a>HashMap类</h2><p>HashMap和Hashtable类似，不同之处在于HashMap是非同步的，并且允许null，即null value和null key。，但是将HashMap视为Collection时（values()方法可返回Collection），其迭代子操作时间开销和HashMap 的容量成比例。因此，如果迭代操作的性能相当重要的话，不要将HashMap的初始化容量设得过高，或者load factor过低。</p>
-<h2 id="WeakHashMap类"><a href="#WeakHashMap类" class="headerlink" title="WeakHashMap类"></a>WeakHashMap类</h2><p>WeakHashMap是一种改进的HashMap，它对key实行“弱引用”，如果一个key不再被外部所引用，那么该key可以被GC回收。</p>
-<h2 id="对集合操作的工具类"><a href="#对集合操作的工具类" class="headerlink" title="对集合操作的工具类"></a>对集合操作的工具类</h2><p>Java提供了java.util.Collections，以及java.util.Arrays类简化对集合的操作</p>
-<p>java.util.Collections主要提供一些static方法用来操作或创建Collection，Map等集合。</p>
-<p>java.util.Arrays主要提供static方法对数组进行操作。。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>如果涉及到堆栈，队列等操作，应该考虑用List，对于需要快速插入，删除元素，应该使用LinkedList，如果需要快速随机访问元素，应该使用ArrayList。</p>
-<p>如果程序在单线程环境中，或者访问仅仅在一个线程中进行，考虑非同步的类，其效率较高，如果多个线程可能同时操作一个类，应该使用同步的类。</p>
-<p>在除需要排序时使用TreeSet,TreeMap外,都应使用HashSet,HashMap,因为他们 的效率更高。</p>
-<p>要特别注意对哈希表的操作，作为key的对象要正确复写equals和hashCode方法。</p>
-<p>容器类仅能持有对象引用（指向对象的指针），而不是将对象信息copy一份至数列某位置。一旦将对象置入容器内，便损失了该对象的型别信息。</p>
-<p>尽量返回接口而非实际的类型，如返回List而非ArrayList，这样如果以后需要将ArrayList换成LinkedList时，客户端代码不用改变。这就是针对抽象编程。</p>
-<h2 id="注意："><a href="#注意：" class="headerlink" title="注意："></a>注意：</h2><ol>
-<li>Collection没有get()方法来取得某个元素。只能通过iterator()遍历元素。</li>
-<li>Set和Collection拥有一模一样的接口。</li>
-<li>List，可以通过get()方法来一次取出一个元素。使用数字来选择一堆对象中的一个，get(0)…。(add/get)</li>
-<li>一般使用ArrayList。用LinkedList构造堆栈stack、队列queue。</li>
-<li>Map用 put(k,v) / get(k)，还可以使用containsKey()/containsValue()来检查其中是否含有某个key/value。<br>HashMap会利用对象的hashCode来快速找到key。</li>
-<li>Map中元素，可以将key序列、value序列单独抽取出来。<br>使用keySet()抽取key序列，将map中的所有keys生成一个Set。<br>使用values()抽取value序列，将map中的所有values生成一个Collection。<br>为什么一个生成Set，一个生成Collection？那是因为，key总是独一无二的，value允许重复。</li>
-</ol>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/08/17/Java/Java集合框架List，Map，Set等全面介绍/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2014/08/17/Java/Hibernate各种主键生成策略与配置详解/" itemprop="url">
-                  Hibernate各种主键生成策略与配置详解
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2014-08-17T01:32:28+08:00" content="Aug 17 2014">
-              Aug 17 2014
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2014/08/17/Java/Hibernate各种主键生成策略与配置详解/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/17/Java/Hibernate各种主键生成策略与配置详解/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="assigned"><a href="#assigned" class="headerlink" title="assigned"></a>assigned</h2><p>主键由外部程序负责生成，在 save() 之前必须指定一个。Hibernate不负责维护主键生成。与Hibernate和底层数据库都无关，可以跨数据库。在存储对象前，必须要使用主键的setter方法给主键赋值，至于这个值怎么生成，完全由自己决定，这种方法应该尽量避免。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">id</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">column</span>=<span class="string">"id"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">generator</span> <span class="attr">class</span>=<span class="string">"assigned"</span> /&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">id</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>“ud”是自定义的策略名，人为起的名字，后面均用“ud”表示。</p>
-<p><em>特点：可以跨数据库，人为控制主键生成，应尽量避免。</em></p>
-<h2 id="increment"><a href="#increment" class="headerlink" title="increment"></a>increment</h2><p>由Hibernate从数据库中取出主键的最大值（每个session只取1次），以该值为基础，每次增量为1，在内存中生成主键，不依赖于底层的数据库，因此可以跨数据库。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">id</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">column</span>=<span class="string">"id"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">generator</span> <span class="attr">class</span>=<span class="string">"increment"</span> /&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">id</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>Hibernate调用org.hibernate.id.IncrementGenerator类里面的generate()方法，使用select max(idColumnName) from tableName语句获取主键最大值。该方法被声明成了synchronized，所以在一个独立的Java虚拟机内部是没有问题的，然而，在多个JVM同时并发访问数据库select max时就可能取出相同的值，再insert就会发生Dumplicate entry的错误。所以只能有一个Hibernate应用进程访问数据库，否则就可能产生主键冲突，所以不适合多进程并发更新数据库，适合单一进程访问数据库，不能用于群集环境。</p>
-<p>官方文档：只有在没有其他进程往同一张表中插入数据时才能使用，在集群下不要使用。</p>
-<p><em>特点：跨数据库，不适合多进程并发更新数据库，适合单一进程访问数据库，不能用于群集环境。</em></p>
-<h2 id="hilo"><a href="#hilo" class="headerlink" title="hilo"></a>hilo</h2><p>hilo（高低位方式high low）是hibernate中最常用的一种生成方式，需要一张额外的表保存hi的值。保存hi值的表至少有一条记录（只与第一条记录有关），否则会出现错误。可以跨数据库。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">id</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">column</span>=<span class="string">"id"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">generator</span> <span class="attr">class</span>=<span class="string">"hilo"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">"table"</span>&gt;</span>hibernate_hilo<span class="tag">&lt;/<span class="name">param</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">"column"</span>&gt;</span>next_hi<span class="tag">&lt;/<span class="name">param</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">"max_lo"</span>&gt;</span>100<span class="tag">&lt;/<span class="name">param</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">generator</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">id</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">"table"</span>&gt;</span>hibernate_hilo<span class="tag">&lt;/<span class="name">param</span>&gt;</span> 指定保存hi值的表名</div><div class="line"><span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">"column"</span>&gt;</span>next_hi<span class="tag">&lt;/<span class="name">param</span>&gt;</span> 指定保存hi值的列名</div><div class="line"><span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">"max_lo"</span>&gt;</span>100<span class="tag">&lt;/<span class="name">param</span>&gt;</span> 指定低位的最大值</div></pre></td></tr></table></figure>
-<p>也可以省略table和column配置，其默认的表为hibernate_unique_key，列为next_hi</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">id</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">column</span>=<span class="string">"id"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">generator</span> <span class="attr">class</span>=<span class="string">"hilo"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">"max_lo"</span>&gt;</span>100<span class="tag">&lt;/<span class="name">param</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">generator</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">id</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>hilo生成器生成主键的过程（以hibernate_unique_key表，next_hi列为例）：</p>
-<ol>
-<li>获得hi值：读取并记录数据库的hibernate_unique_key表中next_hi字段的值，数据库中此字段值加1保存。</li>
-<li>获得lo值：从0到max_lo循环取值，差值为1，当值为max_lo值时，重新获取hi值，然后lo值继续从0到max_lo循环。</li>
-<li>根据公式 hi * (max_lo + 1) + lo计算生成主键值。</li>
-</ol>
-<p>注意：当hi值是0的时候，那么第一个值不是0*(max_lo+1)+0=0，而是lo跳过0从1开始，直接是1、2、3……</p>
-<p>那max_lo配置多大合适呢？</p>
-<p>这要根据具体情况而定，如果系统一般不重启，而且需要用此表建立大量的主键，可以吧max_lo配置大一点，这样可以减少读取数据表的次数，提高效率；反之，如果服务器经常重启，可以吧max_lo配置小一点，可以避免每次重启主键之间的间隔太大，造成主键值主键不连贯。</p>
-<p><em>特点：跨数据库，hilo算法生成的标志只能在一个数据库中保证唯一。</em></p>
-<h2 id="seqhilo"><a href="#seqhilo" class="headerlink" title="seqhilo"></a>seqhilo</h2><p>与hilo类似，通过hi/lo算法实现的主键生成机制，只是将hilo中的数据表换成了序列sequence，需要数据库中先创建sequence，适用于支持sequence的数据库，如Oracle。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">id</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">column</span>=<span class="string">"id"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">generator</span> <span class="attr">class</span>=<span class="string">"seqhilo"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">"sequence"</span>&gt;</span>hibernate_seq<span class="tag">&lt;/<span class="name">param</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">"max_lo"</span>&gt;</span>100<span class="tag">&lt;/<span class="name">param</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">generator</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">id</span>&gt;</span></div></pre></td></tr></table></figure>
-<p><em>特点：与hilo类似，只能在支持序列的数据库中使用。</em></p>
-<h2 id="sequence"><a href="#sequence" class="headerlink" title="sequence"></a>sequence</h2><p>采用数据库提供的sequence机制生成主键，需要数据库支持sequence。如oralce、DB、SAP DB、PostgerSQL、McKoi中的sequence。MySQL这种不支持sequence的数据库则不行（可以使用identity）。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">generator</span> <span class="attr">class</span>=<span class="string">"sequence"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">"sequence"</span>&gt;</span>hibernate_id<span class="tag">&lt;/<span class="name">param</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">generator</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">"sequence"</span>&gt;</span>hibernate_id<span class="tag">&lt;/<span class="name">param</span>&gt;</span> 指定sequence的名称</div></pre></td></tr></table></figure>
-<p>Hibernate生成主键时，查找sequence并赋给主键值，主键值由数据库生成，Hibernate不负责维护，使用时必须先创建一个sequence，如果不指定sequence名称，则使用Hibernate默认的sequence，名称为hibernate_sequence，前提要在数据库中创建该sequence。</p>
-<p><em>特点：只能在支持序列的数据库中使用，如Oracle。</em></p>
-<h2 id="identity"><a href="#identity" class="headerlink" title="identity"></a>identity</h2><p>identity由底层数据库生成标识符。identity是由数据库自己生成的，但这个主键必须设置为自增长，使用identity的前提条件是底层数据库支持自动增长字段类型，如DB2、SQL Server、MySQL、Sybase和HypersonicSQL等，Oracle这类没有自增字段的则不支持。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">id</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">column</span>=<span class="string">"id"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">generator</span> <span class="attr">class</span>=<span class="string">"identity"</span> /&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">id</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>例：如果使用MySQL数据库，则主键字段必须设置成auto_increment。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">id int(11) primary key auto_increment</div></pre></td></tr></table></figure>
-<p><em>特点：只能用在支持自动增长的字段数据库中使用，如MySQL。</em></p>
-<h2 id="native"><a href="#native" class="headerlink" title="native"></a>native</h2><p>native由hibernate根据使用的数据库自行判断采用identity、hilo、sequence其中一种作为主键生成方式，灵活性很强。如果能支持identity则使用identity，如果支持sequence则使用sequence。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">id</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">column</span>=<span class="string">"id"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">generator</span> <span class="attr">class</span>=<span class="string">"native"</span> /&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">id</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>例如MySQL使用identity，Oracle使用sequence</p>
-<p>注意：如果Hibernate自动选择sequence或者hilo，则所有的表的主键都会从Hibernate默认的sequence或hilo表中取。并且，有的数据库对于默认情况主键生成测试的支持，效率并不是很高。</p>
-<p>使用sequence或hilo时，可以加入参数，指定sequence名称或hi值表名称等，如</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">"sequence"</span>&gt;</span>hibernate_id<span class="tag">&lt;/<span class="name">param</span>&gt;</span></div></pre></td></tr></table></figure>
-<p><em>特点：根据数据库自动选择，项目中如果用到多个数据库时，可以使用这种方式，使用时需要设置表的自增字段或建立序列，建立表等。</em></p>
-<h2 id="uuid"><a href="#uuid" class="headerlink" title="uuid"></a>uuid</h2><p>UUID：Universally Unique Identifier，是指在一台机器上生成的数字，它保证对在同一时空中的所有机器都是唯一的。按照开放软件基金会(OSF)制定的标准计算，用到了以太网卡地址、纳秒级时间、芯片ID码和许多可能的数字，标准的UUID格式为：</p>
-<p>xxxxxxxx-xxxx-xxxx-xxxxxx-xxxxxxxxxx (8-4-4-4-12)</p>
-<p>其中每个 x 是 0-9 或 a-f 范围内的一个十六进制的数字。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">id</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">column</span>=<span class="string">"id"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">generator</span> <span class="attr">class</span>=<span class="string">"uuid"</span> /&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">id</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>Hibernate在保存对象时，生成一个UUID字符串作为主键，保证了唯一性，但其并无任何业务逻辑意义，只能作为主键，唯一缺点长度较大，32位（Hibernate将UUID中间的“-”删除了）的字符串，占用存储空间大，但是有两个很重要的优点，Hibernate在维护主键时，不用去数据库查询，从而提高效率，而且它是跨数据库的，以后切换数据库极其方便。</p>
-<p><em>特点：uuid长度大，占用空间大，跨数据库，不用访问数据库就生成主键值，所以效率高且能保证唯一性，移植非常方便，推荐使用。</em></p>
-<h2 id="guid"><a href="#guid" class="headerlink" title="guid"></a>guid</h2><p>GUID：Globally Unique Identifier全球唯一标识符，也称作 UUID，是一个128位长的数字，用16进制表示。算法的核心思想是结合机器的网卡、当地时间、一个随即数来生成GUID。从理论上讲，如果一台机器每秒产生10000000个GUID，则可以保证（概率意义上）3240年不重复。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">id</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">column</span>=<span class="string">"id"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">generator</span> <span class="attr">class</span>=<span class="string">"guid"</span> /&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">id</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>Hibernate在维护主键时，先查询数据库，获得一个uuid字符串，该字符串就是主键值，该值唯一，缺点长度较大，支持数据库有限，优点同uuid，跨数据库，但是仍然需要访问数据库。</p>
-<p><em>注意：长度因数据库不同而不同</em></p>
-<p>MySQL中使用select uuid()语句获得的为36位（包含标准格式的“-”）</p>
-<p>Oracle中，使用select rawtohex(sys_guid()) from dual语句获得的为32位（不包含“-”） 特点：需要数据库支持查询uuid，生成时需要查询数据库，效率没有uuid高，推荐使用uuid。</p>
-<h2 id="foreign"><a href="#foreign" class="headerlink" title="foreign"></a>foreign</h2><p>使用另外一个相关联的对象的主键作为该对象主键。主要用于一对一关系中。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">id</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">column</span>=<span class="string">"id"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">generator</span> <span class="attr">class</span>=<span class="string">"foreign"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">"property"</span>&gt;</span>user<span class="tag">&lt;/<span class="name">param</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">generator</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">id</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">one-to-one</span> <span class="attr">name</span>=<span class="string">"user"</span> <span class="attr">class</span>=<span class="string">"domain.User"</span> <span class="attr">constrained</span>=<span class="string">"true"</span> /&gt;</span></div></pre></td></tr></table></figure>
-<p>该例使用domain.User的主键作为本类映射的主键。</p>
-<p><em>特点：很少使用，大多用在一对一关系中。</em></p>
-<h2 id="select"><a href="#select" class="headerlink" title="select"></a>select</h2><p>使用触发器生成主键，主要用于早期的数据库主键生成机制，能用到的地方非常少。</p>
-<h2 id="其他注释方式配置"><a href="#其他注释方式配置" class="headerlink" title="其他注释方式配置"></a>其他注释方式配置</h2><p>注释方式与配置文件底层实现方式相同，只是配置的方式换成了注释方式</p>
-<ol>
-<li><p>自动增长，适用于支持自增字段的数据库</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Id</span></div><div class="line"><span class="meta">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)</div></pre></td></tr></table></figure>
-</li>
-<li><p>根据底层数据库自动选择方式，需要底层数据库的设置<br>如MySQL，会使用自增字段，需要将主键设置成auto_increment。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Id</span></div><div class="line"><span class="meta">@GeneratedValue</span>(strategy = GenerationType.AUTO)</div></pre></td></tr></table></figure>
-</li>
-<li><p>使用表存储生成的主键，可以跨数据库。<br>每次需要主键值时，查询名为”hibernate_table”的表，查找主键列”gen_pk”值为”2”记录，得到这条记录的”gen_val”值，根据这个值，和allocationSize的值生成主键值。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Id</span></div><div class="line"><span class="meta">@GeneratedValue</span>(strategy = GenerationType.TABLE, generator = <span class="string">"ud"</span>)</div><div class="line"><span class="meta">@TableGenerator</span>(name = <span class="string">"ud"</span>,</div><div class="line">table = <span class="string">"hibernate_table"</span>,</div><div class="line">pkColumnName= <span class="string">"gen_pk"</span>,</div><div class="line">pkColumnValue = <span class="string">"2"</span>,</div><div class="line">valueColumnName = <span class="string">"gen_val"</span>,</div><div class="line">initialValue = <span class="number">2</span>,</div><div class="line">allocationSize = <span class="number">5</span>)</div></pre></td></tr></table></figure>
-</li>
-<li><p>使用序列存储主键值</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Id</span></div><div class="line"><span class="meta">@GeneratedValue</span>(strategy = GenerationType.SEQUENCE, generator = <span class="string">"ud"</span>)</div><div class="line"><span class="meta">@SequenceGenerator</span>(name = <span class="string">"ud"</span>,</div><div class="line">sequenceName = <span class="string">"hibernate_seq"</span>,</div><div class="line">allocationSize = <span class="number">1</span>,</div><div class="line">initialValue = <span class="number">2</span>)</div></pre></td></tr></table></figure>
-</li>
-<li><p>uuid生成主键</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Id</span></div><div class="line"><span class="meta">@GenericGenerator</span>(name = <span class="string">"systemUUID"</span>, strategy = <span class="string">"uuid"</span>)</div><div class="line"><span class="meta">@GeneratedValue</span>(generator = <span class="string">"systemUUID"</span>)</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ol>
-<li><p>为了保证对象标识符的唯一性与不可变性，应该让Hibernate来为主键赋值，而不是程序。</p>
-</li>
-<li><p>正常使用Hibernate维护主键，最好将主键的setter方法设置成private，从而避免人为或程序修改主键，而使用assigned方式，就不能用private，否则无法给主键赋值。</p>
-</li>
-<li><p>Hibernate中唯一一种最简单通用的主键生成器就是uuid。虽然是个32位难读的长字符串，但是它没有跨数据库的问题，将来切换数据库极其简单方便，推荐使用！</p>
-</li>
-<li><p>关于hilo机制注意：<br>hilo算法生成的标志只能在一个数据库中保证唯一。<br>当用户为Hibernate自行提供连接，或者Hibernate通过JTA，从应用服务器的数据源获取数据库连接时，无法使用hilo，因为这不能保证hilo单独在新的数据库连接的事务中访问hi值表，这种情况，如果数据库支持序列，可以使用seqhilo。</p>
-</li>
-<li><p>使用identity、native、GenerationType.AUTO等方式生成主键时，只要用到自增字段，数据库表的字段必须设置成自动增加的，否则出错。</p>
-</li>
-<li><p>还有一些方法未列出来，例如uuid.hex，sequence-identity等，这些方法不是很常用，且已被其他方法代替，如uuid.hex，官方文档里建议不使用，而直接使用uuid方法。</p>
-</li>
-<li><p>Hibernate的各版本主键生成策略配置有略微差别，但实现基本相同。如，有的版本默认sequence不指定序列名，则使用名为hibernate_sequence的序列，有的版本则必须指定序列名。</p>
-</li>
-<li><p>还可以自定义主键生成策略，这里暂时不讨论，只讨论官方自带生成策略。</p>
-</li>
-</ol>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/08/17/Java/Hibernate各种主键生成策略与配置详解/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2014/08/12/Java/开发环境配置/" itemprop="url">
-                  开发环境配置
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2014-08-12T08:47:07+08:00" content="Aug 12 2014">
-              Aug 12 2014
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2014/08/12/Java/开发环境配置/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/12/Java/开发环境配置/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><a href="http://www.eclipse.org/">Eclipse</a></p>
-<p><a href="http://www.eclipse.org/babel/downloads.php">Eclipse Babel Project</a></p>
-<p><a href="http://eclipsecolorthemes.org/">Eclipse Color Themes</a></p>
-<p><a href="http://maven.apache.org/download.cgi">Maven</a></p>
-<p><a href="http://eclipse.org/m2e/download/">Maven Integration (m2e)</a><br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/08/12/Java/开发环境配置/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2014/08/10/Ionic/Navigation/" itemprop="url">
-                  Navigation
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2014-08-10T21:48:52+08:00" content="Aug 10 2014">
-              Aug 10 2014
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/ionic/" itemprop="url" rel="index">
-                    <span itemprop="name">ionic</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2014/08/10/Ionic/Navigation/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/10/Ionic/Navigation/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="ion-nav-view"><a href="#ion-nav-view" class="headerlink" title="ion-nav-view"></a>ion-nav-view</h2><p>当用户浏览整个应用程序，Ionic能够跟踪他们的浏览历史。通过了解他们的历史、视图之间的转换正确滑动或左或右，或没有过渡的。另一个优点是Ionic的导航系统是其管理多个历史能力。</p>
-<p>Ionic使用AngularUI Router模块，所以app的接口可以组织为”states”。和Angular的核心$route服务一样,URLs可以用来控制视图。然而，AngularUI Router提供了更加强大的状态管理功能，状态与name绑定,并且有嵌套或并行的视图，在一个页面允许多个视图。并且，每个状态没有一定需要绑定URL，可以更加灵活的将数据附加至状态。</p>
-<p>在你的应用程序用，ionNavView指示器用来渲染模板，每个模板都是一个状态的一部分。状态通常映射至URL，并且通过angular-ui-router来定义。（记住在示例中将ui-view替换为ion-nav-view）</p>
-<h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><p>在这个例子中，我们将创建一个包含我们的不同状态的应用程序中的导航视图。</p>
-<p>要做到这一点，在我们的标记，我们使用ionNavView顶级的指令。要显示一个标题栏，我们使用<code>ionNavBar</code>指令，更新，因为我们通过导航堆栈导航。</p>
-<p>在navView的animation中，你可以使用任何<code>animation</code>的类。</p>
-<p>推荐的效果: ‘slide-left-right’, ‘slide-left-right-ios7’, ‘slide-in-up’.</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">ion-nav-bar</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-nav-bar</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">ion-nav-view</span> <span class="attr">animation</span>=<span class="string">"slide-left-right"</span>&gt;</span></div><div class="line">  <span class="comment">&lt;!-- Center content --&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">ion-nav-view</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>接下来，我们需要设置状态<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> app = angular.module(<span class="string">'myApp'</span>, [<span class="string">'ionic'</span>]);</div><div class="line">app.config(<span class="function"><span class="keyword">function</span>(<span class="params">$stateProvider</span>) </span>&#123;</div><div class="line">  $stateProvider</div><div class="line">  .state(<span class="string">'index'</span>, &#123;</div><div class="line">    <span class="attr">url</span>: <span class="string">'/'</span>,</div><div class="line">    <span class="attr">templateUrl</span>: <span class="string">'home.html'</span></div><div class="line">  &#125;)</div><div class="line">  .state(<span class="string">'music'</span>, &#123;</div><div class="line">    <span class="attr">url</span>: <span class="string">'/music'</span>,</div><div class="line">    <span class="attr">templateUrl</span>: <span class="string">'music.html'</span></div><div class="line">  &#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<p>当程序启动时，stateProvider会查看url，匹配index state，则会尝试去加载home.html至<ion-nav-view></p>
-<p>页面通过给定的URLs加载。在Angulr中创建templates的一个简单的办法就直接通过<code>&lt;script type=&quot;text/ng-template&quot;&gt;</code>语法在页面中创建。</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">id</span>=<span class="string">"home"</span> <span class="attr">type</span>=<span class="string">"text/ng-template"</span>&gt;</span><span class="xml"></div><div class="line">  <span class="comment">&lt;!-- The title of the ion-view will be shown on the navbar --&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">ion-view</span> <span class="attr">title</span>=<span class="string">"'Home'"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">ion-content</span> <span class="attr">ng-controller</span>=<span class="string">"HomeCtrl"</span>&gt;</span></div><div class="line">      <span class="comment">&lt;!-- The content of the page --&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#/music"</span>&gt;</span>Go to music page!<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">ion-content</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">ion-view</span>&gt;</span></div><div class="line"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>这样的好处是因为缓存加载会非常快，而不是通过异步加载。</p>
-<h2 id="ion-view"><a href="#ion-view" class="headerlink" title="ion-view"></a>ion-view</h2><p>Child of <code>ionNavView</code></p>
-<h3 id="用法-1"><a href="#用法-1" class="headerlink" title="用法"></a>用法</h3><p>下面是一个例子，我们的页面将包含“My Page”为标题导航栏加载。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">ion-nav-bar</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-nav-bar</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">ion-nav-view</span> <span class="attr">class</span>=<span class="string">"slide-left-right"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">ion-view</span> <span class="attr">title</span>=<span class="string">"My Page"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">ion-content</span>&gt;</span></div><div class="line">      Hello!</div><div class="line">    <span class="tag">&lt;/<span class="name">ion-content</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">ion-view</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">ion-nav-view</span>&gt;</span></div></pre></td></tr></table></figure></p>
-<h3 id="API"><a href="#API" class="headerlink" title="API"></a>API</h3><table>
-<thead>
-<tr>
-<th style="text-align:center">属性</th>
-<th style="text-align:center">类型</th>
-<th style="text-align:center">详细说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">title(可选)</td>
-<td style="text-align:center">string</td>
-<td style="text-align:center">显示在<code>ionNavBar</code>的标题</td>
-</tr>
-<tr>
-<td style="text-align:center">hide-back-button(可选)</td>
-<td style="text-align:center">boolean</td>
-<td style="text-align:center">是否隐藏<code>ionNavBar</code>默认的后退按钮</td>
-</tr>
-<tr>
-<td style="text-align:center">hide-nav-bar(可选)</td>
-<td style="text-align:center">boolean</td>
-<td style="text-align:center">是否隐藏默认的<code>ionNavBar</code></td>
-</tr>
-</tbody>
-</table>
-<h2 id="ion-nav-bar"><a href="#ion-nav-bar" class="headerlink" title="ion-nav-bar"></a>ion-nav-bar</h2><p>Delegate: <code>$ionicNavBarDelegate</code></p>
-<p>如果我们已经有了<code>ionNavView</code>,我们同样可以创建<code>&lt;ion-nav-bar&gt;</code>来更新程序的状态。</p>
-<p>我们可以在其中放置<code>ionNavBackButton</code>来添加返回按钮</p>
-<p>我们可以根据当前的可见视图使用<code>ionNavButtons</code>添加按钮</p>
-<p>通过在<code>animation</code>属性中添加animation class来达到title变化的动画效果。(推荐: ‘nav-title-slide-ios7’).</p>
-<p>注意：<code>ion-nav-bar</code>仅仅在ionView中存在的情况下才起效果</p>
-<h3 id="用法-2"><a href="#用法-2" class="headerlink" title="用法"></a>用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">ng-app</span>=<span class="string">"starter"</span>&gt;</span></div><div class="line">  <span class="comment">&lt;!-- The nav bar that will be updated as we navigate --&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">ion-nav-bar</span> <span class="attr">class</span>=<span class="string">"bar-positive"</span> <span class="attr">animation</span>=<span class="string">"nav-title-slide-ios7"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">ion-nav-bar</span>&gt;</span></div><div class="line"></div><div class="line">  <span class="comment">&lt;!-- where the initial view template will be rendered --&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">ion-nav-view</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">ion-view</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">ion-content</span>&gt;</span>Hello!<span class="tag">&lt;/<span class="name">ion-content</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">ion-view</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">ion-nav-view</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div></pre></td></tr></table></figure>
-<h3 id="API-1"><a href="#API-1" class="headerlink" title="API"></a>API</h3><table>
-<thead>
-<tr>
-<th style="text-align:center">属性</th>
-<th style="text-align:center">类型</th>
-<th style="text-align:center">详细说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">delegate-handle(可选)</td>
-<td style="text-align:center">stirng</td>
-<td style="text-align:center">用来被<code>$ionicNavBarDelegate</code>识别</td>
-</tr>
-<tr>
-<td style="text-align:center">align-title(可选)</td>
-<td style="text-align:center">string</td>
-<td style="text-align:center">‘left’, ‘right’, ‘center’. 默认为’center’.</td>
-</tr>
-<tr>
-<td style="text-align:center">no-tap-scroll(可选)</td>
-<td style="text-align:center">boolean</td>
-<td style="text-align:center">默认的，点击的时候，会自动将内容滚动至顶部。通过设置为false可禁用这一行为。</td>
-</tr>
-</tbody>
-</table>
-<h3 id="另外用法"><a href="#另外用法" class="headerlink" title="另外用法"></a>另外用法</h3><p>你可能在每个视图中放置<code>ion-nav-bar</code>，这就要求你拥有整个nvabar，不仅仅contents、transition、view。</p>
-<p>这与在ion-view中使用header bar相似，但他有一个导航栏的功能。</p>
-<p>如果你这么做，很简单的就是在navbar放置nav buttons；不要使用<code>&lt;ion-nav-buttons&gt;</code></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">ion-view</span> <span class="attr">title</span>=<span class="string">"myTitle"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">ion-nav-bar</span> <span class="attr">class</span>=<span class="string">"bar-positive"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">ion-nav-back-button</span>&gt;</span></div><div class="line">      Back</div><div class="line">    <span class="tag">&lt;/<span class="name">ion-nav-back-button</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"buttons right-buttons"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">"button"</span>&gt;</span></div><div class="line">        Right Button</div><div class="line">      <span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">ion-nav-bar</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">ion-view</span>&gt;</span></div></pre></td></tr></table></figure>
-<h2 id="ion-nav-buttons"><a href="#ion-nav-buttons" class="headerlink" title="ion-nav-buttons"></a>ion-nav-buttons</h2><p>Child of <code>ionNavView</code></p>
-<p>在<code>ionView</code>通过<code>ionNavButtons</code>来设置你<code>ionNavBar</code>上的按钮。</p>
-<p>任何你声明的按钮都会被放置在nvabar对应的地方，当离开视图的时候被销毁</p>
-<h3 id="用法-3"><a href="#用法-3" class="headerlink" title="用法"></a>用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">ion-nav-bar</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">ion-nav-bar</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">ion-nav-view</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">ion-view</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">ion-nav-buttons</span> <span class="attr">side</span>=<span class="string">"left"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">"button"</span> <span class="attr">ng-click</span>=<span class="string">"doSomething()"</span>&gt;</span></div><div class="line">        I'm a button on the left of the navbar!</div><div class="line">      <span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">ion-nav-buttons</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">ion-content</span>&gt;</span></div><div class="line">      Some super content here!</div><div class="line">    <span class="tag">&lt;/<span class="name">ion-content</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">ion-view</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">ion-nav-view</span>&gt;</span></div></pre></td></tr></table></figure>
-<h3 id="API-2"><a href="#API-2" class="headerlink" title="API"></a>API</h3><table>
-<thead>
-<tr>
-<th style="text-align:center">属性</th>
-<th style="text-align:center">类型</th>
-<th style="text-align:center">详细说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">side</td>
-<td style="text-align:center">sting</td>
-<td style="text-align:center">放置在ionNavBar的方向。’left’ or ‘right’.</td>
-</tr>
-</tbody>
-</table>
-<h2 id="ion-nav-back-button"><a href="#ion-nav-back-button" class="headerlink" title="ion-nav-back-button"></a>ion-nav-back-button</h2><p>Child of <code>ionNavBar</code></p>
-<p>在<code>ionNavBar</code>中创建返回的按钮.</p>
-<p>当用户可以返回的时候会显示出来。</p>
-<p>默认的，点击会返回。如果你希望有更多高级的功能，请看下面的例子。</p>
-<h3 id="用法-4"><a href="#用法-4" class="headerlink" title="用法"></a>用法</h3><p>默认的点击行为<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">ion-nav-bar</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">ion-nav-back-button</span> <span class="attr">class</span>=<span class="string">"button-clear"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"ion-arrow-left-c"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span> Back</div><div class="line">  <span class="tag">&lt;/<span class="name">ion-nav-back-button</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">ion-nav-bar</span>&gt;</span></div></pre></td></tr></table></figure></p>
-<p>自定义点击行为，使用<code>$ionicNavBarDelegate</code><br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">ion-nav-bar</span> <span class="attr">ng-controller</span>=<span class="string">"MyCtrl"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">ion-nav-back-button</span> <span class="attr">class</span>=<span class="string">"button-clear"</span></div><div class="line">    <span class="attr">ng-click</span>=<span class="string">"goBack()"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"ion-arrow-left-c"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span> Back</div><div class="line">  <span class="tag">&lt;/<span class="name">ion-nav-back-button</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">ion-nav-bar</span>&gt;</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyCtrl</span>(<span class="params">$scope, $ionicNavBarDelegate</span>) </span>&#123;</div><div class="line">  $scope.goBack = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    $ionicNavBarDelegate.back();</div><div class="line">  &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>在button上显示之前的标题，再次使用<code>$ionicNavBarDelegate</code><br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">ion-nav-bar</span> <span class="attr">ng-controller</span>=<span class="string">"MyCtrl"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">ion-nav-back-button</span> <span class="attr">class</span>=<span class="string">"button-icon"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"icon ion-arrow-left-c"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>&#123;&#123;getPreviousTitle() || 'Back'&#125;&#125;</div><div class="line">  <span class="tag">&lt;/<span class="name">ion-nav-back-button</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">ion-nav-bar</span>&gt;</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyCtrl</span>(<span class="params">$scope, $ionicNavBarDelegate</span>) </span>&#123;</div><div class="line">  $scope.getPreviousTitle = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> $ionicNavBarDelegate.getPreviousTitle();</div><div class="line">  &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="nav-clear"><a href="#nav-clear" class="headerlink" title="nav-clear"></a>nav-clear</h2><p>nav-clear作为属性的指示器，应该使用在使视图发生变化的元素上，例如<a href>或者<button ui-sref>.</p>
-<p>当nav-clear作用的元素点击时，会 disable the next view transition. This directive is useful, for example, for links within a sideMenu.</p>
-<h3 id="用法-5"><a href="#用法-5" class="headerlink" title="用法"></a>用法</h3><p>下面是一个在side menu中的添加了nav-clear的链接，点击的时候会禁用原来的动画效果<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">nav-clear</span> <span class="attr">menu-close</span> <span class="attr">href</span>=<span class="string">"#/home"</span> <span class="attr">class</span>=<span class="string">"item"</span>&gt;</span>Home<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div></pre></td></tr></table></figure></p>
-<h2 id="ionicNavBarDelegate"><a href="#ionicNavBarDelegate" class="headerlink" title="$ionicNavBarDelegate"></a>$ionicNavBarDelegate</h2><p>Delegate for controlling the <code>ionNavBar</code> directive.</p>
-<h3 id="用法-6"><a href="#用法-6" class="headerlink" title="用法"></a>用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">ng-controller</span>=<span class="string">"MyCtrl"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">ion-nav-bar</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">ng-click</span>=<span class="string">"setNavTitle('banana')"</span>&gt;</span></div><div class="line">      Set title to banana!</div><div class="line">    <span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">ion-nav-bar</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyCtrl</span>(<span class="params">$scope, $ionicNavBarDelegate</span>) </span>&#123;</div><div class="line">  $scope.setNavTitle = <span class="function"><span class="keyword">function</span>(<span class="params">title</span>) </span>&#123;</div><div class="line">    $ionicNavBarDelegate.setTitle(title);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><h4 id="back-event"><a href="#back-event" class="headerlink" title="back([event])"></a>back([event])</h4><p>在视图历史中返回</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">参数名</th>
-<th style="text-align:center">类型</th>
-<th style="text-align:center">详细信息</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">event(可选)</td>
-<td style="text-align:center">DOMEvent</td>
-<td style="text-align:center">The event object (eg from a tap event)</td>
-</tr>
-</tbody>
-</table>
-<h4 id="align-direction"><a href="#align-direction" class="headerlink" title="align([direction])"></a>align([direction])</h4><p>设置button中title的方向</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">参数名</th>
-<th style="text-align:center">类型</th>
-<th style="text-align:center">详细信息</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">direction(可选)</td>
-<td style="text-align:center">string</td>
-<td style="text-align:center">‘left’, ‘right’, ‘center’. 默认: ‘center’.</td>
-</tr>
-</tbody>
-</table>
-<h4 id="showBackButton-show"><a href="#showBackButton-show" class="headerlink" title="showBackButton([show])"></a>showBackButton([show])</h4><p>设置/获取<code>ionNavBackButton</code>是否显示</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">参数名</th>
-<th style="text-align:center">类型</th>
-<th style="text-align:center">详细信息</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">show(可选)</td>
-<td style="text-align:center">boolean</td>
-<td style="text-align:center">是否显示返回按钮</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>返回:<code>boolean</code>.是否显示返回按钮</li>
-</ul>
-<h4 id="showBar-show"><a href="#showBar-show" class="headerlink" title="showBar(show)"></a>showBar(show)</h4><p>细节同上</p>
-<h4 id="setTitle-title"><a href="#setTitle-title" class="headerlink" title="setTitle(title)"></a>setTitle(title)</h4><p>设置<code>ionNavBar</code>的标题</p>
-<h4 id="changeTitle-title-direction"><a href="#changeTitle-title-direction" class="headerlink" title="changeTitle(title, direction)"></a>changeTitle(title, direction)</h4><p>Change the title, transitioning the new title in and the old one out in a given direction.</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">参数名</th>
-<th style="text-align:center">类型</th>
-<th style="text-align:center">详细信息</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">title</td>
-<td style="text-align:center">string</td>
-<td style="text-align:center">The new title to show.</td>
-</tr>
-<tr>
-<td style="text-align:center">direction</td>
-<td style="text-align:center">string</td>
-<td style="text-align:center">The direction to transition the new title in. Available: ‘forward’, ‘back’.</td>
-</tr>
-</tbody>
-</table>
-<h4 id="getTitle"><a href="#getTitle" class="headerlink" title="getTitle()"></a>getTitle()</h4><ul>
-<li>返回:<code>string</code>.当前navbar的标题.</li>
-</ul>
-<h4 id="getPreviousTitle"><a href="#getPreviousTitle" class="headerlink" title="getPreviousTitle()"></a>getPreviousTitle()</h4><ul>
-<li>返回:<code>string</code>.前一个navbar的标题.</li>
-</ul>
-<h4 id="getByHandle-handle"><a href="#getByHandle-handle" class="headerlink" title="$getByHandle(handle)"></a>$getByHandle(handle)</h4><table>
-<thead>
-<tr>
-<th style="text-align:center">参数名</th>
-<th style="text-align:center">类型</th>
-<th style="text-align:center">详细信息</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">handle</td>
-<td style="text-align:center">string</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>返回:<code>delegateInstance</code>Returns:  A delegate instance that controls only the ionTabs directives with delegate-handle matching the given handle.</li>
-</ul>
-<p>示例: $ionicNavBarDelegate.$getByHandle(‘myHandle’).setTitle(‘newTitle’)</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2014/08/10/Ionic/Navigation/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
                 
                 <a class="post-title-link" href="/2014/08/10/Ionic/Side Menus/" itemprop="url">
                   Side Menus
@@ -1429,56 +328,113 @@
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2014-08-10T18:24:51+08:00" content="Aug 10 2014">
-              Aug 10 2014
-            </time>
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: Aug 10 2014 18:24:51" itemprop="dateCreated datePublished" datetime="2014-08-10T18:24:51+08:00">Aug 10 2014</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: Mar 24 2015 9:39:35" itemprop="dateModified" datetime="2015-03-24T09:39:35+08:00">Mar 24 2015</time>
+              
+            
           </span>
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp;
+            
+              <span class="post-meta-divider">|</span>
+            
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">分类于</span>
               
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/ionic/" itemprop="url" rel="index">
-                    <span itemprop="name">ionic</span>
-                  </a>
-                </span>
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/ionic/" itemprop="url" rel="index"><span itemprop="name">ionic</span></a></span>
 
                 
                 
-
               
             </span>
           
 
           
             
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2014/08/10/Ionic/Side Menus/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/10/Ionic/Side Menus/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
+          
+
+          
           
 
           
 
           
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">3.7k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">3 mins.</span>
+              
+            </div>
           
+
+          
+
         </div>
       </header>
     
 
-
+    
+    
+    
     <div class="post-body" itemprop="articleBody">
 
       
@@ -1496,9 +452,10 @@
 <li><code>menuClose</code></li>
 </ul>
 <h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><p>使用侧滑菜单，需要添加父元素<code>&lt;ion-side-menus&gt;</code>，<code>&lt;ion-side-menu-content&gt;</code>作为中心内容区域，还有一个或多个<code>&lt;ion-side-menu&gt;</code></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">ion-side-menus</span>&gt;</span></div><div class="line">  <span class="comment">&lt;!-- Center content --&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">ion-side-menu-content</span> <span class="attr">ng-controller</span>=<span class="string">"ContentController"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">ion-side-menu-content</span>&gt;</span></div><div class="line"></div><div class="line">  <span class="comment">&lt;!-- Left menu --&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">ion-side-menu</span> <span class="attr">side</span>=<span class="string">"left"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">ion-side-menu</span>&gt;</span></div><div class="line"></div><div class="line">  <span class="comment">&lt;!-- Right menu --&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">ion-side-menu</span> <span class="attr">side</span>=<span class="string">"right"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">ion-side-menu</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">ion-side-menus</span>&gt;</span></div></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">ContentController</span>(<span class="params">$scope, $ionicSideMenuDelegate</span>) </span>&#123;</div><div class="line">  $scope.toggleLeft = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    $ionicSideMenuDelegate.toggleLeft();</div><div class="line">  &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="API"><a href="#API" class="headerlink" title="API"></a>API</h3><table>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ion-side-menus</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- Center content --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-side-menu-content</span> <span class="attr">ng-controller</span>=<span class="string">"ContentController"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-side-menu-content</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">&lt;!-- Left menu --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-side-menu</span> <span class="attr">side</span>=<span class="string">"left"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-side-menu</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">&lt;!-- Right menu --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-side-menu</span> <span class="attr">side</span>=<span class="string">"right"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-side-menu</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ion-side-menus</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ContentController</span>(<span class="params">$scope, $ionicSideMenuDelegate</span>) </span>&#123;</span><br><span class="line">  $scope.toggleLeft = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    $ionicSideMenuDelegate.toggleLeft();</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="API"><a href="#API" class="headerlink" title="API"></a>API</h3><div class="table-container">
+<table>
 <thead>
 <tr>
 <th style="text-align:center">属性</th>
@@ -1514,11 +471,13 @@
 </tr>
 </tbody>
 </table>
+</div>
 <h2 id="ion-side-menu-content"><a href="#ion-side-menu-content" class="headerlink" title="ion-side-menu-content"></a>ion-side-menu-content</h2><p>Child of <code>ionSideMenus</code></p>
 <p>主要可见内容区域的容器，与<code>ionSideMenu</code>平级</p>
-<h3 id="用法-1"><a href="#用法-1" class="headerlink" title="用法"></a>用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">ion-side-menu-content</span></div><div class="line">  <span class="attr">edge-drag-threshold</span>=<span class="string">"true"</span></div><div class="line">  <span class="attr">drag-content</span>=<span class="string">"true"</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">ion-side-menu-content</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="用法-1"><a href="#用法-1" class="headerlink" title="用法"></a>用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ion-side-menu-content</span></span></span><br><span class="line"><span class="tag">  <span class="attr">edge-drag-threshold</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">drag-content</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ion-side-menu-content</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>更加完整的例子，请看<code>ionSideMenus</code></p>
-<h3 id="API-1"><a href="#API-1" class="headerlink" title="API"></a>API</h3><table>
+<h3 id="API-1"><a href="#API-1" class="headerlink" title="API"></a>API</h3><div class="table-container">
+<table>
 <thead>
 <tr>
 <th style="text-align:center">属性</th>
@@ -1539,6 +498,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <p>接受三种类型的数值    </p>
 <ul>
 <li>如果给定一个非零的数字，距离屏幕边距指定的像素允许拖拽</li>
@@ -1547,9 +507,10 @@
 </ul>
 <h2 id="ion-side-menu"><a href="#ion-side-menu" class="headerlink" title="ion-side-menu"></a>ion-side-menu</h2><p>Child of <code>ionSideMenus</code></p>
 <p>侧滑菜单的容器，与<code>ionSideMenuContent</code>平级。</p>
-<h3 id="用法-2"><a href="#用法-2" class="headerlink" title="用法"></a>用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">ion-side-menu</span></div><div class="line">  <span class="attr">side</span>=<span class="string">"left"</span></div><div class="line">  <span class="attr">width</span>=<span class="string">"myWidthValue + 20"</span></div><div class="line">  <span class="attr">is-enabled</span>=<span class="string">"shouldLeftSideMenuBeEnabled()"</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">ion-side-menu</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="用法-2"><a href="#用法-2" class="headerlink" title="用法"></a>用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ion-side-menu</span></span></span><br><span class="line"><span class="tag">  <span class="attr">side</span>=<span class="string">"left"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">width</span>=<span class="string">"myWidthValue + 20"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">is-enabled</span>=<span class="string">"shouldLeftSideMenuBeEnabled()"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ion-side-menu</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>更加完整的例子，请看<code>ionSideMenus</code></p>
-<h3 id="API-2"><a href="#API-2" class="headerlink" title="API"></a>API</h3><table>
+<h3 id="API-2"><a href="#API-2" class="headerlink" title="API"></a>API</h3><div class="table-container">
+<table>
 <thead>
 <tr>
 <th style="text-align:center">属性</th>
@@ -1575,15 +536,17 @@
 </tr>
 </tbody>
 </table>
+</div>
 <h2 id="menu-toggle"><a href="#menu-toggle" class="headerlink" title="menu-toggle"></a>menu-toggle</h2><p>切换给定边的侧滑菜单</p>
-<h3 id="用法-3"><a href="#用法-3" class="headerlink" title="用法"></a>用法</h3><p>下方的示例是在nav bar中link。点击link就会自动打开给定的侧滑菜单<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">ion-view</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">ion-nav-buttons</span> <span class="attr">side</span>=<span class="string">"left"</span>&gt;</span></div><div class="line">   <span class="tag">&lt;<span class="name">button</span> <span class="attr">menu-toggle</span>=<span class="string">"left"</span> <span class="attr">class</span>=<span class="string">"button button-icon icon ion-navicon"</span>&gt;</span><span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">ion-nav-buttons</span>&gt;</span></div><div class="line"> ...</div><div class="line"><span class="tag">&lt;/<span class="name">ion-view</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<h3 id="用法-3"><a href="#用法-3" class="headerlink" title="用法"></a>用法</h3><p>下方的示例是在nav bar中link。点击link就会自动打开给定的侧滑菜单<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ion-view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-nav-buttons</span> <span class="attr">side</span>=<span class="string">"left"</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">button</span> <span class="attr">menu-toggle</span>=<span class="string">"left"</span> <span class="attr">class</span>=<span class="string">"button button-icon icon ion-navicon"</span>&gt;</span><span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-nav-buttons</span>&gt;</span></span><br><span class="line"> ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">ion-view</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
 <h2 id="menu-close"><a href="#menu-close" class="headerlink" title="menu-close"></a>menu-close</h2><p>关闭当前的侧滑菜单</p>
-<h3 id="用法-4"><a href="#用法-4" class="headerlink" title="用法"></a>用法</h3><p>下面的实例是在side menu中的link中，点击这个link则会自动关闭当前打开的菜单<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">menu-close</span> <span class="attr">href</span>=<span class="string">"#/home"</span> <span class="attr">class</span>=<span class="string">"item"</span>&gt;</span>Home<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<h3 id="用法-4"><a href="#用法-4" class="headerlink" title="用法"></a>用法</h3><p>下面的实例是在side menu中的link中，点击这个link则会自动关闭当前打开的菜单<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">menu-close</span> <span class="attr">href</span>=<span class="string">"#/home"</span> <span class="attr">class</span>=<span class="string">"item"</span>&gt;</span>Home<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
 <h2 id="ionicSideMenuDelegate"><a href="#ionicSideMenuDelegate" class="headerlink" title="$ionicSideMenuDelegate"></a>$ionicSideMenuDelegate</h2><p>Delegate for controlling the <code>ionSideMenus</code> directive.</p>
 <p>通过<code>ionicSideMenuDelegate</code>服务调用的函数会控制所有的side menus。通过调用<code>$getByHandle</code>获取<code>ionSideMenus</code>实例。</p>
-<h3 id="用法-5"><a href="#用法-5" class="headerlink" title="用法"></a>用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">ng-controller</span>=<span class="string">"MainCtrl"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">ion-side-menus</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">ion-side-menu-content</span>&gt;</span></div><div class="line">      Content!</div><div class="line">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">ng-click</span>=<span class="string">"toggleLeftSideMenu()"</span>&gt;</span></div><div class="line">        Toggle Left Side Menu</div><div class="line">      <span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">ion-side-menu-content</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">ion-side-menu</span> <span class="attr">side</span>=<span class="string">"left"</span>&gt;</span></div><div class="line">      Left Menu!</div><div class="line">    <span class="tag">&lt;<span class="name">ion-side-menu</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">ion-side-menus</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">MainCtrl</span>(<span class="params">$scope, $ionicSideMenuDelegate</span>) </span>&#123;</div><div class="line">  $scope.toggleLeftSideMenu = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    $ionicSideMenuDelegate.toggleLeft();</div><div class="line">  &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="用法-5"><a href="#用法-5" class="headerlink" title="用法"></a>用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">ng-controller</span>=<span class="string">"MainCtrl"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-side-menus</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-side-menu-content</span>&gt;</span></span><br><span class="line">      Content!</span><br><span class="line">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">ng-click</span>=<span class="string">"toggleLeftSideMenu()"</span>&gt;</span></span><br><span class="line">        Toggle Left Side Menu</span><br><span class="line">      <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ion-side-menu-content</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-side-menu</span> <span class="attr">side</span>=<span class="string">"left"</span>&gt;</span></span><br><span class="line">      Left Menu!</span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-side-menu</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-side-menus</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">MainCtrl</span>(<span class="params">$scope, $ionicSideMenuDelegate</span>) </span>&#123;</span><br><span class="line">  $scope.toggleLeftSideMenu = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    $ionicSideMenuDelegate.toggleLeft();</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><h4 id="toggleLeft-isOpen"><a href="#toggleLeft-isOpen" class="headerlink" title="toggleLeft([isOpen])"></a>toggleLeft([isOpen])</h4><p>如果存在左侧滑菜单，则切换。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -1600,6 +563,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <h4 id="toggleRight-isOpen"><a href="#toggleRight-isOpen" class="headerlink" title="toggleRight([isOpen])"></a>toggleRight([isOpen])</h4><p>用法同<code>toggleLeft([isOpen])</code></p>
 <h4 id="getOpenRatio"><a href="#getOpenRatio" class="headerlink" title="getOpenRatio()"></a>getOpenRatio()</h4><p>返回已打开菜单的宽度占菜单宽度的比例。</p>
 <ul>
@@ -1614,7 +578,8 @@
 <h4 id="isOpenRight"><a href="#isOpenRight" class="headerlink" title="isOpenRight()"></a>isOpenRight()</h4><ul>
 <li>返回：<code>boolean</code>。右侧菜单处于打开状态</li>
 </ul>
-<h4 id="canDragContent-canDrag"><a href="#canDragContent-canDrag" class="headerlink" title="canDragContent([canDrag])"></a>canDragContent([canDrag])</h4><table>
+<h4 id="canDragContent-canDrag"><a href="#canDragContent-canDrag" class="headerlink" title="canDragContent([canDrag])"></a>canDragContent([canDrag])</h4><div class="table-container">
+<table>
 <thead>
 <tr>
 <th style="text-align:center">参数名</th>
@@ -1630,10 +595,12 @@
 </tr>
 </tbody>
 </table>
+</div>
 <ul>
 <li>返回：<code>boolean</code>。是否可以通过拖拽打开侧滑菜单</li>
 </ul>
-<h4 id="edgeDragThreshold-value"><a href="#edgeDragThreshold-value" class="headerlink" title="edgeDragThreshold(value)"></a>edgeDragThreshold(value)</h4><table>
+<h4 id="edgeDragThreshold-value"><a href="#edgeDragThreshold-value" class="headerlink" title="edgeDragThreshold(value)"></a>edgeDragThreshold(value)</h4><div class="table-container">
+<table>
 <thead>
 <tr>
 <th style="text-align:center">参数名</th>
@@ -1648,10 +615,12 @@
 </tr>
 </tbody>
 </table>
+</div>
 <ul>
 <li>返回：<code>boolean</code>。是否可以在屏幕边距阈值内使用拖拽</li>
 </ul>
-<h4 id="getByHandle-handle"><a href="#getByHandle-handle" class="headerlink" title="$getByHandle(handle)"></a>$getByHandle(handle)</h4><table>
+<h4 id="getByHandle-handle"><a href="#getByHandle-handle" class="headerlink" title="$getByHandle(handle)"></a>$getByHandle(handle)</h4><div class="table-container">
+<table>
 <thead>
 <tr>
 <th style="text-align:center">参数名</th>
@@ -1666,20 +635,37 @@
 </tr>
 </tbody>
 </table>
+</div>
 <ul>
 <li>返回:<code>delegateInstance</code>Returns:  A delegate instance that controls only the ionTabs directives with delegate-handle matching the given handle.</li>
 </ul>
 <p>示例: $ionicSideMenuDelegate.$getByHandle(‘my-handle’).toggleLeft();</p>
-          <div class="post-more-link text-center">
+          <!--noindex-->
+          <div class="post-button text-center">
             <a class="btn" href="/2014/08/10/Ionic/Side Menus/#more" rel="contents">
-              阅读全文 &raquo;
+              Read more &raquo;
             </a>
           </div>
+          <!--/noindex-->
         
       
     </div>
 
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
     <footer class="post-footer">
+      
+
       
 
       
@@ -1689,6 +675,10 @@
         <div class="post-eof"></div>
       
     </footer>
+  </div>
+  
+  
+  
   </article>
 
 
@@ -1696,13 +686,29 @@
       
 
   
-  
 
   
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://violet-day.github.io/2014/08/10/Ionic/Tabs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="violet_day">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/5970246?v=3&s=460">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nemo's Blog">
+    </span>
 
     
       <header class="post-header">
@@ -1710,9 +716,6 @@
         
         
           <h1 class="post-title" itemprop="name headline">
-            
-            
-              
                 
                 <a class="post-title-link" href="/2014/08/10/Ionic/Tabs/" itemprop="url">
                   ionic-Tabs
@@ -1724,56 +727,113 @@
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2014-08-10T04:59:23+08:00" content="Aug 10 2014">
-              Aug 10 2014
-            </time>
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: Aug 10 2014 4:59:23" itemprop="dateCreated datePublished" datetime="2014-08-10T04:59:23+08:00">Aug 10 2014</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: Mar 24 2015 9:39:35" itemprop="dateModified" datetime="2015-03-24T09:39:35+08:00">Mar 24 2015</time>
+              
+            
           </span>
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp;
+            
+              <span class="post-meta-divider">|</span>
+            
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">分类于</span>
               
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/ionic/" itemprop="url" rel="index">
-                    <span itemprop="name">ionic</span>
-                  </a>
-                </span>
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/ionic/" itemprop="url" rel="index"><span itemprop="name">ionic</span></a></span>
 
                 
                 
-
               
             </span>
           
 
           
             
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2014/08/10/Ionic/Tabs/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/10/Ionic/Tabs/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
+          
+
+          
           
 
           
 
           
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">2.6k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">2 mins.</span>
+              
+            </div>
           
+
+          
+
         </div>
       </header>
     
 
-
+    
+    
+    
     <div class="post-body" itemprop="articleBody">
 
       
@@ -1786,13 +846,14 @@
 <p>可以任意设置<code>tabs class</code>和<code>animation class</code>来定义效果。</p>
 <p>单个的tab细节详见<code>ionTab</code>指示器</p>
 <p>注意: 不要再ion-content添加ion-tabs，这样会造成css错误</p>
-<h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">ion-tabs</span> <span class="attr">class</span>=<span class="string">"tabs-positive tabs-icon-only"</span>&gt;</span></div><div class="line"></div><div class="line">  <span class="tag">&lt;<span class="name">ion-tab</span> <span class="attr">title</span>=<span class="string">"Home"</span> <span class="attr">icon-on</span>=<span class="string">"ion-ios7-filing"</span> <span class="attr">icon-off</span>=<span class="string">"ion-ios7-filing-outline"</span>&gt;</span></div><div class="line">    <span class="comment">&lt;!-- Tab 1 content --&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">ion-tab</span>&gt;</span></div><div class="line"></div><div class="line">  <span class="tag">&lt;<span class="name">ion-tab</span> <span class="attr">title</span>=<span class="string">"About"</span> <span class="attr">icon-on</span>=<span class="string">"ion-ios7-clock"</span> <span class="attr">icon-off</span>=<span class="string">"ion-ios7-clock-outline"</span>&gt;</span></div><div class="line">    <span class="comment">&lt;!-- Tab 2 content --&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">ion-tab</span>&gt;</span></div><div class="line"></div><div class="line">  <span class="tag">&lt;<span class="name">ion-tab</span> <span class="attr">title</span>=<span class="string">"Settings"</span> <span class="attr">icon-on</span>=<span class="string">"ion-ios7-gear"</span> <span class="attr">icon-off</span>=<span class="string">"ion-ios7-gear-outline"</span>&gt;</span></div><div class="line">    <span class="comment">&lt;!-- Tab 3 content --&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">ion-tab</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">ion-tabs</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ion-tabs</span> <span class="attr">class</span>=<span class="string">"tabs-positive tabs-icon-only"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-tab</span> <span class="attr">title</span>=<span class="string">"Home"</span> <span class="attr">icon-on</span>=<span class="string">"ion-ios7-filing"</span> <span class="attr">icon-off</span>=<span class="string">"ion-ios7-filing-outline"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- Tab 1 content --&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-tab</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-tab</span> <span class="attr">title</span>=<span class="string">"About"</span> <span class="attr">icon-on</span>=<span class="string">"ion-ios7-clock"</span> <span class="attr">icon-off</span>=<span class="string">"ion-ios7-clock-outline"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- Tab 2 content --&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-tab</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-tab</span> <span class="attr">title</span>=<span class="string">"Settings"</span> <span class="attr">icon-on</span>=<span class="string">"ion-ios7-gear"</span> <span class="attr">icon-off</span>=<span class="string">"ion-ios7-gear-outline"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- Tab 3 content --&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-tab</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">ion-tabs</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <h2 id="ion-tab"><a href="#ion-tab" class="headerlink" title="ion-tab"></a>ion-tab</h2><p>Child of ionTabs</p>
 <p>包含了tab的content。content只有当指定的tab被选中时才出现。</p>
 <p>每个ionTab都有自己的view history</p>
-<h3 id="用法-1"><a href="#用法-1" class="headerlink" title="用法"></a>用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">ion-tab</span></div><div class="line">  <span class="attr">title</span>=<span class="string">"Tab!"</span></div><div class="line">  <span class="attr">icon</span>=<span class="string">"my-icon"</span></div><div class="line">  <span class="attr">href</span>=<span class="string">"#/tab/tab-link"</span></div><div class="line">  <span class="attr">on-select</span>=<span class="string">"onTabSelected()"</span></div><div class="line">  <span class="attr">on-deselect</span>=<span class="string">"onTabDeselected()"</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">ion-tab</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="用法-1"><a href="#用法-1" class="headerlink" title="用法"></a>用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ion-tab</span></span></span><br><span class="line"><span class="tag">  <span class="attr">title</span>=<span class="string">"Tab!"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">icon</span>=<span class="string">"my-icon"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">href</span>=<span class="string">"#/tab/tab-link"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">on-select</span>=<span class="string">"onTabSelected()"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">on-deselect</span>=<span class="string">"onTabDeselected()"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ion-tab</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>更加完整的例子请看<code>inoTabs</code></p>
-<h3 id="API"><a href="#API" class="headerlink" title="API"></a>API</h3><table>
+<h3 id="API"><a href="#API" class="headerlink" title="API"></a>API</h3><div class="table-container">
+<table>
 <thead>
 <tr>
 <th style="text-align:center">属性</th>
@@ -1853,11 +914,13 @@
 </tr>
 </tbody>
 </table>
+</div>
 <h2 id="ionicTabsDelegate"><a href="#ionicTabsDelegate" class="headerlink" title="$ionicTabsDelegate"></a>$ionicTabsDelegate</h2><p>Delegate for controlling the <code>ionTabs</code> directive.</p>
 <p><code>$ionicTabsDelegate</code>服务中的函数控制所有的<code>ionTabs</code>指示器，通过<code>$getByHandle</code>获取具体的<code>ionTabs</code>实例。</p>
-<h3 id="用法-2"><a href="#用法-2" class="headerlink" title="用法"></a>用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">ng-controller</span>=<span class="string">"MyCtrl"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">ion-tabs</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">ion-tab</span> <span class="attr">title</span>=<span class="string">"Tab 1"</span>&gt;</span></div><div class="line">      Hello tab 1!</div><div class="line">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">ng-click</span>=<span class="string">"selectTabWithIndex(1)"</span>&gt;</span>Select tab 2!<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">ion-tab</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">ion-tab</span> <span class="attr">title</span>=<span class="string">"Tab 2"</span>&gt;</span>Hello tab 2!<span class="tag">&lt;/<span class="name">ion-tab</span>&gt;</span></div><div class="line"></div><div class="line">  <span class="tag">&lt;/<span class="name">ion-tabs</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyCtrl</span>(<span class="params">$scope, $ionicTabsDelegate</span>) </span>&#123;</div><div class="line">  $scope.selectTabWithIndex = <span class="function"><span class="keyword">function</span>(<span class="params">index</span>) </span>&#123;</div><div class="line">    $ionicTabsDelegate.select(index);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="用法-2"><a href="#用法-2" class="headerlink" title="用法"></a>用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">ng-controller</span>=<span class="string">"MyCtrl"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-tabs</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-tab</span> <span class="attr">title</span>=<span class="string">"Tab 1"</span>&gt;</span></span><br><span class="line">      Hello tab 1!</span><br><span class="line">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">ng-click</span>=<span class="string">"selectTabWithIndex(1)"</span>&gt;</span>Select tab 2!<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ion-tab</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-tab</span> <span class="attr">title</span>=<span class="string">"Tab 2"</span>&gt;</span>Hello tab 2!<span class="tag">&lt;/<span class="name">ion-tab</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-tabs</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyCtrl</span>(<span class="params">$scope, $ionicTabsDelegate</span>) </span>&#123;</span><br><span class="line">  $scope.selectTabWithIndex = <span class="function"><span class="keyword">function</span>(<span class="params">index</span>) </span>&#123;</span><br><span class="line">    $ionicTabsDelegate.select(index);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><h4 id="select-index-shouldChangeHistory"><a href="#select-index-shouldChangeHistory" class="headerlink" title="select(index, [shouldChangeHistory])"></a><code>select(index, [shouldChangeHistory])</code></h4><p>通过给定的index选中tab</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -1879,10 +942,12 @@
 </tr>
 </tbody>
 </table>
+</div>
 <h4 id="selectedIndex"><a href="#selectedIndex" class="headerlink" title="selectedIndex"></a><code>selectedIndex</code></h4><ul>
 <li>返回：<code>number</code>,选中tab的索引，没有则为-1</li>
 </ul>
-<h4 id="getByHandle-handle"><a href="#getByHandle-handle" class="headerlink" title="$getByHandle(handle)"></a><code>$getByHandle(handle)</code></h4><table>
+<h4 id="getByHandle-handle"><a href="#getByHandle-handle" class="headerlink" title="$getByHandle(handle)"></a><code>$getByHandle(handle)</code></h4><div class="table-container">
+<table>
 <thead>
 <tr>
 <th style="text-align:center">参数名</th>
@@ -1897,20 +962,37 @@
 </tr>
 </tbody>
 </table>
+</div>
 <ul>
 <li>返回:<code>delegateInstance</code>Returns:  A delegate instance that controls only the ionTabs directives with delegate-handle matching the given handle.</li>
 </ul>
 <p>示例: $ionicTabsDelegate.$getByHandle(‘my-handle’).select(0);</p>
-          <div class="post-more-link text-center">
+          <!--noindex-->
+          <div class="post-button text-center">
             <a class="btn" href="/2014/08/10/Ionic/Tabs/#more" rel="contents">
-              阅读全文 &raquo;
+              Read more &raquo;
             </a>
           </div>
+          <!--/noindex-->
         
       
     </div>
 
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
     <footer class="post-footer">
+      
+
       
 
       
@@ -1920,6 +1002,10 @@
         <div class="post-eof"></div>
       
     </footer>
+  </div>
+  
+  
+  
   </article>
 
 
@@ -1927,13 +1013,29 @@
       
 
   
-  
 
   
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://violet-day.github.io/2014/07/24/414Request-URITooLarge/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="violet_day">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/5970246?v=3&s=460">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nemo's Blog">
+    </span>
 
     
       <header class="post-header">
@@ -1941,12 +1043,9 @@
         
         
           <h1 class="post-title" itemprop="name headline">
-            
-            
-              
                 
-                <a class="post-title-link" href="/2014/08/09/Ionic/Cordova/" itemprop="url">
-                  Can't install Cordova plugins from Git on CLI
+                <a class="post-title-link" href="/2014/07/24/414Request-URITooLarge/" itemprop="url">
+                  Large Request-URI-Too-Large
                 </a>
               
             
@@ -1955,56 +1054,113 @@
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2014-08-09T06:53:03+08:00" content="Aug 9 2014">
-              Aug 9 2014
-            </time>
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: Jul 24 2014 5:59:54" itemprop="dateCreated datePublished" datetime="2014-07-24T05:59:54+08:00">Jul 24 2014</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: May 5 2018 22:55:15" itemprop="dateModified" datetime="2018-05-05T22:55:15+08:00">May 5 2018</time>
+              
+            
           </span>
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp;
+            
+              <span class="post-meta-divider">|</span>
+            
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">分类于</span>
               
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/cordova/" itemprop="url" rel="index">
-                    <span itemprop="name">cordova</span>
-                  </a>
-                </span>
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/nginx/" itemprop="url" rel="index"><span itemprop="name">nginx</span></a></span>
 
                 
                 
-
               
             </span>
           
 
           
             
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2014/08/09/Ionic/Cordova/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/09/Ionic/Cordova/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
+          
+
+          
           
 
           
 
           
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">1.3k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">1 mins.</span>
+              
+            </div>
           
+
+          
+
         </div>
       </header>
     
 
-
+    
+    
+    
     <div class="post-body" itemprop="articleBody">
 
       
@@ -2013,17 +1169,43 @@
       
         
           
-            <p>错误信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">C:\Users\UserName\Desktop\hello&gt;cordova plugin add https://github.com/danwilson/google-analytics-plugin.git</div><div class="line">Fetching plugin &quot;https://github.com/danwilson/google-analytics-plugin.git&quot; via git clone</div><div class="line">Error: Command failed: fatal: could not create work tree dir &apos;C:\Users\DAVIDH~1\AppData\Local\Temp\plugman\git\1397683376354&apos;.: No such file or directory</div></pre></td></tr></table></figure></p>
-<p>解决办法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkdir C:\Users\DAVIDH~1\AppData\Local\Temp\plugman\git</div></pre></td></tr></table></figure>
-<p>参考：<a href="http://stackoverflow.com/questions/23121382/cant-install-cordova-plugins-from-git-on-cli" target="_blank" rel="external">Can’t install Cordova plugins from Git on CLI</a></p>
+            <p>客户端请求头缓冲区大小，如果请求头总长度大于小于128k，则使用此缓冲区，<br>请求头总长度大于128k时使用large_client_header_buffers设置的缓存区<br><code>client_header_buffer_size 128k;</code></p>
+<p>large_client_header_buffers 指令参数4为个数，128k为大小，默认是8k。申请4个128k。<br><code>large_client_header_buffers 4 128k;</code></p>
+<p>当http 的URI太长或者request header过大时会报414 Request URI too large或400 bad request错误。</p>
+<p>可能原因:</p>
+<ol>
+<li>cookie中写入的值太大造成的，因为header中的其他参数的size一般比较固定，只有cookie可能被写入较大的数据</li>
+<li>请求参数太长，比如发布一个文章正文，用urlencode后，使用get方式传到后台。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GET http://www.264.cn/ HTTP/1.1</span><br><span class="line">Host: www.264.cn</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Cache-Control: max-age=0</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.31 </span><br><span class="line">Accept-Encoding: gzip,deflate,sdch</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.8</span><br><span class="line">Accept-Charset: GBK,utf-8;q=0.7,*;q=0.3</span><br><span class="line">Cookie: bdshare_firstime=1363517175366; </span><br><span class="line">If-Modified-Since: Mon, 13 May 2013 13:40:02 GMT</span><br></pre></td></tr></table></figure>
+<p>当请求头过大时，超过large_client_header_buffer时，nginx可能返回”Request URI too large” (414)或者”Bad-request”(400)错误,</p>
+<p>如上例HTTP请求头由多行构成，其中”GET <a href="http://www.264.cn/" target="_blank" rel="noopener">http://www.264.cn/</a> HTTP/1.1”表示Request line</p>
+<p>当Request line的长度大于large_client_header_buffer的一个buffer(128k)时，nginx会返回”Request URI too large” (414)错误，对应上面的场景2。</p>
+<p>请求投中最长的一行也要小于large_client_header_buffer，当不是Request line的最长行大于一个buffer(128k)时，会返回”Bad-request”(400)错误，对应上面的场景1。</p>
+<p>解决办法：这时可以调大上述两个值。</p>
+<p>在http节点处添加</p>
+<p>client_header_buffer_size 512k;<br>large_client_header_buffers 4 512k;</p>
 
           
         
       
     </div>
 
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
     <footer class="post-footer">
+      
+
       
 
       
@@ -2033,24 +1215,218 @@
         <div class="post-eof"></div>
       
     </footer>
+  </div>
+  
+  
+  
   </article>
 
 
     
+      
 
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://violet-day.github.io/2014/07/24/Nodejs/[翻译]statejs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="violet_day">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/5970246?v=3&s=460">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nemo's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2014/07/24/Nodejs/[翻译]statejs/" itemprop="url">
+                  statejs
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: Jul 24 2014 5:59:31" itemprop="dateCreated datePublished" datetime="2014-07-24T05:59:31+08:00">Jul 24 2014</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: May 5 2018 22:53:32" itemprop="dateModified" datetime="2018-05-05T22:53:32+08:00">May 5 2018</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">7.1k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">6 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="States"><a href="#States" class="headerlink" title="States"></a>States</h1><p> <code>State</code> 的实例封装了<code>owner</code>在指定时刻下的条件和行为。 一个<code>State</code>是由methods, arbitrary data, events, guards, substates和 transition expressions的集合组成。<br>一个owner通常拥有多个<code>State</code>s, 并且指向其中一个作为 current state, 在current state中owner会表现出相应的方法和行为。通过行为来触发 transition使得由一个状态转变为另外一个状态。</p>
+<h1 id="Object-model"><a href="#Object-model" class="headerlink" title="Object model"></a>Object model</h1><p><code>State</code> objects are modeled by a set of relational references that define three distinct dimensions or “axes”.状态对象是由一组定义三个不同的维度或“轴”关系的参考蓝本。<br>从根本上来说，<code>State</code> 模型是分层次的，从 owner 拥有着唯一的root state开始，每个<code>state</code>都作为 superstate被 substates 继承。一个 <code>State</code> 可能从零个或者多个 parastates继承，提供了定义成分的关系，通过C3线性多重继承实现的一种手段。<br>如果owner的<code>state</code>树是由其他owner的prototypal继承而来 ，继承的owner将可以view their prototype’s States as protostates from which their own epistates inherit.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> p = &#123;&#125;;</span><br><span class="line">state(p, &#123;</span><br><span class="line">    A: state,</span><br><span class="line">    B: state(&#123;</span><br><span class="line">        BA: state,</span><br><span class="line">        BB: state</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> o = <span class="built_in">Object</span>.create(p);</span><br><span class="line">state(o, &#123;</span><br><span class="line">    A: state(&#123;</span><br><span class="line">        AA: state.extend(<span class="string">'X, Y'</span>)</span><br><span class="line">    &#125;),</span><br><span class="line">    X: state,</span><br><span class="line">    Y: state</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>State S 的继承顺序如下 relation precedence:<br>1.S的protostate继承链<br>2.S的parastates，按照声明的先后顺序<br>3.S的superstate<br>其中parastate和superstate线性加载，或者并行，protostate则按照顺序加载</p>
+<h2 id="The-root-state"><a href="#The-root-state" class="headerlink" title="The root state"></a>The root state</h2><p>所有被 <code>State</code> 影响的 owner 都有单独的 root state。root state的名称为唯一的空字符串 ‘’.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">owner.state().root === owner.state(<span class="string">''</span>);   <span class="comment">// &gt;&gt;&gt; true (invariant)</span></span><br><span class="line">owner.state(<span class="string">'-&gt;'</span>);</span><br><span class="line">owner.state();                            <span class="comment">// &gt;&gt;&gt; State ''</span></span><br></pre></td></tr></table></figure></p>
+<p>默认的，owner的初始current state被设置为 root state — 除非 root state 被标记为 abstract attribute，或者另外一个 <code>State</code> 被标记为 initial attribute.<br>root state 还可以用来存储 methods 并且可以被owner的 <code>State</code>s重写。这些方法被替换至root state。如果没有被重写，则会调用默认的方法。</p>
+<h2 id="Superstates-and-substates"><a href="#Superstates-and-substates" class="headerlink" title="Superstates and substates"></a>Superstates and substates</h2><p><strong>owner</strong> 表现得行为由 <strong>substates</strong> 决定 ，这些<strong>substates</strong> 由 <strong>superstates</strong> 生成<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o = &#123;&#125;;</span><br><span class="line">state( o, &#123;</span><br><span class="line">    A: state(&#123;</span><br><span class="line">        AA: state,</span><br><span class="line">        AB: state</span><br><span class="line">    &#125;),</span><br><span class="line">    B: state</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> root = o.state(<span class="string">''</span>);                    <span class="comment">// &gt;&gt;&gt; RootState</span></span><br><span class="line">o.state() === root;                        <span class="comment">// &gt;&gt;&gt; true</span></span><br><span class="line">o.state(<span class="string">'-&gt; AA'</span>);</span><br><span class="line">o.state() === o.state(<span class="string">'AA'</span>);               <span class="comment">// &gt;&gt;&gt; true</span></span><br><span class="line">o.state().superstate === o.state(<span class="string">'A'</span>);     <span class="comment">// &gt;&gt;&gt; true</span></span><br><span class="line">o.state().superstate.superstate === root;  <span class="comment">// &gt;&gt;&gt; true</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="Parastates-and-composition"><a href="#Parastates-and-composition" class="headerlink" title="Parastates and composition"></a>Parastates and composition</h2><p>除了通过 <strong>superstates</strong> 继承，<code>State</code> 模型还支持通过 <strong>parastate</strong> 关系实现多继承。<br>最孤单的就是RootState，它不承担任何关系。<br>Parastates 通过 <code>state.extend</code> 函数声明, 参数为一个或多个字符串 to parastates, along with optional parameters attributes and expression, and returns a StateExpression that can be used to produce a State with the named parastates.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o = &#123;&#125;;</span><br><span class="line">state( o, &#123;</span><br><span class="line">    A: state(&#123;</span><br><span class="line">        AA: state.extend(<span class="string">'X, Y'</span>)</span><br><span class="line">    &#125;),</span><br><span class="line">    X: state,</span><br><span class="line">    Y: state</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h1 id="状态表达式-Expressions"><a href="#状态表达式-Expressions" class="headerlink" title="状态表达式(Expressions)"></a>状态表达式(Expressions)</h1><p><code>State</code> 通过 <em>state expression</em> 数据结构以声明的方式定义。<br><code>StateExpression</code> 通过调用不包含<code>owner</code>参数的 <code>state()</code> 函数创建，仅提供一个 <code>expression</code> 参数，还可以提供由空格分隔的 <code>attributes</code>参数。<br>在其内部， 状态表达式的内容根据对象的 categories 设置，其中包含 <code>data</code>, <code>methods</code>, <code>events</code>, <code>guards</code>, <code>substates</code> 和 <code>transitions</code>。<code>state()</code> 的 <code>expression</code>可以根据这些 categories形成结构化，或者可以通过类型推断来简化实现一些更加简单的缩写。</p>
+<h2 id="结构化状态表达式-Structured-state-expressions"><a href="#结构化状态表达式-Structured-state-expressions" class="headerlink" title="结构化状态表达式(Structured state expressions)"></a>结构化状态表达式(Structured state expressions)</h2><p>以入门的例子为基础，我们可以写一个包含明确分类的expression，包含子状态、方法、事件等。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> longformExpression = state(&#123;</span><br><span class="line">    methods: &#123;</span><br><span class="line">        greet: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="string">"Hello."</span>; &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    states: &#123;</span><br><span class="line">        Formal: &#123;</span><br><span class="line">            methods: &#123;</span><br><span class="line">                greet: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="string">"How do you do?"</span>; &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            events: &#123;</span><br><span class="line">                enter: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">this</span>.wearTux(); &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        Casual: &#123;</span><br><span class="line">            methods: &#123;</span><br><span class="line">                greet: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="string">"Hi!"</span>; &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            events: &#123;</span><br><span class="line">                enter: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">this</span>.wearJeans(); &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// &gt;&gt;&gt; StateExpression</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="简写-Shorthand"><a href="#简写-Shorthand" class="headerlink" title="简写(Shorthand)"></a>简写(Shorthand)</h2><p>明确的分类是很准确的，但是这样显得很冗余。所有 state() 同样接受更加简便的表达形式。效果同上面的一样。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> shorthandExpression = state(&#123;</span><br><span class="line">    greet: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="string">"Hello."</span>; &#125;,</span><br><span class="line"></span><br><span class="line">    Formal: &#123;</span><br><span class="line">        enter: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">this</span>.wearTux(); &#125;,</span><br><span class="line">        greet: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="string">"How do you do?"</span>; &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    Casual: &#123;</span><br><span class="line">        enter: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">this</span>.wearJeans(); &#125;,</span><br><span class="line">        greet: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="string">"Hi!"</span>; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// &gt;&gt;&gt; StateExpression</span></span><br></pre></td></tr></table></figure></p>
+<p>在这个例子中，<code>state()</code> 根据以下规则解释：<br><em>识别缺乏键名的类别 ，推断 <code>Formal</code> 和 <code>Casual</code> 为状态
+</em>将 <code>enter</code> 识别为内置的事件类型，将关联的函数作为 <code>enter</code> 事件的监听器，别且在被所在的 <code>state</code> 触发。<br>*推断 <code>greet</code> 不是一个内置的事件类型，所以被认为是一个方法。<br>所有显示的定义可以通过简写来实现，但是要避免出现含糊不清的情况 (例如，创建一个名为 <code>data</code> 的状态，或者方法名叫做 <code>enter</code>。</p>
+<h2 id="表达式推断-Interpreting-expression-input"><a href="#表达式推断-Interpreting-expression-input" class="headerlink" title="表达式推断(Interpreting expression input)"></a>表达式推断(Interpreting expression input)</h2><p>提供给 <code>state()</code>的 <code>StateExpression</code>根据以下规则推断解释：<br>1.如果输入的值的类型为<code>StateExpression</code>或<code>TransitionExpression</code>并且推断如此，则使用输入的键名为它的名称，如果输入的值是<code>state</code>函数自身，则推断为名称为键名的空状态。<br>2.如果键名是类名，它的值是一个对象或null，那么它将被解释，因为它会在长期形成的结构化格式。<br>3.如果键名同 built-in event type 匹配，或者值是string， 则推断值作为一个事件监听函数，, an array of event listeners, or a named transition target to be bound to that event type.<br>4.Otherwise, if an entry’s key matches a guard action (i.e., admit, release), interpret the value as a guard condition (or array of guard conditions).<br>5.Otherwise, if an entry’s value is an object, interpret it as a substate whose name is the entry’s key, or if the entry’s value is a function, interpret it as a method whose name is the entry’s key.</p>
+<h1 id="Transitions过渡"><a href="#Transitions过渡" class="headerlink" title="Transitions过渡"></a>Transitions过渡</h1><p>Whenever an object’s current state changes, a transition state is created, which temporarily assumes the role of the current state while the object is travelling from its origin or source state to its target state.<br>每当一个对象的当前状态的变化，会创建一个过渡状态，这暂时假定当前状态的角色，而对象从它的源状态变化到目标状态。</p>
+<h2 id="Transition-expressions"><a href="#Transition-expressions" class="headerlink" title="Transition expressions"></a>Transition expressions</h2><p>A state expression may include any number of transition expressions, which define some action to be performed, either synchronously or asynchronously, along with selectors for the origin/source and target states to which the transition should apply, and guards to determine the appropriate transition to employ.<br>状态表达式可以包括任何数量的过渡表达式，它定义要执行的操作，同步或异步，以及选择的原产地/来源和目标状态的过渡应适用的，和警卫来确定合适的过渡聘请。<br>Before an object undergoes a state change, it examines the transition expressions available for the given origin and target, and selects one to be enacted. To test each expression, its origin state is validated against its admit transition guards, and its target state is validated against its release transition guards. The object then instantiates a Transition based on the first valid transition expression it encounters, or, if no transition expression is available, a generic actionless Transition.<br>对象经历一个状态的改变之前，它会检查过渡表达式对于源状态和目标状态是否可用，并选择一个制定。要测试每个表达式，它的起源状态进行验证针对其承认过渡卫士，并将其目标状态及其对过渡释放警卫进行了验证。该对象，然后实例化基于它遇到的第一个有效的过渡表达一个过渡，或者，如果没有过渡表达式是可用的，一个通用的无为过渡。<br>Where transition expressions should be situated in the state hierarchy is largely a matter of discretion. In determining the appropriate transition expression for a given origin–target pairing, the search proceeds, in order:<br>过渡表达式在状态层次的设置应该非常慎重。<br>1.at 过渡表达式的<code>target</code>状态(CSS3过渡是相对于类声明的方式)<br>2.at 过渡表达式的<code>origin</code>状态<br>progressively up the superstate chain of target<br>progressively up the superstate chain of origin<br>Transitions can therefore be organized in a variety of ways, but ambiguity resolution is regular and predictable, as demonstrated with the Zig transition in the example below:<br>过渡可以实现为不同的方式，但是这是有规律并且可预测的，如示例中<code>Zig</code>过渡<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
   </nav>
 
 
 
           </div>
-          
-
-
           
 
         </div>
@@ -2066,72 +1442,188 @@
   </div>
 
   <aside id="sidebar" class="sidebar">
+    
     <div class="sidebar-inner">
 
       
 
       
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="https://avatars2.githubusercontent.com/u/5970246?v=3&s=460"
-               alt="violet_day" />
-          <p class="site-author-name" itemprop="name">violet_day</p>
-          <p class="site-description motion-element" itemprop="description"></p>
-        </div>
-        <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/archives">
-              <span class="site-state-item-count">28</span>
-              <span class="site-state-item-name">日志</span>
-            </a>
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://avatars2.githubusercontent.com/u/5970246?v=3&s=460"
+                alt="violet_day" />
+            
+              <p class="site-author-name" itemprop="name">violet_day</p>
+              <p class="site-description motion-element" itemprop="description"></p>
           </div>
+
           
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">21</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
           
-            <div class="site-state-item site-state-categories">
-              <a href="/categories">
-                <span class="site-state-item-count">11</span>
-                <span class="site-state-item-name">分类</span>
-              </a>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/violet-day" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
             </div>
           
 
           
-            <div class="site-state-item site-state-tags">
-              <a href="/tags">
-                <span class="site-state-item-count">41</span>
-                <span class="site-state-item-name">标签</span>
-              </a>
-            </div>
           
 
-        </nav>
+          
+          
 
-        
-
-        <div class="links-of-author motion-element">
           
             
-              <span class="links-of-author-item">
-                <a href="https://github.com/violet-day" target="_blank">
-                  
-                    <i class="fa fa-github"></i> GitHub
-                  
-                </a>
-              </span>
-            
           
-        </div>
-
-        
-        
-
-        <div class="links-of-author motion-element">
           
-        </div>
 
+        </div>
       </section>
+
+      
 
       
 
@@ -2145,71 +1637,169 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
-  
-  &copy; 
-  <span itemprop="copyrightYear">2018</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">violet_day</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Symbols count total: </span>
+    
+    <span title="Symbols count total">66k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    
+    <span title="Reading time total">1:01</span>
+  
 </div>
 
-<div class="powered-by">
-  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
-</div>
-
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
-  </a>
-</div>
 
 
 
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
       </div>
     </footer>
 
-    <div class="back-to-top"></div>
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
   </div>
 
   
 
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.2.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.2.0"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.2.0"></script>
+
+
 
   
 
 
 
-  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+	
 
-  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
 
-  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
 
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
-
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
-
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
 
 
 
   
+
+
+
+
+
+
+
+
+
+
   
 
 
-  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
 
 
 
@@ -2217,44 +1807,42 @@
 
   
 
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
-
-
-
   
 
   
+  
+
+  
+  
+    
+      
+    
+      
+    
+      
+    
+      
     
   
 
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"Nemo"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
   
-    
-  
-
-
-
 
 
   
   
 
   
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=6.2.0"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=6.2.0"></script>
+
+
   
 
+  
+
+  
 
 </body>
 </html>

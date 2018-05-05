@@ -1,15 +1,28 @@
-<!doctype html>
+<!DOCTYPE html>
+
+
+
 
 
 
   
 
 
-<html class="theme-next pisces use-motion">
+<html class="theme-next mist use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
 
 
 
@@ -27,21 +40,6 @@
 
 
 
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
-
-
-
-
-  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-
-
-
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="ionic,Navigation," />
 
 
 
@@ -50,58 +48,101 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.2.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.2.0" color="#222">
 
 
 
 
 
 
-<meta name="description" content="ion-nav-view当用户浏览整个应用程序，Ionic能够跟踪他们的浏览历史。通过了解他们的历史、视图之间的转换正确滑动或左或右，或没有过渡的。另一个优点是Ionic的导航系统是其管理多个历史能力。
-Ionic使用AngularUI Router模块，所以app的接口可以组织为”states”。和Angular的核心$route服务一样,URLs可以用来控制视图。然而，AngularUI Ro">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Navigation">
-<meta property="og:url" content="http://violet-day.github.io/2014/08/10/Ionic/Navigation/index.html">
-<meta property="og:site_name" content="Nemo's Blog">
-<meta property="og:description" content="ion-nav-view当用户浏览整个应用程序，Ionic能够跟踪他们的浏览历史。通过了解他们的历史、视图之间的转换正确滑动或左或右，或没有过渡的。另一个优点是Ionic的导航系统是其管理多个历史能力。
-Ionic使用AngularUI Router模块，所以app的接口可以组织为”states”。和Angular的核心$route服务一样,URLs可以用来控制视图。然而，AngularUI Ro">
-<meta property="og:updated_time" content="2015-03-24T01:39:35.000Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Navigation">
-<meta name="twitter:description" content="ion-nav-view当用户浏览整个应用程序，Ionic能够跟踪他们的浏览历史。通过了解他们的历史、视图之间的转换正确滑动或左或右，或没有过渡的。另一个优点是Ionic的导航系统是其管理多个历史能力。
-Ionic使用AngularUI Router模块，所以app的接口可以组织为”states”。和Angular的核心$route服务一样,URLs可以用来控制视图。然而，AngularUI Ro">
 
 
 
-<script type="text/javascript" id="hexo.configuration">
+<script type="text/javascript" id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Pisces',
-    sidebar: {"position":"left","display":"post"},
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: 6218687468384814000,
-      author: '博主'
+    root: '/',
+    scheme: 'Mist',
+    version: '6.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
     }
   };
 </script>
 
-  <title> Navigation | Nemo's Blog </title>
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
 
 
+
+
+  <meta name="description" content="ion-nav-view当用户浏览整个应用程序，Ionic能够跟踪他们的浏览历史。通过了解他们的历史、视图之间的转换正确滑动或左或右，或没有过渡的。另一个优点是Ionic的导航系统是其管理多个历史能力。 Ionic使用AngularUI Router模块，所以app的接口可以组织为”states”。和Angular的核心$route服务一样,URLs可以用来控制视图。然而，AngularUI Ro">
+<meta name="keywords" content="ionic,Navigation">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Navigation">
+<meta property="og:url" content="http://violet-day.github.io/2014/08/10/Ionic/Navigation/index.html">
+<meta property="og:site_name" content="Nemo&#39;s Blog">
+<meta property="og:description" content="ion-nav-view当用户浏览整个应用程序，Ionic能够跟踪他们的浏览历史。通过了解他们的历史、视图之间的转换正确滑动或左或右，或没有过渡的。另一个优点是Ionic的导航系统是其管理多个历史能力。 Ionic使用AngularUI Router模块，所以app的接口可以组织为”states”。和Angular的核心$route服务一样,URLs可以用来控制视图。然而，AngularUI Ro">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2015-03-24T01:39:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Navigation">
+<meta name="twitter:description" content="ion-nav-view当用户浏览整个应用程序，Ionic能够跟踪他们的浏览历史。通过了解他们的历史、视图之间的转换正确滑动或左或右，或没有过渡的。另一个优点是Ionic的导航系统是其管理多个历史能力。 Ionic使用AngularUI Router模块，所以app的接口可以组织为”states”。和Angular的核心$route服务一样,URLs可以用来控制视图。然而，AngularUI Ro">
+
+
+
+
+
+
+  <link rel="canonical" href="http://violet-day.github.io/2014/08/10/Ionic/Navigation/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Navigation | Nemo's Blog</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-67357558-7"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-67357558-7', 'auto');
-  ga('send', 'pageview');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-67357558-7');
 </script>
 
 
@@ -109,99 +150,140 @@ Ionic使用AngularUI Router模块，所以app的接口可以组织为”states�
 
 
 
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
     
   
 
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
-  
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
 
-  <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">Nemo's Blog</span>
-      <span class="logo-line-after"><i></i></span>
-    </a>
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Nemo's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Ride The Lightning</p>
+      
   </div>
-  <p class="site-subtitle">Ride The Lightning</p>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
 </div>
 
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
-</div>
+
+
 
 <nav class="site-nav">
   
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+  </li>
 
-  
-    <ul id="menu" class="menu ">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
-            首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
-            
-            分类
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
-            归档
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
-            
-            标签
-          </a>
-        </li>
-      
-
-      
       
       
     </ul>
   
 
   
+    
+
+  
+
+  
 </nav>
 
- </div>
+
+
+  
+
+
+
+</div>
     </header>
+
+    
+
 
     <main id="main" class="main">
       <div class="main-inner">
         <div class="content-wrap">
+          
           <div id="content" class="content">
             
 
@@ -209,24 +291,36 @@ Ionic使用AngularUI Router模块，所以app的接口可以组织为”states�
     
 
   
-  
 
   
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://violet-day.github.io/2014/08/10/Ionic/Navigation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="violet_day">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/5970246?v=3&s=460">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nemo's Blog">
+    </span>
 
     
       <header class="post-header">
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                Navigation
+          <h1 class="post-title" itemprop="name headline">Navigation
               
             
           </h1>
@@ -234,56 +328,113 @@ Ionic使用AngularUI Router模块，所以app的接口可以组织为”states�
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2014-08-10T21:48:52+08:00" content="Aug 10 2014">
-              Aug 10 2014
-            </time>
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: Aug 10 2014 21:48:52" itemprop="dateCreated datePublished" datetime="2014-08-10T21:48:52+08:00">Aug 10 2014</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: Mar 24 2015 9:39:35" itemprop="dateModified" datetime="2015-03-24T09:39:35+08:00">Mar 24 2015</time>
+              
+            
           </span>
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp;
+            
+              <span class="post-meta-divider">|</span>
+            
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">分类于</span>
               
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/ionic/" itemprop="url" rel="index">
-                    <span itemprop="name">ionic</span>
-                  </a>
-                </span>
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/ionic/" itemprop="url" rel="index"><span itemprop="name">ionic</span></a></span>
 
                 
                 
-
               
             </span>
           
 
           
             
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2014/08/10/Ionic/Navigation/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/08/10/Ionic/Navigation/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
+          
+
+          
           
 
           
 
           
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">7k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">6 mins.</span>
+              
+            </div>
           
+
+          
+
         </div>
       </header>
     
 
-
+    
+    
+    
     <div class="post-body" itemprop="articleBody">
 
       
@@ -297,15 +448,16 @@ Ionic使用AngularUI Router模块，所以app的接口可以组织为”states�
 <p>要做到这一点，在我们的标记，我们使用ionNavView顶级的指令。要显示一个标题栏，我们使用<code>ionNavBar</code>指令，更新，因为我们通过导航堆栈导航。</p>
 <p>在navView的animation中，你可以使用任何<code>animation</code>的类。</p>
 <p>推荐的效果: ‘slide-left-right’, ‘slide-left-right-ios7’, ‘slide-in-up’.</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">ion-nav-bar</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-nav-bar</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">ion-nav-view</span> <span class="attr">animation</span>=<span class="string">"slide-left-right"</span>&gt;</span></div><div class="line">  <span class="comment">&lt;!-- Center content --&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">ion-nav-view</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>接下来，我们需要设置状态<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> app = angular.module(<span class="string">'myApp'</span>, [<span class="string">'ionic'</span>]);</div><div class="line">app.config(<span class="function"><span class="keyword">function</span>(<span class="params">$stateProvider</span>) </span>&#123;</div><div class="line">  $stateProvider</div><div class="line">  .state(<span class="string">'index'</span>, &#123;</div><div class="line">    <span class="attr">url</span>: <span class="string">'/'</span>,</div><div class="line">    <span class="attr">templateUrl</span>: <span class="string">'home.html'</span></div><div class="line">  &#125;)</div><div class="line">  .state(<span class="string">'music'</span>, &#123;</div><div class="line">    <span class="attr">url</span>: <span class="string">'/music'</span>,</div><div class="line">    <span class="attr">templateUrl</span>: <span class="string">'music.html'</span></div><div class="line">  &#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ion-nav-bar</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-nav-bar</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ion-nav-view</span> <span class="attr">animation</span>=<span class="string">"slide-left-right"</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- Center content --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ion-nav-view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>接下来，我们需要设置状态<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> app = angular.module(<span class="string">'myApp'</span>, [<span class="string">'ionic'</span>]);</span><br><span class="line">app.config(<span class="function"><span class="keyword">function</span>(<span class="params">$stateProvider</span>) </span>&#123;</span><br><span class="line">  $stateProvider</span><br><span class="line">  .state(<span class="string">'index'</span>, &#123;</span><br><span class="line">    url: <span class="string">'/'</span>,</span><br><span class="line">    templateUrl: <span class="string">'home.html'</span></span><br><span class="line">  &#125;)</span><br><span class="line">  .state(<span class="string">'music'</span>, &#123;</span><br><span class="line">    url: <span class="string">'/music'</span>,</span><br><span class="line">    templateUrl: <span class="string">'music.html'</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
 <p>当程序启动时，stateProvider会查看url，匹配index state，则会尝试去加载home.html至<ion-nav-view></ion-nav-view></p>
 <p>页面通过给定的URLs加载。在Angulr中创建templates的一个简单的办法就直接通过<code>&lt;script type=&quot;text/ng-template&quot;&gt;</code>语法在页面中创建。</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">id</span>=<span class="string">"home"</span> <span class="attr">type</span>=<span class="string">"text/ng-template"</span>&gt;</span><span class="xml"></span></div><div class="line">  <span class="comment">&lt;!-- The title of the ion-view will be shown on the navbar --&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">ion-view</span> <span class="attr">title</span>=<span class="string">"'Home'"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">ion-content</span> <span class="attr">ng-controller</span>=<span class="string">"HomeCtrl"</span>&gt;</span></div><div class="line">      <span class="comment">&lt;!-- The content of the page --&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#/music"</span>&gt;</span>Go to music page!<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">ion-content</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">ion-view</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">id</span>=<span class="string">"home"</span> <span class="attr">type</span>=<span class="string">"text/ng-template"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="handlebars"><span class="xml">  <span class="comment">&lt;!-- The title of the ion-view will be shown on the navbar --&gt;</span></span></span></span><br><span class="line"><span class="handlebars"><span class="xml">  <span class="tag">&lt;<span class="name">ion-view</span> <span class="attr">title</span>=<span class="string">"'Home'"</span>&gt;</span></span></span></span><br><span class="line"><span class="handlebars"><span class="xml">    <span class="tag">&lt;<span class="name">ion-content</span> <span class="attr">ng-controller</span>=<span class="string">"HomeCtrl"</span>&gt;</span></span></span></span><br><span class="line"><span class="handlebars"><span class="xml">      <span class="comment">&lt;!-- The content of the page --&gt;</span></span></span></span><br><span class="line"><span class="javascript">      &lt;a href=<span class="string">"#/music"</span>&gt;Go to music page!<span class="xml"><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span></span></span><br><span class="line"><span class="handlebars"><span class="xml">    <span class="tag">&lt;/<span class="name">ion-content</span>&gt;</span></span></span></span><br><span class="line"><span class="handlebars"><span class="xml">  <span class="tag">&lt;/<span class="name">ion-view</span>&gt;</span></span></span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>这样的好处是因为缓存加载会非常快，而不是通过异步加载。</p>
 <h2 id="ion-view"><a href="#ion-view" class="headerlink" title="ion-view"></a>ion-view</h2><p>Child of <code>ionNavView</code></p>
-<h3 id="用法-1"><a href="#用法-1" class="headerlink" title="用法"></a>用法</h3><p>下面是一个例子，我们的页面将包含“My Page”为标题导航栏加载。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">ion-nav-bar</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-nav-bar</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">ion-nav-view</span> <span class="attr">class</span>=<span class="string">"slide-left-right"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">ion-view</span> <span class="attr">title</span>=<span class="string">"My Page"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">ion-content</span>&gt;</span></div><div class="line">      Hello!</div><div class="line">    <span class="tag">&lt;/<span class="name">ion-content</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">ion-view</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">ion-nav-view</span>&gt;</span></div></pre></td></tr></table></figure></p>
-<h3 id="API"><a href="#API" class="headerlink" title="API"></a>API</h3><table>
+<h3 id="用法-1"><a href="#用法-1" class="headerlink" title="用法"></a>用法</h3><p>下面是一个例子，我们的页面将包含“My Page”为标题导航栏加载。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ion-nav-bar</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-nav-bar</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ion-nav-view</span> <span class="attr">class</span>=<span class="string">"slide-left-right"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-view</span> <span class="attr">title</span>=<span class="string">"My Page"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-content</span>&gt;</span></span><br><span class="line">      Hello!</span><br><span class="line">    <span class="tag">&lt;/<span class="name">ion-content</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ion-nav-view</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="API"><a href="#API" class="headerlink" title="API"></a>API</h3><div class="table-container">
+<table>
 <thead>
 <tr>
 <th style="text-align:center">属性</th>
@@ -331,14 +483,16 @@ Ionic使用AngularUI Router模块，所以app的接口可以组织为”states�
 </tr>
 </tbody>
 </table>
+</div>
 <h2 id="ion-nav-bar"><a href="#ion-nav-bar" class="headerlink" title="ion-nav-bar"></a>ion-nav-bar</h2><p>Delegate: <code>$ionicNavBarDelegate</code></p>
 <p>如果我们已经有了<code>ionNavView</code>,我们同样可以创建<code>&lt;ion-nav-bar&gt;</code>来更新程序的状态。</p>
 <p>我们可以在其中放置<code>ionNavBackButton</code>来添加返回按钮</p>
 <p>我们可以根据当前的可见视图使用<code>ionNavButtons</code>添加按钮</p>
 <p>通过在<code>animation</code>属性中添加animation class来达到title变化的动画效果。(推荐: ‘nav-title-slide-ios7’).</p>
 <p>注意：<code>ion-nav-bar</code>仅仅在ionView中存在的情况下才起效果</p>
-<h3 id="用法-2"><a href="#用法-2" class="headerlink" title="用法"></a>用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">ng-app</span>=<span class="string">"starter"</span>&gt;</span></div><div class="line">  <span class="comment">&lt;!-- The nav bar that will be updated as we navigate --&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">ion-nav-bar</span> <span class="attr">class</span>=<span class="string">"bar-positive"</span> <span class="attr">animation</span>=<span class="string">"nav-title-slide-ios7"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">ion-nav-bar</span>&gt;</span></div><div class="line"></div><div class="line">  <span class="comment">&lt;!-- where the initial view template will be rendered --&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">ion-nav-view</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">ion-view</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">ion-content</span>&gt;</span>Hello!<span class="tag">&lt;/<span class="name">ion-content</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">ion-view</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">ion-nav-view</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div></pre></td></tr></table></figure>
-<h3 id="API-1"><a href="#API-1" class="headerlink" title="API"></a>API</h3><table>
+<h3 id="用法-2"><a href="#用法-2" class="headerlink" title="用法"></a>用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">ng-app</span>=<span class="string">"starter"</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- The nav bar that will be updated as we navigate --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-nav-bar</span> <span class="attr">class</span>=<span class="string">"bar-positive"</span> <span class="attr">animation</span>=<span class="string">"nav-title-slide-ios7"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-nav-bar</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">&lt;!-- where the initial view template will be rendered --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-nav-view</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-view</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">ion-content</span>&gt;</span>Hello!<span class="tag">&lt;/<span class="name">ion-content</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ion-view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-nav-view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="API-1"><a href="#API-1" class="headerlink" title="API"></a>API</h3><div class="table-container">
+<table>
 <thead>
 <tr>
 <th style="text-align:center">属性</th>
@@ -364,15 +518,17 @@ Ionic使用AngularUI Router模块，所以app的接口可以组织为”states�
 </tr>
 </tbody>
 </table>
+</div>
 <h3 id="另外用法"><a href="#另外用法" class="headerlink" title="另外用法"></a>另外用法</h3><p>你可能在每个视图中放置<code>ion-nav-bar</code>，这就要求你拥有整个nvabar，不仅仅contents、transition、view。</p>
 <p>这与在ion-view中使用header bar相似，但他有一个导航栏的功能。</p>
 <p>如果你这么做，很简单的就是在navbar放置nav buttons；不要使用<code>&lt;ion-nav-buttons&gt;</code></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">ion-view</span> <span class="attr">title</span>=<span class="string">"myTitle"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">ion-nav-bar</span> <span class="attr">class</span>=<span class="string">"bar-positive"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">ion-nav-back-button</span>&gt;</span></div><div class="line">      Back</div><div class="line">    <span class="tag">&lt;/<span class="name">ion-nav-back-button</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"buttons right-buttons"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">"button"</span>&gt;</span></div><div class="line">        Right Button</div><div class="line">      <span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">ion-nav-bar</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">ion-view</span>&gt;</span></div></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ion-view</span> <span class="attr">title</span>=<span class="string">"myTitle"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-nav-bar</span> <span class="attr">class</span>=<span class="string">"bar-positive"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-nav-back-button</span>&gt;</span></span><br><span class="line">      Back</span><br><span class="line">    <span class="tag">&lt;/<span class="name">ion-nav-back-button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"buttons right-buttons"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">"button"</span>&gt;</span></span><br><span class="line">        Right Button</span><br><span class="line">      <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-nav-bar</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ion-view</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <h2 id="ion-nav-buttons"><a href="#ion-nav-buttons" class="headerlink" title="ion-nav-buttons"></a>ion-nav-buttons</h2><p>Child of <code>ionNavView</code></p>
 <p>在<code>ionView</code>通过<code>ionNavButtons</code>来设置你<code>ionNavBar</code>上的按钮。</p>
 <p>任何你声明的按钮都会被放置在nvabar对应的地方，当离开视图的时候被销毁</p>
-<h3 id="用法-3"><a href="#用法-3" class="headerlink" title="用法"></a>用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">ion-nav-bar</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">ion-nav-bar</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">ion-nav-view</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">ion-view</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">ion-nav-buttons</span> <span class="attr">side</span>=<span class="string">"left"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">"button"</span> <span class="attr">ng-click</span>=<span class="string">"doSomething()"</span>&gt;</span></div><div class="line">        I'm a button on the left of the navbar!</div><div class="line">      <span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">ion-nav-buttons</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">ion-content</span>&gt;</span></div><div class="line">      Some super content here!</div><div class="line">    <span class="tag">&lt;/<span class="name">ion-content</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">ion-view</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">ion-nav-view</span>&gt;</span></div></pre></td></tr></table></figure>
-<h3 id="API-2"><a href="#API-2" class="headerlink" title="API"></a>API</h3><table>
+<h3 id="用法-3"><a href="#用法-3" class="headerlink" title="用法"></a>用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ion-nav-bar</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ion-nav-bar</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ion-nav-view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-view</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-nav-buttons</span> <span class="attr">side</span>=<span class="string">"left"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">"button"</span> <span class="attr">ng-click</span>=<span class="string">"doSomething()"</span>&gt;</span></span><br><span class="line">        I'm a button on the left of the navbar!</span><br><span class="line">      <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ion-nav-buttons</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-content</span>&gt;</span></span><br><span class="line">      Some super content here!</span><br><span class="line">    <span class="tag">&lt;/<span class="name">ion-content</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ion-nav-view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="API-2"><a href="#API-2" class="headerlink" title="API"></a>API</h3><div class="table-container">
+<table>
 <thead>
 <tr>
 <th style="text-align:center">属性</th>
@@ -388,22 +544,24 @@ Ionic使用AngularUI Router模块，所以app的接口可以组织为”states�
 </tr>
 </tbody>
 </table>
+</div>
 <h2 id="ion-nav-back-button"><a href="#ion-nav-back-button" class="headerlink" title="ion-nav-back-button"></a>ion-nav-back-button</h2><p>Child of <code>ionNavBar</code></p>
 <p>在<code>ionNavBar</code>中创建返回的按钮.</p>
 <p>当用户可以返回的时候会显示出来。</p>
 <p>默认的，点击会返回。如果你希望有更多高级的功能，请看下面的例子。</p>
-<h3 id="用法-4"><a href="#用法-4" class="headerlink" title="用法"></a>用法</h3><p>默认的点击行为<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">ion-nav-bar</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">ion-nav-back-button</span> <span class="attr">class</span>=<span class="string">"button-clear"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"ion-arrow-left-c"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span> Back</div><div class="line">  <span class="tag">&lt;/<span class="name">ion-nav-back-button</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">ion-nav-bar</span>&gt;</span></div></pre></td></tr></table></figure></p>
-<p>自定义点击行为，使用<code>$ionicNavBarDelegate</code><br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">ion-nav-bar</span> <span class="attr">ng-controller</span>=<span class="string">"MyCtrl"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">ion-nav-back-button</span> <span class="attr">class</span>=<span class="string">"button-clear"</span></span></div><div class="line">    <span class="attr">ng-click</span>=<span class="string">"goBack()"</span>&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"ion-arrow-left-c"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span> Back</div><div class="line">  <span class="tag">&lt;/<span class="name">ion-nav-back-button</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">ion-nav-bar</span>&gt;</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyCtrl</span>(<span class="params">$scope, $ionicNavBarDelegate</span>) </span>&#123;</div><div class="line">  $scope.goBack = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    $ionicNavBarDelegate.back();</div><div class="line">  &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>在button上显示之前的标题，再次使用<code>$ionicNavBarDelegate</code><br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">ion-nav-bar</span> <span class="attr">ng-controller</span>=<span class="string">"MyCtrl"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">ion-nav-back-button</span> <span class="attr">class</span>=<span class="string">"button-icon"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"icon ion-arrow-left-c"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>&#123;&#123;getPreviousTitle() || 'Back'&#125;&#125;</div><div class="line">  <span class="tag">&lt;/<span class="name">ion-nav-back-button</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">ion-nav-bar</span>&gt;</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyCtrl</span>(<span class="params">$scope, $ionicNavBarDelegate</span>) </span>&#123;</div><div class="line">  $scope.getPreviousTitle = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> $ionicNavBarDelegate.getPreviousTitle();</div><div class="line">  &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="用法-4"><a href="#用法-4" class="headerlink" title="用法"></a>用法</h3><p>默认的点击行为<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ion-nav-bar</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-nav-back-button</span> <span class="attr">class</span>=<span class="string">"button-clear"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"ion-arrow-left-c"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span> Back</span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-nav-back-button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ion-nav-bar</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>自定义点击行为，使用<code>$ionicNavBarDelegate</code><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ion-nav-bar</span> <span class="attr">ng-controller</span>=<span class="string">"MyCtrl"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-nav-back-button</span> <span class="attr">class</span>=<span class="string">"button-clear"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">ng-click</span>=<span class="string">"goBack()"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"ion-arrow-left-c"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span> Back</span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-nav-back-button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ion-nav-bar</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyCtrl</span>(<span class="params">$scope, $ionicNavBarDelegate</span>) </span>&#123;</span><br><span class="line">  $scope.goBack = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    $ionicNavBarDelegate.back();</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在button上显示之前的标题，再次使用<code>$ionicNavBarDelegate</code><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ion-nav-bar</span> <span class="attr">ng-controller</span>=<span class="string">"MyCtrl"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-nav-back-button</span> <span class="attr">class</span>=<span class="string">"button-icon"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"icon ion-arrow-left-c"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>&#123;&#123;getPreviousTitle() || 'Back'&#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-nav-back-button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ion-nav-bar</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyCtrl</span>(<span class="params">$scope, $ionicNavBarDelegate</span>) </span>&#123;</span><br><span class="line">  $scope.getPreviousTitle = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> $ionicNavBarDelegate.getPreviousTitle();</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="nav-clear"><a href="#nav-clear" class="headerlink" title="nav-clear"></a>nav-clear</h2><p>nav-clear作为属性的指示器，应该使用在使视图发生变化的元素上，例如<a href="">或者<button ui-sref="">.</button></a></p>
 <p>当nav-clear作用的元素点击时，会 disable the next view transition. This directive is useful, for example, for links within a sideMenu.</p>
-<h3 id="用法-5"><a href="#用法-5" class="headerlink" title="用法"></a>用法</h3><p>下面是一个在side menu中的添加了nav-clear的链接，点击的时候会禁用原来的动画效果<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">nav-clear</span> <span class="attr">menu-close</span> <span class="attr">href</span>=<span class="string">"#/home"</span> <span class="attr">class</span>=<span class="string">"item"</span>&gt;</span>Home<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<h3 id="用法-5"><a href="#用法-5" class="headerlink" title="用法"></a>用法</h3><p>下面是一个在side menu中的添加了nav-clear的链接，点击的时候会禁用原来的动画效果<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">nav-clear</span> <span class="attr">menu-close</span> <span class="attr">href</span>=<span class="string">"#/home"</span> <span class="attr">class</span>=<span class="string">"item"</span>&gt;</span>Home<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
 <h2 id="ionicNavBarDelegate"><a href="#ionicNavBarDelegate" class="headerlink" title="$ionicNavBarDelegate"></a>$ionicNavBarDelegate</h2><p>Delegate for controlling the <code>ionNavBar</code> directive.</p>
-<h3 id="用法-6"><a href="#用法-6" class="headerlink" title="用法"></a>用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">ng-controller</span>=<span class="string">"MyCtrl"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">ion-nav-bar</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">ng-click</span>=<span class="string">"setNavTitle('banana')"</span>&gt;</span></div><div class="line">      Set title to banana!</div><div class="line">    <span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">ion-nav-bar</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyCtrl</span>(<span class="params">$scope, $ionicNavBarDelegate</span>) </span>&#123;</div><div class="line">  $scope.setNavTitle = <span class="function"><span class="keyword">function</span>(<span class="params">title</span>) </span>&#123;</div><div class="line">    $ionicNavBarDelegate.setTitle(title);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="用法-6"><a href="#用法-6" class="headerlink" title="用法"></a>用法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">ng-controller</span>=<span class="string">"MyCtrl"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-nav-bar</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">ng-click</span>=<span class="string">"setNavTitle('banana')"</span>&gt;</span></span><br><span class="line">      Set title to banana!</span><br><span class="line">    <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-nav-bar</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyCtrl</span>(<span class="params">$scope, $ionicNavBarDelegate</span>) </span>&#123;</span><br><span class="line">  $scope.setNavTitle = <span class="function"><span class="keyword">function</span>(<span class="params">title</span>) </span>&#123;</span><br><span class="line">    $ionicNavBarDelegate.setTitle(title);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><h4 id="back-event"><a href="#back-event" class="headerlink" title="back([event])"></a>back([event])</h4><p>在视图历史中返回</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -420,7 +578,9 @@ Ionic使用AngularUI Router模块，所以app的接口可以组织为”states�
 </tr>
 </tbody>
 </table>
+</div>
 <h4 id="align-direction"><a href="#align-direction" class="headerlink" title="align([direction])"></a>align([direction])</h4><p>设置button中title的方向</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -437,7 +597,9 @@ Ionic使用AngularUI Router模块，所以app的接口可以组织为”states�
 </tr>
 </tbody>
 </table>
+</div>
 <h4 id="showBackButton-show"><a href="#showBackButton-show" class="headerlink" title="showBackButton([show])"></a>showBackButton([show])</h4><p>设置/获取<code>ionNavBackButton</code>是否显示</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -454,12 +616,14 @@ Ionic使用AngularUI Router模块，所以app的接口可以组织为”states�
 </tr>
 </tbody>
 </table>
+</div>
 <ul>
 <li>返回:<code>boolean</code>.是否显示返回按钮</li>
 </ul>
 <h4 id="showBar-show"><a href="#showBar-show" class="headerlink" title="showBar(show)"></a>showBar(show)</h4><p>细节同上</p>
 <h4 id="setTitle-title"><a href="#setTitle-title" class="headerlink" title="setTitle(title)"></a>setTitle(title)</h4><p>设置<code>ionNavBar</code>的标题</p>
 <h4 id="changeTitle-title-direction"><a href="#changeTitle-title-direction" class="headerlink" title="changeTitle(title, direction)"></a>changeTitle(title, direction)</h4><p>Change the title, transitioning the new title in and the old one out in a given direction.</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -481,13 +645,15 @@ Ionic使用AngularUI Router模块，所以app的接口可以组织为”states�
 </tr>
 </tbody>
 </table>
+</div>
 <h4 id="getTitle"><a href="#getTitle" class="headerlink" title="getTitle()"></a>getTitle()</h4><ul>
 <li>返回:<code>string</code>.当前navbar的标题.</li>
 </ul>
 <h4 id="getPreviousTitle"><a href="#getPreviousTitle" class="headerlink" title="getPreviousTitle()"></a>getPreviousTitle()</h4><ul>
 <li>返回:<code>string</code>.前一个navbar的标题.</li>
 </ul>
-<h4 id="getByHandle-handle"><a href="#getByHandle-handle" class="headerlink" title="$getByHandle(handle)"></a>$getByHandle(handle)</h4><table>
+<h4 id="getByHandle-handle"><a href="#getByHandle-handle" class="headerlink" title="$getByHandle(handle)"></a>$getByHandle(handle)</h4><div class="table-container">
+<table>
 <thead>
 <tr>
 <th style="text-align:center">参数名</th>
@@ -502,6 +668,7 @@ Ionic使用AngularUI Router模块，所以app的接口可以组织为”states�
 </tr>
 </tbody>
 </table>
+</div>
 <ul>
 <li>返回:<code>delegateInstance</code>Returns:  A delegate instance that controls only the ionTabs directives with delegate-handle matching the given handle.</li>
 </ul>
@@ -510,15 +677,31 @@ Ionic使用AngularUI Router模块，所以app的接口可以组织为”states�
       
     </div>
 
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
     <footer class="post-footer">
       
         <div class="post-tags">
           
-            <a href="/tags/ionic/" rel="tag">#ionic</a>
+            <a href="/tags/ionic/" rel="tag"># ionic</a>
           
-            <a href="/tags/Navigation/" rel="tag">#Navigation</a>
+            <a href="/tags/Navigation/" rel="tag"># Navigation</a>
           
         </div>
+      
+
+      
+      
       
 
       
@@ -531,10 +714,12 @@ Ionic使用AngularUI Router模块，所以app的接口可以组织为”states�
             
           </div>
 
+          <span class="post-nav-divider"></span>
+
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2014/08/12/Java/开发环境配置/" rel="prev" title="开发环境配置">
-                开发环境配置 <i class="fa fa-chevron-right"></i>
+              <a href="/2014/08/17/Java/Hibernate各种主键生成策略与配置详解/" rel="prev" title="Hibernate各种主键生成策略与配置详解">
+                Hibernate各种主键生成策略与配置详解 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -544,30 +729,15 @@ Ionic使用AngularUI Router模块，所以app的接口可以组织为”states�
       
       
     </footer>
+  </div>
+  
+  
+  
   </article>
 
 
 
     <div class="post-spread">
-      
-        <div class="ds-share flat" data-thread-key="2014/08/10/Ionic/Navigation/"
-     data-title="Navigation"
-     data-content=""
-     data-url="http://violet-day.github.io/2014/08/10/Ionic/Navigation/">
-  <div class="ds-share-inline">
-    <ul  class="ds-share-icons-16">
-
-      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
-      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
-      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
-      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
-      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
-
-    </ul>
-    <div class="ds-share-icons-more">
-    </div>
-  </div>
-</div>
       
     </div>
   </div>
@@ -576,15 +746,8 @@ Ionic使用AngularUI Router模块，所以app的接口可以组织为”states�
           </div>
           
 
+  
 
-          
-  <div class="comments" id="comments">
-    
-      <div class="ds-thread" data-thread-key="2014/08/10/Ionic/Navigation/"
-           data-title="Navigation" data-url="http://violet-day.github.io/2014/08/10/Ionic/Navigation/">
-      </div>
-    
-  </div>
 
 
         </div>
@@ -600,99 +763,214 @@ Ionic使用AngularUI Router模块，所以app的接口可以组织为”states�
   </div>
 
   <aside id="sidebar" class="sidebar">
+    
     <div class="sidebar-inner">
 
       
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
           </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
           </li>
         </ul>
       
 
-      <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="https://avatars2.githubusercontent.com/u/5970246?v=3&s=460"
-               alt="violet_day" />
-          <p class="site-author-name" itemprop="name">violet_day</p>
-          <p class="site-description motion-element" itemprop="description"></p>
-        </div>
-        <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/archives">
-              <span class="site-state-item-count">28</span>
-              <span class="site-state-item-name">日志</span>
-            </a>
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://avatars2.githubusercontent.com/u/5970246?v=3&s=460"
+                alt="violet_day" />
+            
+              <p class="site-author-name" itemprop="name">violet_day</p>
+              <p class="site-description motion-element" itemprop="description"></p>
           </div>
+
           
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">21</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
           
-            <div class="site-state-item site-state-categories">
-              <a href="/categories">
-                <span class="site-state-item-count">11</span>
-                <span class="site-state-item-name">分类</span>
-              </a>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/violet-day" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
             </div>
           
 
           
-            <div class="site-state-item site-state-tags">
-              <a href="/tags">
-                <span class="site-state-item-count">41</span>
-                <span class="site-state-item-name">标签</span>
-              </a>
-            </div>
           
 
-        </nav>
+          
+          
 
-        
-
-        <div class="links-of-author motion-element">
           
             
-              <span class="links-of-author-item">
-                <a href="https://github.com/violet-day" target="_blank">
-                  
-                    <i class="fa fa-github"></i> GitHub
-                  
-                </a>
-              </span>
-            
           
-        </div>
-
-        
-        
-
-        <div class="links-of-author motion-element">
           
-        </div>
 
+        </div>
       </section>
 
       
+      <!--noindex-->
         <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc-indicator-top post-toc-indicator">
-            <i class="fa fa-angle-double-up"></i>
-          </div>
           <div class="post-toc">
+
             
               
             
+
             
               <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ion-nav-view"><span class="nav-number">1.</span> <span class="nav-text">ion-nav-view</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用法"><span class="nav-number">1.1.</span> <span class="nav-text">用法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ion-view"><span class="nav-number">2.</span> <span class="nav-text">ion-view</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用法-1"><span class="nav-number">2.1.</span> <span class="nav-text">用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#API"><span class="nav-number">2.2.</span> <span class="nav-text">API</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ion-nav-bar"><span class="nav-number">3.</span> <span class="nav-text">ion-nav-bar</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用法-2"><span class="nav-number">3.1.</span> <span class="nav-text">用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#API-1"><span class="nav-number">3.2.</span> <span class="nav-text">API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#另外用法"><span class="nav-number">3.3.</span> <span class="nav-text">另外用法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ion-nav-buttons"><span class="nav-number">4.</span> <span class="nav-text">ion-nav-buttons</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用法-3"><span class="nav-number">4.1.</span> <span class="nav-text">用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#API-2"><span class="nav-number">4.2.</span> <span class="nav-text">API</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ion-nav-back-button"><span class="nav-number">5.</span> <span class="nav-text">ion-nav-back-button</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用法-4"><span class="nav-number">5.1.</span> <span class="nav-text">用法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nav-clear"><span class="nav-number">6.</span> <span class="nav-text">nav-clear</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用法-5"><span class="nav-number">6.1.</span> <span class="nav-text">用法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ionicNavBarDelegate"><span class="nav-number">7.</span> <span class="nav-text">$ionicNavBarDelegate</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用法-6"><span class="nav-number">7.1.</span> <span class="nav-text">用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法"><span class="nav-number">7.2.</span> <span class="nav-text">方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#back-event"><span class="nav-number">7.2.1.</span> <span class="nav-text">back([event])</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#align-direction"><span class="nav-number">7.2.2.</span> <span class="nav-text">align([direction])</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#showBackButton-show"><span class="nav-number">7.2.3.</span> <span class="nav-text">showBackButton([show])</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#showBar-show"><span class="nav-number">7.2.4.</span> <span class="nav-text">showBar(show)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#setTitle-title"><span class="nav-number">7.2.5.</span> <span class="nav-text">setTitle(title)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#changeTitle-title-direction"><span class="nav-number">7.2.6.</span> <span class="nav-text">changeTitle(title, direction)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getTitle"><span class="nav-number">7.2.7.</span> <span class="nav-text">getTitle()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getPreviousTitle"><span class="nav-number">7.2.8.</span> <span class="nav-text">getPreviousTitle()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getByHandle-handle"><span class="nav-number">7.2.9.</span> <span class="nav-text">$getByHandle(handle)</span></a></li></ol></li></ol></li></ol></div>
             
-          </div>
-          <div class="post-toc-indicator-bottom post-toc-indicator">
-            <i class="fa fa-angle-double-down"></i>
+
           </div>
         </section>
+      <!--/noindex-->
+      
+
       
 
     </div>
@@ -705,266 +983,97 @@ Ionic使用AngularUI Router模块，所以app的接口可以组织为”states�
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
-  
-  &copy; 
-  <span itemprop="copyrightYear">2018</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">violet_day</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Symbols count total: </span>
+    
+    <span title="Symbols count total">66k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    
+    <span title="Reading time total">1:01</span>
+  
 </div>
 
-<div class="powered-by">
-  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
-</div>
-
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
-  </a>
-</div>
 
 
 
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
       </div>
     </footer>
 
-    <div class="back-to-top"></div>
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
   </div>
 
   
 
-
-  
-
-
-
-  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
-
-  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
-
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
-
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
-
-
-
-  
-  
-<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
-
-<script type="text/javascript" id="sidebar.toc.highlight">
-  $(document).ready(function () {
-    var tocSelector = '.post-toc';
-    var $tocSelector = $(tocSelector);
-    var activeCurrentSelector = '.active-current';
-
-    $tocSelector
-      .on('activate.bs.scrollspy', function () {
-        var $currentActiveElement = $(tocSelector + ' .active').last();
-
-        removeCurrentActiveClass();
-        $currentActiveElement.addClass('active-current');
-
-        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
-      })
-      .on('clear.bs.scrollspy', function () {
-        removeCurrentActiveClass();
-      });
-
-    function removeCurrentActiveClass () {
-      $(tocSelector + ' ' + activeCurrentSelector)
-        .removeClass(activeCurrentSelector.substring(1));
-    }
-
-    function processTOC () {
-      getTOCMaxHeight();
-      toggleTOCOverflowIndicators();
-    }
-
-    function getTOCMaxHeight () {
-      var height = $('.sidebar').height() -
-                   $tocSelector.position().top -
-                   $('.post-toc-indicator-bottom').height();
-
-      $tocSelector.css('height', height);
-
-      return height;
-    }
-
-    function toggleTOCOverflowIndicators () {
-      tocOverflowIndicator(
-        '.post-toc-indicator-top',
-        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
-      );
-
-      tocOverflowIndicator(
-        '.post-toc-indicator-bottom',
-        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
-      )
-    }
-
-    $(document).on('sidebar.motion.complete', function () {
-      processTOC();
-    });
-
-    $('body').scrollspy({ target: tocSelector });
-    $(window).on('resize', function () {
-      if ( $('.sidebar').hasClass('sidebar-active') ) {
-        processTOC();
-      }
-    });
-
-    onScroll($tocSelector);
-
-    function onScroll (element) {
-      element.on('mousewheel DOMMouseScroll', function (event) {
-          var oe = event.originalEvent;
-          var delta = oe.wheelDelta || -oe.detail;
-
-          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
-          event.preventDefault();
-
-          toggleTOCOverflowIndicators();
-      });
-    }
-
-    function tocOverflowIndicator (indicator, action) {
-      var $indicator = $(indicator);
-      var opacity = action === 'show' ? 1 : 0;
-      $indicator.velocity ?
-        $indicator.velocity('stop').velocity({
-          opacity: opacity
-        }, { duration: 100 }) :
-        $indicator.stop().animate({
-          opacity: opacity
-        }, 100);
-    }
-
-  });
-</script>
-
-<script type="text/javascript" id="sidebar.nav">
-  $(document).ready(function () {
-    var html = $('html');
-    var TAB_ANIMATE_DURATION = 200;
-    var hasVelocity = $.isFunction(html.velocity);
-
-    $('.sidebar-nav li').on('click', function () {
-      var item = $(this);
-      var activeTabClassName = 'sidebar-nav-active';
-      var activePanelClassName = 'sidebar-panel-active';
-      if (item.hasClass(activeTabClassName)) {
-        return;
-      }
-
-      var currentTarget = $('.' + activePanelClassName);
-      var target = $('.' + item.data('target'));
-
-      hasVelocity ?
-        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
-          target
-            .velocity('stop')
-            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
-            .addClass(activePanelClassName);
-        }) :
-        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
-          currentTarget.hide();
-          target
-            .stop()
-            .css({'opacity': 0, 'display': 'block'})
-            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
-              currentTarget.removeClass(activePanelClassName);
-              target.addClass(activePanelClassName);
-            });
-        });
-
-      item.siblings().removeClass(activeTabClassName);
-      item.addClass(activeTabClassName);
-    });
-
-    $('.post-toc a').on('click', function (e) {
-      e.preventDefault();
-      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
-      var offset = $(targetSelector).offset().top;
-      hasVelocity ?
-        html.velocity('stop').velocity('scroll', {
-          offset: offset  + 'px',
-          mobileHA: false
-        }) :
-        $('html, body').stop().animate({
-          scrollTop: offset
-        }, 500);
-    });
-
-    // Expand sidebar on post detail page by default, when post has a toc.
-    NexT.motion.middleWares.sidebar = function () {
-      var $tocContent = $('.post-toc-content');
-
-      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
-        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
-          NexT.utils.displaySidebar();
-        }
-      }
-    };
-  });
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
 </script>
 
 
 
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
 
 
 
-  
 
-  
-    
-  
 
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"Nemo"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
 
-  
-    
-  
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -972,10 +1081,108 @@ Ionic使用AngularUI Router模块，所以app的接口可以组织为”states�
 
   
   
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.2.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.2.0"></script>
+
+
 
   
   
 
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.2.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.2.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.2.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=6.2.0"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=6.2.0"></script>
+
+
+  
+
+  
+
+  
 
 </body>
 </html>
